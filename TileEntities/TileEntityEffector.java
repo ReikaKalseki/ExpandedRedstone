@@ -1,0 +1,89 @@
+/*******************************************************************************
+ * @author Reika Kalseki
+ * 
+ * Copyright 2013
+ * 
+ * All rights reserved.
+ * Distribution of the software in any form is only allowed with
+ * explicit, prior permission from the owner.
+ ******************************************************************************/
+package Reika.ExpandedRedstone.TileEntities;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
+import Reika.DragonAPI.Libraries.ReikaJavaLibrary;
+import Reika.DragonAPI.Libraries.ReikaRedstoneHelper;
+import Reika.ExpandedRedstone.InventoriedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Registry.RedstoneTiles;
+
+public class TileEntityEffector extends InventoriedRedstoneTileEntity {
+
+	private boolean lastPower;
+
+	@Override
+	public void updateEntity(World world, int x, int y, int z, int meta) {
+		super.updateEntity(world, x, y, z);
+		if (ReikaRedstoneHelper.isPositiveEdge(world, x, y, z, lastPower)) {
+			this.useItem();
+		}
+		lastPower = world.isBlockIndirectlyGettingPowered(x, y, z);
+	}
+
+	private void useItem() {
+		for (int i = 0; i < inv.length; i++) {
+			ItemStack is = inv[i];
+			if (is != null) {
+				this.fakeClick(i, is);
+				return;
+			}
+		}
+	}
+
+	private void fakeClick(int slot, ItemStack is) {
+		World world = worldObj;
+		int dx = this.getFacingX();
+		int dy = this.getFacingY();
+		int dz = this.getFacingZ();
+		EntityPlayer ep = this.getPlacer();
+		Item it = is.getItem();
+		Class c = it.getClass();
+		try {
+			Method click = c.getMethod("onItemUse", ItemStack.class, EntityPlayer.class, World.class, int.class, int.class, int.class, int.class, float.class, float.class, float.class);
+			Object o = click.invoke(it, is, ep, world, dx, dy, dz, 0, 0F, 0F, 0F);
+			ReikaInventoryHelper.decrStack(slot, inv);
+			ReikaJavaLibrary.pConsole(o);
+		}
+		catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		}
+		catch (SecurityException e) {
+			e.printStackTrace();
+		}
+		catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		}
+		catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public int getTEIndex() {
+		return RedstoneTiles.EFFECTOR.ordinal();
+	}
+
+	@Override
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		return true;
+	}
+}
