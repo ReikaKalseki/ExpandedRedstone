@@ -9,8 +9,9 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import Reika.ExpandedRedstone.ExpandedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityDriver extends ExpandedRedstoneTileEntity {
@@ -27,6 +28,7 @@ public class TileEntityDriver extends ExpandedRedstoneTileEntity {
 		return false;
 	}
 
+	@Override
 	public int getEmission() {
 		return level;
 	}
@@ -34,5 +36,41 @@ public class TileEntityDriver extends ExpandedRedstoneTileEntity {
 	@Override
 	public int getTEIndex() {
 		return RedstoneTiles.DRIVER.ordinal();
+	}
+
+	public void increment() {
+		level++;
+		if (level > 15)
+			level = 0;
+	}
+
+	public void decrement() {
+		level--;
+		if (level < 0)
+			level = 15;
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound NBT)
+	{
+		super.readFromNBT(NBT);
+
+		level = NBT.getInteger("lvl");
+	}
+
+	/**
+	 * Writes a tile entity to NBT.
+	 */
+	@Override
+	public void writeToNBT(NBTTagCompound NBT)
+	{
+		super.writeToNBT(NBT);
+
+		NBT.setInteger("lvl", level);
+	}
+
+	@Override
+	public int getTopTexture() {
+		return level;
 	}
 }

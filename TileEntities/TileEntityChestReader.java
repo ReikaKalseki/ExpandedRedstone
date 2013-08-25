@@ -10,10 +10,11 @@
 package Reika.ExpandedRedstone.TileEntities;
 
 import net.minecraft.inventory.IInventory;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
-import Reika.ExpandedRedstone.ExpandedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityChestReader extends ExpandedRedstoneTileEntity {
@@ -43,5 +44,29 @@ public class TileEntityChestReader extends ExpandedRedstoneTileEntity {
 
 	public void alternate() {
 		signalFull = !signalFull;
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound NBT)
+	{
+		super.readFromNBT(NBT);
+
+		signalFull = NBT.getBoolean("full");
+	}
+
+	/**
+	 * Writes a tile entity to NBT.
+	 */
+	@Override
+	public void writeToNBT(NBTTagCompound NBT)
+	{
+		super.writeToNBT(NBT);
+
+		NBT.setBoolean("full", signalFull);
+	}
+
+	@Override
+	public int getTopTexture() {
+		return signalFull ? 0 : 1;
 	}
 }

@@ -27,10 +27,12 @@ import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod( modid = "ExpandedRedstone", name="ExpandedRedstone", version="beta", certificateFingerprint = "@GET_FINGERPRINT@")
@@ -53,11 +55,15 @@ public class ExpandedRedstone extends DragonAPIMod {
 
 	public static ModLogger logger;
 
+	@SidedProxy(clientSide="Reika.ExpandedRedstone.ClientProxy", serverSide="Reika.ExpandedRedstone.CommonProxy")
+	public static CommonProxy proxy;
+
 	@Override
 	@PreInit
 	public void preload(FMLPreInitializationEvent evt) {
 		config.initProps(evt);
 		logger = new ModLogger(instance, RedstoneOptions.LOGLOADING.getState(), RedstoneOptions.DEBUGMODE.getState(), false);
+		proxy.registerSounds();
 	}
 
 	@Override
@@ -65,6 +71,8 @@ public class ExpandedRedstone extends DragonAPIMod {
 	public void load(FMLInitializationEvent event) {
 		this.addBlocks();
 		this.addItems();
+		NetworkRegistry.instance().registerGuiHandler(instance, new GuiLoader());
+		proxy.registerRenderers();
 	}
 
 	@Override

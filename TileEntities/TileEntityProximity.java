@@ -14,23 +14,26 @@ import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import Reika.DragonAPI.Libraries.ReikaMathLibrary;
-import Reika.ExpandedRedstone.ExpandedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityProximity extends ExpandedRedstoneTileEntity {
 
 	private int range = 16;
 
-	private EntityType entity;
+	private EntityType entity = EntityType.PLAYER;
 
 	enum EntityType {
 		PLAYER(EntityPlayer.class),
 		MOB(EntityMob.class);
 
 		private Class<? extends Entity> cl;
+
+		public static final EntityType[] list = values();
 
 		private EntityType(Class c) {
 			cl = c;
@@ -65,5 +68,32 @@ public class TileEntityProximity extends ExpandedRedstoneTileEntity {
 	@Override
 	public int getTEIndex() {
 		return RedstoneTiles.PROXIMITY.ordinal();
+	}
+
+	public void stepCreature() {
+		int c = entity.ordinal();
+		c++;
+		if (c >= EntityType.list.length)
+			c = 0;
+		entity = EntityType.list[c];
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound NBT)
+	{
+		super.readFromNBT(NBT);
+
+		entity = EntityType.list[NBT.getInteger("type")];
+	}
+
+	/**
+	 * Writes a tile entity to NBT.
+	 */
+	@Override
+	public void writeToNBT(NBTTagCompound NBT)
+	{
+		super.writeToNBT(NBT);
+
+		NBT.setInteger("type", entity.ordinal());
 	}
 }

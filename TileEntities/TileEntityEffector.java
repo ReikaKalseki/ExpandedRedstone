@@ -16,10 +16,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
-import Reika.DragonAPI.Libraries.ReikaJavaLibrary;
 import Reika.DragonAPI.Libraries.ReikaRedstoneHelper;
-import Reika.ExpandedRedstone.InventoriedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Base.InventoriedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityEffector extends InventoriedRedstoneTileEntity {
@@ -56,8 +54,7 @@ public class TileEntityEffector extends InventoriedRedstoneTileEntity {
 		try {
 			Method click = c.getMethod("onItemUse", ItemStack.class, EntityPlayer.class, World.class, int.class, int.class, int.class, int.class, float.class, float.class, float.class);
 			Object o = click.invoke(it, is, ep, world, dx, dy, dz, 0, 0F, 0F, 0F);
-			ReikaInventoryHelper.decrStack(slot, inv);
-			ReikaJavaLibrary.pConsole(o);
+			inv[slot] = is;
 		}
 		catch (NoSuchMethodException e) {
 			e.printStackTrace();
@@ -85,5 +82,10 @@ public class TileEntityEffector extends InventoriedRedstoneTileEntity {
 	@Override
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
 		return true;
+	}
+
+	@Override
+	public int getFrontTexture() {
+		return worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) ? 1 : 0;
 	}
 }

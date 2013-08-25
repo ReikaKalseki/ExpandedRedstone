@@ -7,8 +7,10 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ExpandedRedstone;
+package Reika.ExpandedRedstone.Base;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Base.TileEntityBase;
@@ -41,7 +43,7 @@ public abstract class ExpandedRedstoneTileEntity extends TileEntityBase {
 	}
 
 	@Override
-	protected String getTEName() {
+	public String getTEName() {
 		return RedstoneTiles.TEList[this.getTEIndex()].getName();
 	}
 
@@ -115,4 +117,51 @@ public abstract class ExpandedRedstoneTileEntity extends TileEntityBase {
 		return 0;
 	}
 
+	@Override
+	public void readFromNBT(NBTTagCompound NBT)
+	{
+		super.readFromNBT(NBT);
+
+		facing = dirs[NBT.getInteger("face")];
+
+		emit = NBT.getBoolean("emitting");
+	}
+
+	/**
+	 * Writes a tile entity to NBT.
+	 */
+	@Override
+	public void writeToNBT(NBTTagCompound NBT)
+	{
+		super.writeToNBT(NBT);
+
+		if (facing != null)
+			NBT.setInteger("face", facing.ordinal());
+
+		NBT.setBoolean("emitting", emit);
+	}
+
+	public int getTextureForSide(int s) {
+		return 0;
+	}
+
+	public boolean isOverridingIcon(int side) {
+		return false;
+	}
+
+	public Icon getOverridingIcon(int side) {
+		return null;
+	}
+
+	public boolean canPowerSide(int s) {
+		return true;
+	}
+
+	public int getTopTexture() {
+		return 0;
+	}
+
+	public int getFrontTexture() {
+		return 0;
+	}
 }

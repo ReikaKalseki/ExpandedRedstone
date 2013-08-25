@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ExpandedRedstone;
+package Reika.ExpandedRedstone.ItemBlocks;
 
 import java.util.List;
 
@@ -20,9 +20,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Interfaces.IndexedItemSprites;
+import Reika.DragonAPI.Libraries.ReikaPlayerAPI;
 import Reika.DragonAPI.Libraries.ReikaWorldHelper;
+import Reika.ExpandedRedstone.ExpandedRedstone;
+import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneBlocks;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 import cpw.mods.fml.relauncher.Side;
@@ -71,7 +73,7 @@ public class ItemCircuitPlacer extends Item implements IndexedItemSprites {
 		}
 		world.playSoundEffect(x+0.5, y+0.5, z+0.5, "step.stone", 1F, 1.5F);
 		ExpandedRedstoneTileEntity te = (ExpandedRedstoneTileEntity)world.getBlockTileEntity(x, y, z);
-		te.setFacing(ForgeDirection.SOUTH);
+		te.setFacing(ReikaPlayerAPI.getDirectionFromPlayerLook(ep, tile.canBeVertical()));
 		te.placer = ep.getEntityName();
 		return true;
 	}

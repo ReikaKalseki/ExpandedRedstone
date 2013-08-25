@@ -10,7 +10,7 @@
 package Reika.ExpandedRedstone.TileEntities;
 
 import net.minecraft.world.World;
-import Reika.ExpandedRedstone.ExpandedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityWeather extends ExpandedRedstoneTileEntity {

@@ -15,8 +15,8 @@ import net.minecraft.item.ItemBlock;
 import Reika.DragonAPI.Interfaces.IDRegistry;
 import Reika.DragonAPI.Interfaces.RegistrationList;
 import Reika.DragonAPI.Libraries.ReikaJavaLibrary;
-import Reika.ExpandedRedstone.BlockRedTile;
 import Reika.ExpandedRedstone.ExpandedRedstone;
+import Reika.ExpandedRedstone.ItemBlocks.BlockRedTile;
 
 public enum RedstoneBlocks implements RegistrationList, IDRegistry {
 

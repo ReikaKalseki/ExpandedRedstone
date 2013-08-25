@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
 import Reika.DragonAPI.Libraries.ReikaItemHelper;
 import Reika.DragonAPI.Libraries.ReikaRedstoneHelper;
-import Reika.ExpandedRedstone.ExpandedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityBreaker extends ExpandedRedstoneTileEntity {
@@ -78,6 +78,11 @@ public class TileEntityBreaker extends ExpandedRedstoneTileEntity {
 				return true;
 		}
 		return false;
+	}
+
+	@Override
+	public int getFrontTexture() {
+		return worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) ? 1 : 0;
 	}
 
 }

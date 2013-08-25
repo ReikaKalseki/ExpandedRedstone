@@ -11,10 +11,11 @@ package Reika.ExpandedRedstone.TileEntities;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
 import Reika.DragonAPI.Libraries.ReikaItemHelper;
 import Reika.DragonAPI.Libraries.ReikaRedstoneHelper;
 import Reika.DragonAPI.Libraries.ReikaWorldHelper;
-import Reika.ExpandedRedstone.InventoriedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Base.InventoriedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityPlacer extends InventoriedRedstoneTileEntity {
@@ -47,7 +48,8 @@ public class TileEntityPlacer extends InventoriedRedstoneTileEntity {
 				int id = ReikaItemHelper.getWorldBlockIDFromItem(is);
 				int meta = ReikaItemHelper.getWorldBlockMetaFromItem(is);
 				if (id != 0) {
-					world.setBlock(dx, dy, dz, id, meta, 3);
+					if (world.setBlock(dx, dy, dz, id, meta, 3))
+						ReikaInventoryHelper.decrStack(i, inv);
 					return;
 				}
 			}
@@ -63,5 +65,10 @@ public class TileEntityPlacer extends InventoriedRedstoneTileEntity {
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
 		int id = ReikaItemHelper.getWorldBlockIDFromItem(itemstack);
 		return id != 0;
+	}
+
+	@Override
+	public int getFrontTexture() {
+		return worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) ? 1 : 0;
 	}
 }

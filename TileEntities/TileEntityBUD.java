@@ -9,51 +9,73 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import Reika.ExpandedRedstone.ExpandedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityBUD extends ExpandedRedstoneTileEntity {
 
-	private int[] IDs = new int[6];
-	private int[] metas = new int[6];
+	private int IDStored;
+	private int metaStored;
 
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z);
-		if (this.checkForUpdates(world, x, y, z))
+		if (this.checkForUpdates(world))
 			this.sendPulse(20);
-		this.setStates(world, x, y, z);
+		this.setStates(world);
 	}
 
-	private void setStates(World world, int x, int y, int z) {
-
-		for (int i = 0; i < 6; i++) {
-			int dx = x+dirs[i].offsetX;
-			int dy = y+dirs[i].offsetY;
-			int dz = z+dirs[i].offsetZ;
-			int id = world.getBlockId(dx, dy, dz);
-			int meta = world.getBlockMetadata(dx, dy, dz);
-			IDs[i] = id;
-			metas[i] = meta;
-		}
+	private void setStates(World world) {
+		int x = this.getFacingX();
+		int y = this.getFacingY();
+		int z = this.getFacingZ();
+		int id = world.getBlockId(x, y, z);
+		int meta = world.getBlockMetadata(x, y, z);
+		IDStored = id;
+		metaStored = meta;
 	}
 
-	private boolean checkForUpdates(World world, int x, int y, int z) {
-		for (int i = 0; i < 6; i++) {
-			int dx = x+dirs[i].offsetX;
-			int dy = y+dirs[i].offsetY;
-			int dz = z+dirs[i].offsetZ;
-			int id = world.getBlockId(dx, dy, dz);
-			int meta = world.getBlockMetadata(dx, dy, dz);
-			if (IDs[i] != id || false)
-				return true;
-		}
-		return false;
+	private boolean checkForUpdates(World world) {
+		int x = this.getFacingX();
+		int y = this.getFacingY();
+		int z = this.getFacingZ();
+		int id = world.getBlockId(x, y, z);
+		int meta = world.getBlockMetadata(x, y, z);
+		return id != IDStored || meta != metaStored;
 	}
 
 	@Override
 	public int getTEIndex() {
 		return RedstoneTiles.BUD.ordinal();
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound NBT)
+	{
+		super.readFromNBT(NBT);
+
+		IDStored = NBT.getInteger("id");
+		metaStored = NBT.getInteger("meta");
+	}
+
+	/**
+	 * Writes a tile entity to NBT.
+	 */
+	@Override
+	public void writeToNBT(NBTTagCompound NBT)
+	{
+		super.writeToNBT(NBT);
+
+		NBT.setInteger("id", IDStored);
+		NBT.setInteger("meta", metaStored);
+	}
+
+	@Override
+	public boolean canPowerSide(int s) {
+		if (this.getFacing() == null)
+			return false;
+		return s != this.getFacing().ordinal();
 	}
 }

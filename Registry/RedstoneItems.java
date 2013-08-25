@@ -19,12 +19,12 @@ import Reika.DragonAPI.Interfaces.IDRegistry;
 import Reika.DragonAPI.Interfaces.RegistrationList;
 import Reika.DragonAPI.Libraries.ReikaJavaLibrary;
 import Reika.ExpandedRedstone.ExpandedRedstone;
-import Reika.ExpandedRedstone.ItemCircuitPlacer;
+import Reika.ExpandedRedstone.ItemBlocks.ItemCircuitPlacer;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum RedstoneItems implements RegistrationList, IDRegistry {
 
-	PLACER(0, true, "#Screwdriver", ItemCircuitPlacer.class);
+	PLACER(0, true, "#Placer", ItemCircuitPlacer.class);
 
 	private int index;
 	private boolean hasSubtypes;
