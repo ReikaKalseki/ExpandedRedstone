@@ -96,4 +96,9 @@ public class TileEntityProximity extends ExpandedRedstoneTileEntity {
 
 		NBT.setInteger("type", entity.ordinal());
 	}
+
+	@Override
+	public int getTopTexture() {
+		return entity.ordinal()*2+(emit ? 1 : 0);
+	}
 }

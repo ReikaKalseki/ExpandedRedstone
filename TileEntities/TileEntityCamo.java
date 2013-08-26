@@ -15,6 +15,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
+import Reika.ExpandedRedstone.ItemBlocks.BlockRedTile;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityCamo extends ExpandedRedstoneTileEntity {
@@ -39,7 +40,7 @@ public class TileEntityCamo extends ExpandedRedstoneTileEntity {
 		int id = worldObj.getBlockId(xCoord, yCoord-1, zCoord);
 		int meta = worldObj.getBlockMetadata(xCoord, yCoord-1, zCoord);
 		if (id == 0)
-			return null;
+			return BlockRedTile.trans;
 		if (id == this.getTileEntityBlockID() && meta == this.getTEIndex()) {
 			TileEntityCamo te = (TileEntityCamo)worldObj.getBlockTileEntity(xCoord, yCoord-1, zCoord);
 			if (te.isOverridingIcon(side))

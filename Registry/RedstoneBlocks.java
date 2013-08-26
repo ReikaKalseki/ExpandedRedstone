@@ -16,11 +16,14 @@ import Reika.DragonAPI.Interfaces.IDRegistry;
 import Reika.DragonAPI.Interfaces.RegistrationList;
 import Reika.DragonAPI.Libraries.ReikaJavaLibrary;
 import Reika.ExpandedRedstone.ExpandedRedstone;
+import Reika.ExpandedRedstone.ItemBlocks.BlockExpandedWire;
 import Reika.ExpandedRedstone.ItemBlocks.BlockRedTile;
+import Reika.ExpandedRedstone.ItemBlocks.ItemCircuitPlacer;
 
 public enum RedstoneBlocks implements RegistrationList, IDRegistry {
 
-	TILEENTITY(BlockRedTile.class);
+	TILEENTITY(BlockRedTile.class),
+	WIRE(BlockExpandedWire.class);
 
 	private Class blockClass;
 
@@ -66,7 +69,12 @@ public enum RedstoneBlocks implements RegistrationList, IDRegistry {
 	}
 
 	public Material getBlockMaterial() {
-		return Material.rock;
+		switch(this) {
+		case WIRE:
+			return Material.circuits;
+		default:
+			return Material.portal;
+		}
 	}
 
 	public int getBlockID() {
@@ -85,32 +93,42 @@ public enum RedstoneBlocks implements RegistrationList, IDRegistry {
 
 	@Override
 	public String getBasicName() {
-		return this.name().substring(0, 1)+this.name().substring(1).toLowerCase();
+		switch(this) {
+		case WIRE:
+			return "Lapis Wire";
+		default:
+			return this.name().substring(0, 1)+this.name().substring(1).toLowerCase();
+		}
 	}
 
 	@Override
 	public String getMultiValuedName(int meta) {
-		return null;
+		return RedstoneTiles.TEList[meta].getName();
 	}
 
 	@Override
 	public boolean hasMultiValuedName() {
-		return false;
+		return this == TILEENTITY;
 	}
 
 	@Override
 	public int getNumberMetadatas() {
-		return 1;
+		return RedstoneTiles.TEList.length;
 	}
 
 	@Override
 	public Class<? extends ItemBlock> getItemBlock() {
-		return null;
+		switch(this) {
+		case TILEENTITY:
+			return ItemCircuitPlacer.class;
+		default:
+			return null;
+		}
 	}
 
 	@Override
 	public boolean hasItemBlock() {
-		return false;
+		return this.getItemBlock() != null;
 	}
 
 	public boolean isDummiedOut() {

@@ -14,9 +14,11 @@ import java.net.URL;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import Reika.DragonAPI.Base.DragonAPIMod;
 import Reika.DragonAPI.Instantiable.ControlledConfig;
 import Reika.DragonAPI.Instantiable.ModLogger;
+import Reika.DragonAPI.Libraries.ReikaItemHelper;
 import Reika.DragonAPI.Libraries.ReikaRegistryHelper;
 import Reika.ExpandedRedstone.Registry.RedstoneBlocks;
 import Reika.ExpandedRedstone.Registry.RedstoneItems;
@@ -73,6 +75,7 @@ public class ExpandedRedstone extends DragonAPIMod {
 		this.addItems();
 		NetworkRegistry.instance().registerGuiHandler(instance, new GuiLoader());
 		proxy.registerRenderers();
+		this.addRecipes();
 	}
 
 	@Override
@@ -89,6 +92,26 @@ public class ExpandedRedstone extends DragonAPIMod {
 		ReikaRegistryHelper.instantiateAndRegisterBlocks(instance, RedstoneBlocks.blockList, blocks, logger.shouldLog());
 		for (int i = 0; i < RedstoneTiles.TEList.length; i++)
 			GameRegistry.registerTileEntity(RedstoneTiles.TEList[i].getTEClass(), "ExpRedstone"+RedstoneTiles.TEList[i].getName());
+	}
+
+	private static void addRecipes() {
+		RedstoneTiles.PLACER.addRecipe("CCC", "CDC", "CRC", 'C', Block.cobblestone, 'R', Item.redstone, 'D', Block.dispenser);
+		RedstoneTiles.CLOCK.addRecipe("srs", "rer", "srs", 's', ReikaItemHelper.stoneSlab, 'r', Item.redstone, 'e', Item.netherQuartz);
+		RedstoneTiles.BUD.addRecipe("ccc", "rne", "ccc", 'c', Block.cobblestone, 'r', Item.redstone, 'n', Item.netherQuartz, 'e', Item.enderPearl);
+		RedstoneTiles.CAMOFLAGE.addSizedRecipe(8, "rir", "iei", "rir", 'r', Item.redstone, 'i', Item.ingotIron, 'e', Item.eyeOfEnder);
+		RedstoneTiles.CHESTREADER.addRecipe(" c ", "rer", " s ", 's', ReikaItemHelper.stoneSlab, 'r', Item.redstone, 'e', Item.netherQuartz, 'c', Block.chestTrapped);
+		RedstoneTiles.DRIVER.addRecipe(" s ", "rer", " s ", 's', ReikaItemHelper.stoneSlab, 'r', Item.redstone, 'e', Item.netherQuartz);
+		RedstoneTiles.EFFECTOR.addRecipe("CCC", "NDE", "CRC", 'C', Block.cobblestone, 'R', Item.redstone, 'D', Block.dispenser, 'N', Item.netherQuartz, 'E', Item.enderPearl);
+		RedstoneTiles.PROXIMITY.addRecipe("rdr", "nen", "sss", 's', ReikaItemHelper.stoneSlab, 'r', Item.redstone, 'e', Item.enderPearl, 'd', Item.diamond, 'n', Item.netherQuartz);
+		RedstoneTiles.TOGGLE.addRecipe("tRt", "rer", "sRs", 't', Block.torchRedstoneActive, 'R', Item.redstoneRepeater, 's', ReikaItemHelper.stoneSlab, 'r', Item.redstone, 'e', Item.netherQuartz);
+		RedstoneTiles.WEATHER.addRecipe("nSn", "rnr", "sss", 's', ReikaItemHelper.stoneSlab, 'r', Item.redstone, 'n', Item.netherQuartz, 'S', Block.daylightSensor);
+
+		GameRegistry.addShapelessRecipe(new ItemStack(RedstoneBlocks.WIRE.getBlockID(), 2, 0), ReikaItemHelper.lapisDye, Item.redstone);
+
+		RedstoneTiles.BREAKER.addNBTRecipe(3, "CCC", "CPC", "CRC", 'C', Block.cobblestone, 'R', Item.redstone, 'P', Item.pickaxeDiamond);
+		RedstoneTiles.BREAKER.addNBTRecipe(2, "CCC", "CPC", "CRC", 'C', Block.cobblestone, 'R', Item.redstone, 'P', Item.pickaxeIron);
+		RedstoneTiles.BREAKER.addNBTRecipe(1, "CCC", "CPC", "CRC", 'C', Block.cobblestone, 'R', Item.redstone, 'P', Item.pickaxeStone);
+		RedstoneTiles.BREAKER.addNBTRecipe(0, "CCC", "CPC", "CRC", 'C', Block.cobblestone, 'R', Item.redstone, 'P', Item.pickaxeWood);
 	}
 
 	@Override

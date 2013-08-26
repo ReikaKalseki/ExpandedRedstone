@@ -19,53 +19,18 @@ import Reika.DragonAPI.Interfaces.IDRegistry;
 import Reika.DragonAPI.Interfaces.RegistrationList;
 import Reika.DragonAPI.Libraries.ReikaJavaLibrary;
 import Reika.ExpandedRedstone.ExpandedRedstone;
-import Reika.ExpandedRedstone.ItemBlocks.ItemCircuitPlacer;
+import Reika.ExpandedRedstone.ItemBlocks.ItemWirePlacer;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum RedstoneItems implements RegistrationList, IDRegistry {
 
-	PLACER(0, true, "#Placer", ItemCircuitPlacer.class);
+	BLUEWIRE(false, "Lapis Wire", ItemWirePlacer.class);
 
-	private int index;
 	private boolean hasSubtypes;
 	private String name;
 	private Class itemClass;
-	private int texturesheet;
 
-	private int maxindex;
-
-	private RedstoneItems(int tex, boolean sub, String n, Class <?extends Item> iCl) {
-		texturesheet = 1;
-		if (tex < 0) {
-			tex = -tex;
-			texturesheet = 0;
-		}
-		if (tex > 255) {
-			texturesheet = tex/256;
-			tex -= texturesheet*256;
-		}
-		index = tex;
-		hasSubtypes = sub;
-		name = n;
-		itemClass = iCl;
-	}
-
-	private RedstoneItems(int lotex, int hitex, boolean sub, String n, Class <?extends Item> iCl) {
-		if (lotex > hitex)
-			throw new RegistrationException(ExpandedRedstone.instance, "Invalid item sprite registration for "+n+"! Backwards texture bounds?");
-		texturesheet = 1;
-		if (lotex < 0) {
-			lotex = -lotex;
-			hitex = -hitex;
-			texturesheet = 0;
-		}
-		if (lotex > 255) {
-			texturesheet = lotex/256;
-			lotex -= texturesheet*256;
-			hitex -= texturesheet*256;
-		}
-		index = lotex;
-		maxindex = lotex;
+	private RedstoneItems(boolean sub, String n, Class <?extends Item> iCl) {
 		hasSubtypes = sub;
 		name = n;
 		itemClass = iCl;
@@ -75,15 +40,11 @@ public enum RedstoneItems implements RegistrationList, IDRegistry {
 
 
 	public Class[] getConstructorParamTypes() {
-		return new Class[]{int.class, int.class}; // ID, Sprite index
+		return new Class[]{int.class};
 	}
 
 	public Object[] getConstructorParams() {
-		return new Object[]{ExpandedRedstone.config.getItemID(this.ordinal()), this.getTextureIndex()};
-	}
-
-	public int getTextureIndex() {
-		return index;
+		return new Object[]{ExpandedRedstone.config.getItemID(this.ordinal())};
 	}
 
 	public static boolean isRegistered(ItemStack is) {
@@ -127,9 +88,6 @@ public enum RedstoneItems implements RegistrationList, IDRegistry {
 	public String getMultiValuedName(int dmg) {
 		if (!this.hasMultiValuedName())
 			throw new RuntimeException("Item "+name+" was called for a multi-name, yet does not have one!");
-		if (this == PLACER) {
-			return RedstoneTiles.TEList[dmg].getName();
-		}
 		throw new RuntimeException("Item "+name+" was called for a multi-name, but it was not registered!");
 	}
 
@@ -157,15 +115,9 @@ public enum RedstoneItems implements RegistrationList, IDRegistry {
 		return false;
 	}
 
-	public int getTextureSheet() {
-		return texturesheet;
-	}
-
 	public int getNumberMetadatas() {
 		if (!hasSubtypes)
 			return 1;
-		if (this == PLACER)
-			return RedstoneTiles.TEList.length;
 		throw new RegistrationException(ExpandedRedstone.instance, "Item "+name+" has subtypes but the number was not specified!");
 	}
 

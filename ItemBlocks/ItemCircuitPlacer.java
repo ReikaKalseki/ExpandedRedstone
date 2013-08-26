@@ -16,10 +16,11 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Interfaces.IndexedItemSprites;
 import Reika.DragonAPI.Libraries.ReikaPlayerAPI;
 import Reika.DragonAPI.Libraries.ReikaWorldHelper;
@@ -27,16 +28,18 @@ import Reika.ExpandedRedstone.ExpandedRedstone;
 import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneBlocks;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
+import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemCircuitPlacer extends Item implements IndexedItemSprites {
+public class ItemCircuitPlacer extends ItemBlock implements IndexedItemSprites {
 
 	private int index;
 
-	public ItemCircuitPlacer(int id, int ind) {
+	public ItemCircuitPlacer(int id) {
 		super(id);
-		index = ind;
+		hasSubtypes = true;
+		this.setMaxDamage(0);
 		this.setCreativeTab(ExpandedRedstone.tab);
 	}
 
@@ -73,8 +76,24 @@ public class ItemCircuitPlacer extends Item implements IndexedItemSprites {
 		}
 		world.playSoundEffect(x+0.5, y+0.5, z+0.5, "step.stone", 1F, 1.5F);
 		ExpandedRedstoneTileEntity te = (ExpandedRedstoneTileEntity)world.getBlockTileEntity(x, y, z);
-		te.setFacing(ReikaPlayerAPI.getDirectionFromPlayerLook(ep, tile.canBeVertical()));
+		if (tile.isReversedPlacement()) {
+			ForgeDirection dir = ReikaPlayerAPI.getDirectionFromPlayerLook(ep, tile.canBeVertical());
+			if (dir.ordinal() < 2)
+				te.setFacing(dir);
+			else
+				te.setFacing(dir.getOpposite());
+		}
+		else {
+			te.setFacing(ReikaPlayerAPI.getDirectionFromPlayerLook(ep, tile.canBeVertical()));
+		}
 		te.placer = ep.getEntityName();
+		if (tile == RedstoneTiles.BREAKER) {
+			TileEntityBreaker brk = (TileEntityBreaker)te;
+			if (is.stackTagCompound != null) {
+				int level = is.stackTagCompound.getInteger("nbt");
+				brk.setHarvestLevel(level);
+			}
+		}
 		return true;
 	}
 
@@ -110,6 +129,15 @@ public class ItemCircuitPlacer extends Item implements IndexedItemSprites {
 	{
 		int d = is.getItemDamage();
 		return super.getUnlocalizedName() + "." + String.valueOf(d);
+	}
+
+	@Override
+	public void addInformation(ItemStack is, EntityPlayer ep, List li, boolean par4) {
+		RedstoneTiles tile = RedstoneTiles.TEList[is.getItemDamage()];
+		if (tile == RedstoneTiles.BREAKER && is.stackTagCompound != null) {
+			int level = is.stackTagCompound.getInteger("nbt");
+			li.add(String.format("Harvest Level: %d", level));
+		}
 	}
 
 }

@@ -13,6 +13,9 @@ import net.minecraft.world.World;
 
 public class CommonProxy {
 
+	public static int tileRender;
+	public static int wireRender;
+
 	/**
 	 * Client side only register stuff...
 	 */

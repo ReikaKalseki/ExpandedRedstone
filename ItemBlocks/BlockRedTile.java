@@ -17,27 +17,30 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.ReikaItemHelper;
-import Reika.ExpandedRedstone.ClientProxy;
+import Reika.DragonAPI.Libraries.ReikaJavaLibrary;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
-import Reika.ExpandedRedstone.Registry.RedstoneItems;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 import Reika.ExpandedRedstone.TileEntities.TileEntity555;
+import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker;
 import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
 import Reika.ExpandedRedstone.TileEntities.TileEntityChestReader;
 import Reika.ExpandedRedstone.TileEntities.TileEntityDriver;
 import Reika.ExpandedRedstone.TileEntities.TileEntityProximity;
+import buildcraft.api.tools.IToolWrench;
+import cpw.mods.fml.common.FMLCommonHandler;
 
 public class BlockRedTile extends Block {
 
+	public static Icon trans;
 	private Icon[][][] icons = new Icon[6][RedstoneTiles.TEList.length][16];
 	private Icon[][] front = new Icon[RedstoneTiles.TEList.length][16];
 	private static final String BLANK_TEX = "ExpandedRedstone:basic";
@@ -45,6 +48,8 @@ public class BlockRedTile extends Block {
 
 	public BlockRedTile(int ID, Material mat) {
 		super(ID, mat);
+		this.setCreativeTab(ExpandedRedstone.tab);
+		this.setHardness(1);
 	}
 
 	@Override
@@ -55,6 +60,49 @@ public class BlockRedTile extends Block {
 	@Override
 	public boolean hasTileEntity(int meta) {
 		return true;
+	}
+
+	@Override
+	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int meta, int fortune) {
+		ArrayList<ItemStack> li = new ArrayList<ItemStack>();
+		RedstoneTiles r = RedstoneTiles.TEList[meta];
+		ItemStack is = r.getItem();
+		if (r == RedstoneTiles.BREAKER) {
+			TileEntityBreaker te = (TileEntityBreaker)world.getBlockTileEntity(x, y, z);
+			ReikaJavaLibrary.pConsole(te+" on "+FMLCommonHandler.instance().getEffectiveSide());
+			if (te != null) {
+				is.stackTagCompound = new NBTTagCompound();
+				is.stackTagCompound.setInteger("nbt", te.getHarvestLevel());
+			}
+		}
+		li.add(is);
+		return li;
+	}
+
+	@Override
+	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z)
+	{
+		if (!player.capabilities.isCreativeMode)
+			this.harvestBlock(world, player, x, y, z, world.getBlockMetadata(x, y, z));
+		return world.setBlock(x, y, z, 0);
+	}
+
+	@Override
+	public void harvestBlock(World world, EntityPlayer ep, int x, int y, int z, int meta) {
+		RedstoneTiles r = RedstoneTiles.TEList[meta];
+		if (r == RedstoneTiles.BREAKER) {
+			TileEntityBreaker brk = (TileEntityBreaker)world.getBlockTileEntity(x, y, z);
+			if (brk != null) {
+				ItemStack todrop = r.getItem();
+				todrop.stackTagCompound = new NBTTagCompound();
+				todrop.stackTagCompound.setInteger("nbt", brk.getHarvestLevel());
+				ReikaItemHelper.dropItem(world, x+0.5, y+0.5, z+0.5, todrop);
+			}
+		}
+		else {
+			ItemStack todrop = r.getItem();
+			ReikaItemHelper.dropItem(world, x+0.5, y+0.5, z+0.5, todrop);
+		}
 	}
 
 	@Override
@@ -112,12 +160,17 @@ public class BlockRedTile extends Block {
 
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer ep, int par6, float a, float b, float c) {
+		ItemStack is = ep.getCurrentEquippedItem();
 		RedstoneTiles r = RedstoneTiles.getTEAt(world, x, y, z);
 		if (ep.isSneaking() && !r.hasSneakActions())
 			return false;
 		ExpandedRedstoneTileEntity te = (ExpandedRedstoneTileEntity)world.getBlockTileEntity(x, y, z);
 		if (te == null)
 			return false;
+		if (is != null && is.getItem() instanceof IToolWrench) {
+			te.rotate();
+			return true;
+		}
 		switch (r) {
 		case CHESTREADER:
 			((TileEntityChestReader)te).alternate();
@@ -152,26 +205,36 @@ public class BlockRedTile extends Block {
 		int meta = iba.getBlockMetadata(x, y, z);
 		if (te == null)
 			return null;
+		RedstoneTiles r = RedstoneTiles.TEList[meta];
 		if (te.isOverridingIcon(s))
 			return te.getOverridingIcon(s);
-		if (RedstoneTiles.TEList[meta].isThinTile()) {
+		if (r.isThinTile()) {
 			if (s == 1)
 				return icons[s][meta][te.getTopTexture()];
 			return icons[s][meta][te.getTextureForSide(s)];
 		}
-		else {
-			if (s == te.getFacing().ordinal()) {
+		else if (!r.isOmniTexture()) {
+			if (te.getFacing() != null && s == te.getFacing().ordinal()) {
 				return front[meta][te.getFrontTexture()];
 			}
 			else {
 				return icons[s][meta][te.getTextureForSide(s)];
 			}
 		}
+		else
+			return icons[s][meta][te.getTextureForSide(s)];
 	}
 
 	@Override
 	public Icon getIcon(int s, int meta)
 	{
+		RedstoneTiles r = RedstoneTiles.TEList[meta];
+		if (s == 4 && !r.isThinTile() && !r.isOmniTexture()) {
+			if (r == RedstoneTiles.BREAKER)
+				return front[meta][4];
+			else
+				return front[meta][0];
+		}
 		return icons[s][meta][0];
 	}
 
@@ -203,6 +266,8 @@ public class BlockRedTile extends Block {
 	public void registerIcons(IconRegister ico)
 	{
 		this.registerBlankTextures(ico);
+		trans = ico.registerIcon("ExpandedRedstone:trans");
+
 		for (int i = 0; i < RedstoneTiles.TEList.length; i++) {
 			RedstoneTiles r = RedstoneTiles.TEList[i];
 			int num = r.getTextureStates();
@@ -218,7 +283,7 @@ public class BlockRedTile extends Block {
 					ExpandedRedstone.logger.log("Creating static tile icon "+icons[1][i][0].getIconName()+" for "+r);
 				}
 			}
-			else {
+			else if (!r.isOmniTexture()) {
 				if (r.isVariableTexture()) {
 					for (int j = 0; j < num; j++) {
 						front[i][j] = ico.registerIcon("ExpandedRedstone:"+r.name().toLowerCase()+"_front_"+j);
@@ -226,13 +291,19 @@ public class BlockRedTile extends Block {
 					}
 				}
 				else {
-					front[i][0] = ico.registerIcon("ExpandedRedstone:"+r.name().toLowerCase());
+					front[i][0] = ico.registerIcon("ExpandedRedstone:"+r.name().toLowerCase()+"_front");
 					ExpandedRedstone.logger.log("Creating static block icon "+front[i][0].getIconName()+" for "+r);
 				}
 			}
+			if (r.isOmniTexture()) {
+				for (int k = 0; k < 6; k++) {
+					icons[k][i][0] = ico.registerIcon("ExpandedRedstone:"+r.name().toLowerCase());
+				}
+				ExpandedRedstone.logger.log("Creating static full texture "+icons[0][i][0].getIconName()+" for "+r);
+			}
 		}
 	}
-
+	/*
 	@Override
 	public final ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
 		int id = this.idPicked(world, x, y, z);
@@ -240,7 +311,7 @@ public class BlockRedTile extends Block {
 			return null;
 		int meta = world.getBlockMetadata(target.blockX, target.blockY, target.blockZ);
 		return RedstoneItems.PLACER.getStackOfMetadata(meta);
-	}
+	}*/
 
 	@Override
 	public final void breakBlock(World world, int x, int y, int z, int par5, int par6) {
@@ -249,13 +320,13 @@ public class BlockRedTile extends Block {
 			ReikaItemHelper.dropInventory(world, x, y, z);
 		super.breakBlock(world, x, y, z, par5, par6);
 	}
-
+	/*
 	@Override
 	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int meta, int fortune) {
 		ArrayList<ItemStack> li = new ArrayList<ItemStack>();
 		li.add(RedstoneItems.PLACER.getStackOfMetadata(meta));
 		return li;
-	}
+	}*/
 
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess iba, int x, int y, int z) {
@@ -294,7 +365,7 @@ public class BlockRedTile extends Block {
 
 	@Override
 	public int getRenderType() {
-		return ClientProxy.tileRender;
+		return ExpandedRedstone.proxy.tileRender;
 	}
 
 	public Icon getFrontTexture(IBlockAccess iba, int x, int y, int z) {

@@ -9,10 +9,15 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.Registry;
 
+import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import Reika.DragonAPI.Exception.RegistrationException;
+import Reika.DragonAPI.Libraries.ReikaItemHelper;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 import Reika.ExpandedRedstone.TileEntities.TileEntity555;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBUD;
@@ -25,6 +30,7 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityPlacer;
 import Reika.ExpandedRedstone.TileEntities.TileEntityProximity;
 import Reika.ExpandedRedstone.TileEntities.TileEntityToggle;
 import Reika.ExpandedRedstone.TileEntities.TileEntityWeather;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum RedstoneTiles {
 
@@ -38,7 +44,7 @@ public enum RedstoneTiles {
 	CHESTREADER("Chest Reader", TileEntityChestReader.class),
 	DRIVER("Signal Driver", TileEntityDriver.class),
 	CLOCK("Redstone Clock", TileEntity555.class),
-	CAMOFLAGE("Camoflage Block", TileEntityCamo.class);
+	CAMOFLAGE("Camouflage Block", TileEntityCamo.class);
 
 	private Class te;
 	private String name;
@@ -99,6 +105,7 @@ public enum RedstoneTiles {
 		case WEATHER:
 		case CLOCK:
 		case DRIVER:
+		case PROXIMITY:
 			return true;
 		default:
 			return false;
@@ -111,6 +118,7 @@ public enum RedstoneTiles {
 		case CLOCK:
 		case DRIVER:
 		case TOGGLE:
+		case PROXIMITY:
 			return true;
 		default:
 			return false;
@@ -120,12 +128,15 @@ public enum RedstoneTiles {
 	public int getTextureStates() {
 		switch(this) {
 		case BREAKER:
+			return 8;
 		case PLACER:
 		case EFFECTOR:
 			return 2;
 		case CHESTREADER:
 			return 2;
 		case TOGGLE:
+			return 4;
+		case PROXIMITY:
 			return 4;
 		case CLOCK:
 			return TileEntity555.Settings.list.length;
@@ -164,6 +175,54 @@ public enum RedstoneTiles {
 		case TOGGLE:
 		case CLOCK:
 		case DRIVER:
+			return true;
+		default:
+			return false;
+		}
+	}
+
+	public boolean isOmniTexture() {
+		switch(this) {
+		case CAMOFLAGE:
+			return true;
+		default:
+			return false;
+		}
+	}
+
+	public ItemStack getItem() {
+		return new ItemStack(Block.blocksList[RedstoneBlocks.TILEENTITY.getBlockID()], 1, this.ordinal());
+	}
+
+	public void addRecipe(Object... params) {
+		GameRegistry.addRecipe(this.getItem(), params);
+	}
+
+	public void addSizedRecipe(int size, Object... params) {
+		GameRegistry.addRecipe(ReikaItemHelper.getSizedItemStack(this.getItem(), size), params);
+	}
+
+	public void addRecipe(IRecipe ir) {
+		GameRegistry.addRecipe(ir);
+	}
+
+	public void addNBTRecipe(int nbt, Object... params) {
+		ItemStack is = this.getItem();
+		is.stackTagCompound = new NBTTagCompound();
+		is.stackTagCompound.setInteger("nbt", nbt);
+		GameRegistry.addRecipe(is, params);
+	}
+
+	public void addShapelessRecipe(Object... params) {
+		GameRegistry.addShapelessRecipe(this.getItem(), params);
+	}
+
+	public boolean isReversedPlacement() {
+		switch(this) {
+		case BREAKER:
+		case BUD:
+		case EFFECTOR:
+		case PLACER:
 			return true;
 		default:
 			return false;

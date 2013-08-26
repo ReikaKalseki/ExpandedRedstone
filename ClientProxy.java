@@ -10,16 +10,14 @@
 package Reika.ExpandedRedstone;
 
 import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
-import Reika.ExpandedRedstone.Registry.RedstoneItems;
+import Reika.DragonAPI.Instantiable.CustomWireRenderer;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientProxy extends CommonProxy {
 
-	public static final int tileRender = RenderingRegistry.getNextAvailableRenderId();
-	public static final CircuitBlockRenderer block = new CircuitBlockRenderer();
-	public static final ItemCircuitRenderer item = new ItemCircuitRenderer();
+	public static final CircuitBlockRenderer circuit = new CircuitBlockRenderer();
+	public static final CustomWireRenderer wire = new CustomWireRenderer(wireRender);
 
 	@Override
 	public void registerSounds() {
@@ -29,23 +27,10 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void registerRenderers() {
-		this.loadModels();
-
-		this.registerSpriteSheets();
-		this.registerBlockSheets();
-	}
-
-	public void loadModels() {
-		MinecraftForgeClient.registerItemRenderer(RedstoneItems.PLACER.getShiftedID(), new ItemCircuitRenderer());
-	}
-
-
-	private void registerBlockSheets() {
-		RenderingRegistry.registerBlockHandler(tileRender, block);
-	}
-
-	private void registerSpriteSheets() {
-
+		tileRender = RenderingRegistry.getNextAvailableRenderId();
+		wireRender = RenderingRegistry.getNextAvailableRenderId();
+		RenderingRegistry.registerBlockHandler(tileRender, circuit);
+		RenderingRegistry.registerBlockHandler(wireRender, wire);
 	}
 
 	// Override any other methods that need to be handled differently client side.

@@ -56,8 +56,8 @@ public class TileEntityBUD extends ExpandedRedstoneTileEntity {
 	{
 		super.readFromNBT(NBT);
 
-		IDStored = NBT.getInteger("id");
-		metaStored = NBT.getInteger("meta");
+		IDStored = NBT.getInteger("ids");
+		metaStored = NBT.getInteger("metas");
 	}
 
 	/**
@@ -68,14 +68,14 @@ public class TileEntityBUD extends ExpandedRedstoneTileEntity {
 	{
 		super.writeToNBT(NBT);
 
-		NBT.setInteger("id", IDStored);
-		NBT.setInteger("meta", metaStored);
+		NBT.setInteger("ids", IDStored);
+		NBT.setInteger("metas", metaStored);
 	}
 
 	@Override
 	public boolean canPowerSide(int s) {
 		if (this.getFacing() == null)
 			return false;
-		return s != this.getFacing().ordinal();
+		return s == this.getFacing().ordinal();
 	}
 }

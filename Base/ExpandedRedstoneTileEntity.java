@@ -21,8 +21,6 @@ import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public abstract class ExpandedRedstoneTileEntity extends TileEntityBase {
 
-	protected static final ForgeDirection[] dirs = ForgeDirection.values();
-
 	private ForgeDirection facing;
 
 	protected boolean emit;
@@ -163,5 +161,23 @@ public abstract class ExpandedRedstoneTileEntity extends TileEntityBase {
 
 	public int getFrontTexture() {
 		return 0;
+	}
+
+	public void rotate() {
+		RedstoneTiles r = RedstoneTiles.TEList[this.getTEIndex()];
+		if (r.canBeVertical()) {
+			int o = facing.ordinal();
+			o++;
+			if (o >= dirs.length-1)
+				o = 0;
+			this.setFacing(dirs[o]);
+		}
+		else {
+			int o = facing.ordinal();
+			o++;
+			if (o >= dirs.length-1)
+				o = 2;
+			this.setFacing(dirs[o]);
+		}
 	}
 }
