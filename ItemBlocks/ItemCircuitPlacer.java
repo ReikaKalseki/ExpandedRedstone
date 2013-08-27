@@ -29,6 +29,7 @@ import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneBlocks;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker;
+import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker.Materials;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -91,7 +92,9 @@ public class ItemCircuitPlacer extends ItemBlock implements IndexedItemSprites {
 			TileEntityBreaker brk = (TileEntityBreaker)te;
 			if (is.stackTagCompound != null) {
 				int level = is.stackTagCompound.getInteger("nbt");
+				int dura = is.stackTagCompound.getInteger("dmg");
 				brk.setHarvestLevel(level);
+				brk.setDurability(dura);
 			}
 		}
 		return true;
@@ -136,7 +139,14 @@ public class ItemCircuitPlacer extends ItemBlock implements IndexedItemSprites {
 		RedstoneTiles tile = RedstoneTiles.TEList[is.getItemDamage()];
 		if (tile == RedstoneTiles.BREAKER && is.stackTagCompound != null) {
 			int level = is.stackTagCompound.getInteger("nbt");
-			li.add(String.format("Harvest Level: %d", level));
+			int dura = is.stackTagCompound.getInteger("dmg");
+			Materials mat = TileEntityBreaker.Materials.mats[level];
+			li.add(String.format("Harvest Level: %s", mat.getName()));
+			if (mat == Materials.WOOD) {
+				li.add(String.format("Durability: %d", dura));
+				if (dura == 0)
+					li.add("Breaker is worn out!");
+			}
 		}
 	}
 

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.ItemBlocks;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,6 +47,8 @@ public class ItemWirePlacer extends Item {
 				return false;
 		}
 		if (!ep.canPlayerEdit(x, y, z, 0, is))
+			return false;
+		else if (!Block.blocksList[RedstoneBlocks.WIRE.getBlockID()].canPlaceBlockAt(world, x, y, z))
 			return false;
 		else
 		{

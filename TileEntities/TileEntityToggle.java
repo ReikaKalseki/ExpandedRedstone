@@ -9,6 +9,8 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRedstoneLogic;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.ReikaRedstoneHelper;
@@ -28,7 +30,20 @@ public class TileEntityToggle extends ExpandedRedstoneTileEntity {
 		if (ReikaRedstoneHelper.isPositiveEdgeOnSide(world, x, y, z, lastPower, side)) {
 			emit = !emit;
 		}
-		lastPower = world.isBlockIndirectlyGettingPowered(x+side.offsetX, y+side.offsetY, z+side.offsetZ);
+		lastPower = this.wasLastPowered(world, x, y, z, side);
+	}
+
+	private boolean wasLastPowered(World world, int x, int y, int z, ForgeDirection side) {
+		boolean sided = world.getIndirectPowerOutput(x+side.offsetX, y+side.offsetY, z+side.offsetZ, side.getOpposite().ordinal());
+		boolean repeat = false;
+		int id = world.getBlockId(x+side.offsetX, y+side.offsetY, z+side.offsetZ);
+		if (id != 0) {
+			Block b = Block.blocksList[id];
+			if (b instanceof BlockRedstoneLogic) {
+				repeat = ((BlockRedstoneLogic) b).func_83011_d(world, x, y, z, side.ordinal());
+			}
+		}
+		return (sided || repeat) && world.isBlockIndirectlyGettingPowered(x, y, z);
 	}
 
 	@Override

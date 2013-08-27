@@ -210,6 +210,8 @@ public enum RedstoneTiles {
 		ItemStack is = this.getItem();
 		is.stackTagCompound = new NBTTagCompound();
 		is.stackTagCompound.setInteger("nbt", nbt);
+		if (this == BREAKER)
+			is.stackTagCompound.setInteger("dmg", TileEntityBreaker.WOOD_USES);
 		GameRegistry.addRecipe(is, params);
 	}
 

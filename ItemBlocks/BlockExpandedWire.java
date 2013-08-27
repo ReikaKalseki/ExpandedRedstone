@@ -16,11 +16,13 @@ import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.ChunkPosition;
@@ -537,7 +539,7 @@ public class BlockExpandedWire extends Block implements WireBlock {
 				f3 = 0.0F;
 			}
 
-			world.spawnParticle("reddust", d0, d1, d2, this.getPowerState(world, par2, par3, par4)/15F*this.getColor().getRed()/256F, this.getPowerState(world, par2, par3, par4)/15F*this.getColor().getGreen()/256F, this.getPowerState(world, par2, par3, par4)/15F*this.getColor().getBlue()/256F);
+			world.spawnParticle("reddust", d0, d1, d2, (0.5F+this.getPowerState(world, par2, par3, par4)/8F)*this.getColor().getRed()/256F, (0.5F+this.getPowerState(world, par2, par3, par4)/8F)*this.getColor().getGreen()/256F, (0.5F+this.getPowerState(world, par2, par3, par4)/8F)*this.getColor().getBlue()/256F);
 		}
 	}
 
@@ -612,6 +614,7 @@ public class BlockExpandedWire extends Block implements WireBlock {
 	public boolean isConnectedTo(IBlockAccess world, int x, int y, int z, int s) {
 		ForgeDirection dir = ForgeDirection.values()[s];
 		int id = world.getBlockId(x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ);
+		int meta = world.getBlockMetadata(x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ);
 		int idup = world.getBlockId(x+dir.offsetX, y+dir.offsetY+1, z+dir.offsetZ);
 		int iddown = world.getBlockId(x+dir.offsetX, y+dir.offsetY-1, z+dir.offsetZ);
 		if (id == blockID)
@@ -625,6 +628,10 @@ public class BlockExpandedWire extends Block implements WireBlock {
 		if (id == Block.redstoneWire.blockID)
 			return false;
 		Block b = Block.blocksList[id];
+		if (b instanceof BlockDirectional) {
+			int direct = BlockDirectional.getDirection(meta);
+			return (Direction.offsetX[direct] == -dir.offsetX && Direction.offsetZ[direct] == -dir.offsetZ) || (Direction.offsetX[direct] == dir.offsetX && Direction.offsetZ[direct] == dir.offsetZ);
+		}
 		if (b.canConnectRedstone(world, x, y, z, dir.getOpposite().ordinal()))
 			return true;
 		return false;

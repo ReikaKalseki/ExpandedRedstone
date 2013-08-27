@@ -97,7 +97,7 @@ public enum RedstoneBlocks implements RegistrationList, IDRegistry {
 		case WIRE:
 			return "Lapis Wire";
 		default:
-			return this.name().substring(0, 1)+this.name().substring(1).toLowerCase();
+			return ReikaJavaLibrary.capFirstChar(this.name());
 		}
 	}
 

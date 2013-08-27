@@ -49,7 +49,7 @@ public class BlockRedTile extends Block {
 	public BlockRedTile(int ID, Material mat) {
 		super(ID, mat);
 		this.setCreativeTab(ExpandedRedstone.tab);
-		this.setHardness(1);
+		this.setHardness(0.75F);
 	}
 
 	@Override
@@ -73,6 +73,7 @@ public class BlockRedTile extends Block {
 			if (te != null) {
 				is.stackTagCompound = new NBTTagCompound();
 				is.stackTagCompound.setInteger("nbt", te.getHarvestLevel());
+				is.stackTagCompound.setInteger("dmg", te.getDurability());
 			}
 		}
 		li.add(is);
@@ -96,6 +97,7 @@ public class BlockRedTile extends Block {
 				ItemStack todrop = r.getItem();
 				todrop.stackTagCompound = new NBTTagCompound();
 				todrop.stackTagCompound.setInteger("nbt", brk.getHarvestLevel());
+				todrop.stackTagCompound.setInteger("dmg", brk.getDurability());
 				ReikaItemHelper.dropItem(world, x+0.5, y+0.5, z+0.5, todrop);
 			}
 		}
