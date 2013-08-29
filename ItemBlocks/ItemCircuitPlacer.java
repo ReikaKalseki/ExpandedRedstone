@@ -18,6 +18,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -105,7 +106,18 @@ public class ItemCircuitPlacer extends ItemBlock implements IndexedItemSprites {
 	public void getSubItems(int id, CreativeTabs tab, List list) {
 		for (int i = 0; i < RedstoneTiles.TEList.length; i++) {
 			ItemStack item = new ItemStack(id, 1, i);
-			list.add(item);
+			if (i == RedstoneTiles.BREAKER.ordinal()) {
+				for (int h = 0; h < 4; h++) {
+					ItemStack item1 = item.copy();
+					item1.stackTagCompound = new NBTTagCompound();
+					item1.stackTagCompound.setInteger("nbt", h);
+					if (h == 0)
+						item1.stackTagCompound.setInteger("dmg", 128);
+					list.add(item1);
+				}
+			}
+			else
+				list.add(item);
 		}
 	}
 

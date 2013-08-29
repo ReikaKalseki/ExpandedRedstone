@@ -20,6 +20,7 @@ import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 public class TileEntityToggle extends ExpandedRedstoneTileEntity {
 
 	private boolean lastPower;
+	private boolean lastRepeat;
 
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
@@ -27,10 +28,11 @@ public class TileEntityToggle extends ExpandedRedstoneTileEntity {
 		if (this.getFacing() == null)
 			return;
 		ForgeDirection side = this.getFacing().getOpposite();
-		if (ReikaRedstoneHelper.isPositiveEdgeOnSide(world, x, y, z, lastPower, side)) {
+		if (ReikaRedstoneHelper.isPositiveEdgeOnSide(world, x, y, z, lastPower, lastRepeat, side)) {
 			emit = !emit;
 		}
 		lastPower = this.wasLastPowered(world, x, y, z, side);
+		lastRepeat = ReikaRedstoneHelper.isReceivingPowerFromRepeater(world, x, y, z, side);
 	}
 
 	private boolean wasLastPowered(World world, int x, int y, int z, ForgeDirection side) {

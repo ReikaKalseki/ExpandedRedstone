@@ -21,11 +21,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.ReikaItemHelper;
-import Reika.DragonAPI.Libraries.ReikaJavaLibrary;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
@@ -36,7 +36,6 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityChestReader;
 import Reika.ExpandedRedstone.TileEntities.TileEntityDriver;
 import Reika.ExpandedRedstone.TileEntities.TileEntityProximity;
 import buildcraft.api.tools.IToolWrench;
-import cpw.mods.fml.common.FMLCommonHandler;
 
 public class BlockRedTile extends Block {
 
@@ -69,7 +68,6 @@ public class BlockRedTile extends Block {
 		ItemStack is = r.getItem();
 		if (r == RedstoneTiles.BREAKER) {
 			TileEntityBreaker te = (TileEntityBreaker)world.getBlockTileEntity(x, y, z);
-			ReikaJavaLibrary.pConsole(te+" on "+FMLCommonHandler.instance().getEffectiveSide());
 			if (te != null) {
 				is.stackTagCompound = new NBTTagCompound();
 				is.stackTagCompound.setInteger("nbt", te.getHarvestLevel());
@@ -118,6 +116,11 @@ public class BlockRedTile extends Block {
 				return te.getEmission();
 		}
 		else return 0;
+	}
+
+	@Override
+	public int isProvidingStrongPower(IBlockAccess iba, int x, int y, int z, int s) {
+		return this.isProvidingWeakPower(iba, x, y, z, s);
 	}
 
 	@Override
@@ -373,6 +376,12 @@ public class BlockRedTile extends Block {
 	public Icon getFrontTexture(IBlockAccess iba, int x, int y, int z) {
 		ExpandedRedstoneTileEntity te = (ExpandedRedstoneTileEntity)iba.getBlockTileEntity(x, y, z);
 		return front[iba.getBlockMetadata(x, y, z)][te.getFrontTexture()];
+	}
+
+	@Override
+	public ItemStack getPickBlock(MovingObjectPosition tg, World world, int x, int y, int z)
+	{
+		return this.getBlockDropped(world, tg.blockX, tg.blockY, tg.blockZ, world.getBlockMetadata(tg.blockX, tg.blockY, tg.blockZ), 0).get(0);
 	}
 
 }
