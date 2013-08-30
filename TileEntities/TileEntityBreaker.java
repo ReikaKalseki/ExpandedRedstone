@@ -31,6 +31,7 @@ public class TileEntityBreaker extends ExpandedRedstoneTileEntity {
 	private boolean lastPower;
 
 	public static final int WOOD_USES = 128;
+	public static final int MAX_RANGE = 12;
 
 	public static final ItemStack BARRIER_BLOCK = new ItemStack(Block.blockLapis);
 
@@ -50,7 +51,7 @@ public class TileEntityBreaker extends ExpandedRedstoneTileEntity {
 		}
 
 		public int getDigDistance() {
-			return this == DIAMOND ? 12 : 1;
+			return this == DIAMOND ? MAX_RANGE : 1;
 		}
 
 		public boolean isDamageable() {
@@ -97,9 +98,9 @@ public class TileEntityBreaker extends ExpandedRedstoneTileEntity {
 	private void breakBlocks(World world) {
 		world.playSoundEffect(xCoord+0.5, yCoord+0.5, zCoord+0.5, "random.click", 0.4F, 1F);
 		for (int k = 1; k <= harvest.getDigDistance(); k++) {
-			int dx = xCoord+k*this.getFacing().offsetX;
-			int dy = yCoord+k*this.getFacing().offsetY;
-			int dz = zCoord+k*this.getFacing().offsetZ;
+			int dx = this.getFacingXScaled(k);
+			int dy = this.getFacingYScaled(k);
+			int dz = this.getFacingZScaled(k);
 			int id = world.getBlockId(dx, dy, dz);
 			int meta = world.getBlockMetadata(dx, dy, dz);
 			if (harvest.canHarvest(dura, id, meta)) {

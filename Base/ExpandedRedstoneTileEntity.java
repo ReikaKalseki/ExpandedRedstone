@@ -89,6 +89,24 @@ public abstract class ExpandedRedstoneTileEntity extends TileEntityBase {
 		return zCoord+facing.offsetZ;
 	}
 
+	public int getFacingXScaled(int d) {
+		if (facing == null)
+			return Integer.MIN_VALUE;
+		return xCoord+facing.offsetX*d;
+	}
+
+	public int getFacingYScaled(int d) {
+		if (facing == null)
+			return Integer.MIN_VALUE;
+		return yCoord+facing.offsetY*d;
+	}
+
+	public int getFacingZScaled(int d) {
+		if (facing == null)
+			return Integer.MIN_VALUE;
+		return zCoord+facing.offsetZ*d;
+	}
+
 	public int getBackX() {
 		if (facing == null)
 			return Integer.MIN_VALUE;

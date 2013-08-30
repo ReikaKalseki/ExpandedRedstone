@@ -26,8 +26,10 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
 import Reika.ExpandedRedstone.TileEntities.TileEntityChestReader;
 import Reika.ExpandedRedstone.TileEntities.TileEntityDriver;
 import Reika.ExpandedRedstone.TileEntities.TileEntityEffector;
+import Reika.ExpandedRedstone.TileEntities.TileEntityEmitter;
 import Reika.ExpandedRedstone.TileEntities.TileEntityPlacer;
 import Reika.ExpandedRedstone.TileEntities.TileEntityProximity;
+import Reika.ExpandedRedstone.TileEntities.TileEntityReceiver;
 import Reika.ExpandedRedstone.TileEntities.TileEntityToggle;
 import Reika.ExpandedRedstone.TileEntities.TileEntityWeather;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -44,7 +46,9 @@ public enum RedstoneTiles {
 	CHESTREADER("Chest Reader", TileEntityChestReader.class),
 	DRIVER("Signal Driver", TileEntityDriver.class),
 	CLOCK("Redstone Clock", TileEntity555.class),
-	CAMOFLAGE("Camouflage Block", TileEntityCamo.class);
+	CAMOFLAGE("Camouflage Block", TileEntityCamo.class),
+	EMITTER("Signal Emitter", TileEntityEmitter.class),
+	RECEIVER("Signal Receiver", TileEntityReceiver.class);
 
 	private Class te;
 	private String name;
@@ -131,6 +135,8 @@ public enum RedstoneTiles {
 			return 8;
 		case PLACER:
 		case EFFECTOR:
+		case RECEIVER:
+		case EMITTER:
 			return 2;
 		case CHESTREADER:
 			return 2;
@@ -153,6 +159,8 @@ public enum RedstoneTiles {
 		case BREAKER:
 		case EFFECTOR:
 		case BUD:
+		case EMITTER:
+		case RECEIVER:
 			return true;
 		default:
 			return false;
@@ -164,6 +172,8 @@ public enum RedstoneTiles {
 		case BREAKER:
 		case PLACER:
 		case EFFECTOR:
+		case RECEIVER:
+		case EMITTER:
 			return true;
 		default:
 			return false;
@@ -225,6 +235,8 @@ public enum RedstoneTiles {
 		case BUD:
 		case EFFECTOR:
 		case PLACER:
+		case EMITTER:
+		case RECEIVER:
 			return true;
 		default:
 			return false;
