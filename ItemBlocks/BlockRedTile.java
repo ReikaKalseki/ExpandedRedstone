@@ -355,6 +355,8 @@ public class BlockRedTile extends Block {
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
 	{
 		int meta = world.getBlockMetadata(x, y, z);
+		if (meta < 0 || meta > RedstoneTiles.TEList.length)
+			meta = 0;
 		RedstoneTiles r = RedstoneTiles.TEList[meta];
 		if (r == RedstoneTiles.CAMOFLAGE) {
 			TileEntityCamo tc = (TileEntityCamo)world.getBlockTileEntity(x, y, z);

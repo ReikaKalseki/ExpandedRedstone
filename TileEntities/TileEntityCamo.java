@@ -14,6 +14,7 @@ import net.minecraft.block.BlockFluid;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
 import Reika.ExpandedRedstone.ItemBlocks.BlockRedTile;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
@@ -28,6 +29,8 @@ public class TileEntityCamo extends ExpandedRedstoneTileEntity {
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z);
+		emit = world.isBlockIndirectlyGettingPowered(x, y, z);
+		//ReikaJavaLibrary.pConsoleIf(this.getImitatedBlockID(), yCoord == 64);
 	}
 
 	@Override
@@ -43,10 +46,34 @@ public class TileEntityCamo extends ExpandedRedstoneTileEntity {
 			return BlockRedTile.trans;
 		if (id == this.getTileEntityBlockID() && meta == this.getTEIndex()) {
 			TileEntityCamo te = (TileEntityCamo)worldObj.getBlockTileEntity(xCoord, yCoord-1, zCoord);
-			if (te.isOverridingIcon(side))
-				return te.getOverridingIcon(side);
+			if (te.isOverridingIcon(side)) {
+				Icon ico = te.getOverridingIcon(side);
+				if (ico == Block.grass.getIcon(side, meta) && !this.canRenderAsGrass())
+					ico = Block.dirt.getIcon(side, meta);
+				else if (te.getImitatedBlockID() == Block.grass.blockID && ico == Block.dirt.getIcon(side, meta) && this.canRenderAsGrass())
+					ico = Block.grass.getIcon(side, meta);
+				return ico;
+			}
 		}
-		return Block.blocksList[id].getIcon(side, meta);
+		Icon ico = Block.blocksList[id].getIcon(side, meta);
+		if (ico == Block.grass.getIcon(side, meta) && !this.canRenderAsGrass())
+			ico = Block.dirt.getIcon(side, meta);
+		return ico;
+	}
+
+	public int getImitatedBlockID() {
+		if (!this.isOverridingIcon(0))
+			return -1;
+		else {
+			int id = worldObj.getBlockId(xCoord, yCoord-1, zCoord);
+			int meta = worldObj.getBlockMetadata(xCoord, yCoord-1, zCoord);
+			if (id == this.getTileEntityBlockID() && meta == this.getTEIndex()) {
+				TileEntityCamo co = (TileEntityCamo)worldObj.getBlockTileEntity(xCoord, yCoord-1, zCoord);
+				return co.getImitatedBlockID();
+			}
+			else
+				return id;
+		}
 	}
 
 	public AxisAlignedBB getBoundingBox() {
@@ -74,6 +101,35 @@ public class TileEntityCamo extends ExpandedRedstoneTileEntity {
 		AxisAlignedBB box = AxisAlignedBB.getAABBPool().getAABB(minx, miny, minz, maxx, maxy, maxz);
 		//return Block.blocksList[id].getCollisionBoundingBoxFromPool(worldObj, xCoord, yCoord-1, zCoord);
 		return box;
+	}
+
+	//ReikaJavaLibrary.pConsoleIf(this.canRenderAsGrass(), yCoord == 64);
+	public boolean canRenderAsGrass() {
+		int id = worldObj.getBlockId(xCoord, yCoord+1, zCoord);
+		int meta = worldObj.getBlockMetadata(xCoord, yCoord+1, zCoord);
+		if (id == 0)
+			return true;
+		if (id == this.getTileEntityBlockID()) {
+			if (meta == this.getTEIndex()) {
+				TileEntityCamo co = (TileEntityCamo)worldObj.getBlockTileEntity(xCoord, yCoord+1, zCoord);
+				if (co.isOverridingIcon(0)) {
+					int im = co.getImitatedBlockID();
+					if (im == -1)
+						return true;
+					return Block.canBlockGrass[im];
+				}
+				else
+					return true;
+			}
+			else
+				return true;
+		}
+		return Block.canBlockGrass[id];
+	}
+
+	@Override
+	public boolean canPowerSide(int s) {
+		return s == ForgeDirection.DOWN.ordinal();
 	}
 
 }

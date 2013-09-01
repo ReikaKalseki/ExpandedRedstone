@@ -53,7 +53,7 @@ public abstract class ExpandedRedstoneTileEntity extends TileEntityBase {
 		return RedstoneBlocks.TILEENTITY.getBlockID();
 	}
 
-	public boolean isEmitting() {
+	public final boolean isEmitting() {
 		return emit;
 	}
 

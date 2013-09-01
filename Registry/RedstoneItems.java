@@ -211,6 +211,10 @@ public enum RedstoneItems implements RegistrationList, IDRegistry {
 		GameRegistry.addShapelessRecipe(this.getStackOf(), params);
 	}
 
+	public void addSizedShapelessRecipe(int amt, Object... params) {
+		GameRegistry.addShapelessRecipe(this.getCraftedProduct(amt), params);
+	}
+
 	public void addRecipe(IRecipe ir) {
 		GameRegistry.addRecipe(ir);
 	}

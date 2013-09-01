@@ -13,7 +13,6 @@ import net.minecraftforge.common.Configuration;
 import Reika.DragonAPI.Exception.RegistrationException;
 import Reika.DragonAPI.Interfaces.ConfigList;
 import Reika.ExpandedRedstone.ExpandedRedstone;
-import Reika.RotaryCraft.RotaryCraft;
 
 public enum RedstoneOptions implements ConfigList {
 
@@ -54,12 +53,12 @@ public enum RedstoneOptions implements ConfigList {
 
 	public float setDecimal(Configuration config) {
 		if (!this.isDecimal())
-			throw new RegistrationException(RotaryCraft.instance, "Config Property \""+this.getLabel()+"\" is not decimal!");
+			throw new RegistrationException(ExpandedRedstone.instance, "Config Property \""+this.getLabel()+"\" is not decimal!");
 		return (float)config.get("Control Setup", this.getLabel(), defaultFloat).getDouble(defaultFloat);
 	}
 
 	public float getFloat() {
-		return (Float)RotaryCraft.config.getControl(this.ordinal());
+		return (Float)ExpandedRedstone.config.getControl(this.ordinal());
 	}
 
 	public Class getPropertyType() {

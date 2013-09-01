@@ -16,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import Reika.DragonAPI.DragonAPICore;
 import Reika.DragonAPI.Libraries.ReikaRedstoneHelper;
 import Reika.ExpandedRedstone.Base.InventoriedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
@@ -52,7 +53,7 @@ public class TileEntityEffector extends InventoriedRedstoneTileEntity {
 		Item it = is.getItem();
 		Class c = it.getClass();
 		try {
-			Method click = c.getMethod("onItemUse", ItemStack.class, EntityPlayer.class, World.class, int.class, int.class, int.class, int.class, float.class, float.class, float.class);
+			Method click = c.getMethod(this.getMethodName(), ItemStack.class, EntityPlayer.class, World.class, int.class, int.class, int.class, int.class, float.class, float.class, float.class);
 			Object o = click.invoke(it, is, ep, world, dx, dy, dz, 0, 0F, 0F, 0F);
 			inv[slot] = is;
 		}
@@ -72,6 +73,11 @@ public class TileEntityEffector extends InventoriedRedstoneTileEntity {
 			e.printStackTrace();
 		}
 
+	}
+
+	//should see if can autoupdate/autoread xml conf files, too
+	private String getMethodName() {
+		return DragonAPICore.isDeObfEnvironment() ? "onItemUse" : "func_77648_a";
 	}
 
 	@Override
