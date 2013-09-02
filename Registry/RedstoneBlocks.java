@@ -14,7 +14,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
 import Reika.DragonAPI.Interfaces.IDRegistry;
 import Reika.DragonAPI.Interfaces.RegistrationList;
-import Reika.DragonAPI.Libraries.ReikaJavaLibrary;
+import Reika.DragonAPI.Libraries.ReikaStringParser;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 import Reika.ExpandedRedstone.ItemBlocks.BlockExpandedWire;
 import Reika.ExpandedRedstone.ItemBlocks.BlockRedTile;
@@ -83,7 +83,7 @@ public enum RedstoneBlocks implements RegistrationList, IDRegistry {
 
 	@Override
 	public String getUnlocalizedName() {
-		return ReikaJavaLibrary.stripSpaces(this.getBasicName());
+		return ReikaStringParser.stripSpaces(this.getBasicName());
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public enum RedstoneBlocks implements RegistrationList, IDRegistry {
 		case WIRE:
 			return "Lapis Wire";
 		default:
-			return ReikaJavaLibrary.capFirstChar(this.name());
+			return ReikaStringParser.capFirstChar(this.name());
 		}
 	}
 

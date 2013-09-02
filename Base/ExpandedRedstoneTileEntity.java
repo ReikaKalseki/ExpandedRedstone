@@ -198,4 +198,8 @@ public abstract class ExpandedRedstoneTileEntity extends TileEntityBase {
 			this.setFacing(dirs[o]);
 		}
 	}
+
+	public boolean canProvideStrongPower() {
+		return true;
+	}
 }

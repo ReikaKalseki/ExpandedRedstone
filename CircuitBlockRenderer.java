@@ -145,9 +145,10 @@ public class CircuitBlockRenderer implements ISimpleBlockRenderingHandler {
 			if (ico[1] == Block.grass.getBlockTextureFromSide(1)) {
 				color = ReikaWorldHelper.biomeToRGB(world, x, z, "Grass");
 				v5.setColorOpaque(color[0], color[1], color[2]);
-				for (int i = 2; i < 6; i++) {
-					overlay[i] = BlockGrass.getIconSideOverlay();
-				}
+				if (rb.fancyGrass)
+					for (int i = 2; i < 6; i++) {
+						overlay[i] = BlockGrass.getIconSideOverlay();
+					}
 			}
 			if (ico[1] == Block.leaves.getIcon(1, metaread)) {
 				metaread = metaread & 3;
@@ -259,6 +260,7 @@ public class CircuitBlockRenderer implements ISimpleBlockRenderingHandler {
 			v5.setColorOpaque_F(color[0]*f12/255F, color[1]*f15/255F, color[2]*f18/255F);
 			rb.renderFaceXPos(b, x, y, z, overlay[5]);
 		}
+
 		return true;
 	}
 

@@ -20,9 +20,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
 import Reika.DragonAPI.Libraries.ReikaItemHelper;
-import Reika.DragonAPI.Libraries.ReikaJavaLibrary;
 import Reika.DragonAPI.Libraries.ReikaRedstoneHelper;
 import Reika.DragonAPI.Libraries.ReikaSoundHelper;
+import Reika.DragonAPI.Libraries.ReikaStringParser;
 import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
@@ -47,7 +47,7 @@ public class TileEntityBreaker extends ExpandedRedstoneTileEntity {
 		public static final Materials[] mats = values();
 
 		public String getName() {
-			return ReikaJavaLibrary.capFirstChar(this.name());
+			return ReikaStringParser.capFirstChar(this.name());
 		}
 
 		public int getDigDistance() {

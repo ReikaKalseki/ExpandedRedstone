@@ -129,7 +129,12 @@ public class TileEntityCamo extends ExpandedRedstoneTileEntity {
 
 	@Override
 	public boolean canPowerSide(int s) {
-		return s == ForgeDirection.DOWN.ordinal();
+		return s == ForgeDirection.DOWN.ordinal() && RedstoneTiles.getTEAt(worldObj, xCoord, yCoord+1, zCoord) == RedstoneTiles.CAMOFLAGE;
+	}
+
+	@Override
+	public boolean canProvideStrongPower() {
+		return false;
 	}
 
 }

@@ -243,4 +243,18 @@ public enum RedstoneTiles {
 		}
 	}
 
+	public boolean isOpaque() {
+		switch(this) {
+		case BREAKER:
+		case BUD:
+		case EFFECTOR:
+		case PLACER:
+		case EMITTER:
+		case RECEIVER:
+			return true;
+		default:
+			return false;
+		}
+	}
+
 }

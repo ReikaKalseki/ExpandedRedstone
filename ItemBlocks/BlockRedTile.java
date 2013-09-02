@@ -49,6 +49,8 @@ public class BlockRedTile extends Block {
 		super(ID, mat);
 		this.setCreativeTab(ExpandedRedstone.tab);
 		this.setHardness(0.75F);
+		this.setResistance(2.5F);
+		this.setLightOpacity(0);
 	}
 
 	@Override
@@ -120,7 +122,8 @@ public class BlockRedTile extends Block {
 
 	@Override
 	public int isProvidingStrongPower(IBlockAccess iba, int x, int y, int z, int s) {
-		return this.isProvidingWeakPower(iba, x, y, z, s);
+		ExpandedRedstoneTileEntity te = (ExpandedRedstoneTileEntity)iba.getBlockTileEntity(x, y, z);
+		return te.canProvideStrongPower() ? this.isProvidingWeakPower(iba, x, y, z, s) : 0;
 	}
 
 	@Override
@@ -354,8 +357,11 @@ public class BlockRedTile extends Block {
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
 	{
+		int id = world.getBlockId(x, y, z);
+		if (id != blockID)
+			return id == 0 ? null : Block.blocksList[id].getCollisionBoundingBoxFromPool(world, x, y, z);
 		int meta = world.getBlockMetadata(x, y, z);
-		if (meta < 0 || meta > RedstoneTiles.TEList.length)
+		if (meta < 0 || meta >= RedstoneTiles.TEList.length)
 			meta = 0;
 		RedstoneTiles r = RedstoneTiles.TEList[meta];
 		if (r == RedstoneTiles.CAMOFLAGE) {
@@ -384,6 +390,20 @@ public class BlockRedTile extends Block {
 	public ItemStack getPickBlock(MovingObjectPosition tg, World world, int x, int y, int z)
 	{
 		return this.getBlockDropped(world, tg.blockX, tg.blockY, tg.blockZ, world.getBlockMetadata(tg.blockX, tg.blockY, tg.blockZ), 0).get(0);
+	}
+
+	@Override
+	public int getLightOpacity(World world, int x, int y, int z)
+	{
+		RedstoneTiles r = RedstoneTiles.getTEAt(world, x, y, z);
+		if (r == RedstoneTiles.CAMOFLAGE) {
+			boolean pwr = world.isBlockIndirectlyGettingPowered(x, y, z);
+			int idb = world.getBlockId(x, y-1, z);
+			if (idb == 0)
+				return 0;
+			return pwr ? Block.blocksList[idb].getLightOpacity(world, x, y-1, z) : 0;
+		}
+		return r.isOpaque() ? 255 : 0;
 	}
 
 }
