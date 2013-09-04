@@ -19,10 +19,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Facing;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.ChunkPosition;
@@ -116,7 +116,7 @@ public class BlockExpandedWire extends Block implements WireBlock {
 	 */
 	public int colorMultiplier(IBlockAccess iba, int par2, int par3, int par4)
 	{
-		return 8388608;
+		return this.getColor().darker().darker().getRGB();
 	}
 
 	/**
@@ -145,13 +145,38 @@ public class BlockExpandedWire extends Block implements WireBlock {
 		}
 	}
 
+	public int getStrongestIndirectPower(World world, int par1, int par2, int par3)
+	{
+		int l = 0;
+
+		for (int i1 = 0; i1 < 6; ++i1)
+		{
+			int id = world.getBlockId(par1 + Facing.offsetsXForSide[i1], par2 + Facing.offsetsYForSide[i1], par3 + Facing.offsetsZForSide[i1]);
+			if (id != Block.redstoneWire.blockID) {
+				int j1 = world.getIndirectPowerLevelTo(par1 + Facing.offsetsXForSide[i1], par2 + Facing.offsetsYForSide[i1], par3 + Facing.offsetsZForSide[i1], i1);
+
+				if (j1 >= 15)
+				{
+					return 15;
+				}
+
+				if (j1 > l)
+				{
+					l = j1;
+				}
+			}
+		}
+
+		return l;
+	}
+
 	private void calculateCurrentChanges(World world, int par2, int par3, int par4, int par5, int par6, int par7)
 	{
 		int k1 = world.getBlockMetadata(par2, par3, par4);
 		byte b0 = 0;
 		int l1 = this.getMaxCurrentStrength(world, par5, par6, par7, b0);
 		wiresProvidePower = false;
-		int i2 = world.getStrongestIndirectPower(par2, par3, par4);
+		int i2 = this.getStrongestIndirectPower(world, par2, par3, par4);
 		wiresProvidePower = true;
 
 		if (i2 > 0 && i2 > l1 - 1)
@@ -376,6 +401,7 @@ public class BlockExpandedWire extends Block implements WireBlock {
 	 */
 	private int getMaxCurrentStrength(World world, int par2, int par3, int par4, int par5)
 	{
+		//ReikaJavaLibrary.pConsole(world.getBlockId(par2, par3, par4));
 		if (world.getBlockId(par2, par3, par4) != blockID)
 		{
 			return par5;
@@ -448,10 +474,10 @@ public class BlockExpandedWire extends Block implements WireBlock {
 			}
 			else
 			{
-				boolean flag = isPoweredOrRepeater(iba, x - 1, y, z, 1) || !iba.isBlockNormalCube(x - 1, y, z) && isPoweredOrRepeater(iba, x - 1, y - 1, z, -1);
-				boolean flag1 = isPoweredOrRepeater(iba, x + 1, y, z, 3) || !iba.isBlockNormalCube(x + 1, y, z) && isPoweredOrRepeater(iba, x + 1, y - 1, z, -1);
-				boolean flag2 = isPoweredOrRepeater(iba, x, y, z - 1, 2) || !iba.isBlockNormalCube(x, y, z - 1) && isPoweredOrRepeater(iba, x, y - 1, z - 1, -1);
-				boolean flag3 = isPoweredOrRepeater(iba, x, y, z + 1, 0) || !iba.isBlockNormalCube(x, y, z + 1) && isPoweredOrRepeater(iba, x, y - 1, z + 1, -1);
+				boolean flag = iba.getBlockId(x-1, y, z) == Block.redstoneWire.blockID || isPoweredOrRepeater(iba, x - 1, y, z, 1) || !iba.isBlockNormalCube(x - 1, y, z) && isPoweredOrRepeater(iba, x - 1, y - 1, z, -1);
+				boolean flag1 = iba.getBlockId(x+1, y, z) == Block.redstoneWire.blockID || isPoweredOrRepeater(iba, x + 1, y, z, 3) || !iba.isBlockNormalCube(x + 1, y, z) && isPoweredOrRepeater(iba, x + 1, y - 1, z, -1);
+				boolean flag2 = iba.getBlockId(x, y, z-1) == Block.redstoneWire.blockID || isPoweredOrRepeater(iba, x, y, z - 1, 2) || !iba.isBlockNormalCube(x, y, z - 1) && isPoweredOrRepeater(iba, x, y - 1, z - 1, -1);
+				boolean flag3 = iba.getBlockId(x, y, z+1) == Block.redstoneWire.blockID || isPoweredOrRepeater(iba, x, y, z + 1, 0) || !iba.isBlockNormalCube(x, y, z + 1) && isPoweredOrRepeater(iba, x, y - 1, z + 1, -1);
 
 				if (!iba.isBlockNormalCube(x, y + 1, z))
 				{
@@ -579,7 +605,7 @@ public class BlockExpandedWire extends Block implements WireBlock {
 	 */
 	public int idPicked(World world, int par2, int par3, int par4)
 	{
-		return Item.redstone.itemID;
+		return RedstoneItems.BLUEWIRE.getShiftedID();
 	}
 
 	@Override
@@ -627,6 +653,11 @@ public class BlockExpandedWire extends Block implements WireBlock {
 			return false;
 		if (id == Block.redstoneWire.blockID)
 			return false;
+
+		//Fully functional but not present in vanilla redstone
+		//if (id == Block.pistonBase.blockID || id == Block.pistonStickyBase.blockID || id == Block.pistonMoving.blockID)
+		//	return true;
+
 		Block b = Block.blocksList[id];
 		if (b instanceof BlockDirectional) {
 			int direct = BlockDirectional.getDirection(meta);
@@ -667,6 +698,12 @@ public class BlockExpandedWire extends Block implements WireBlock {
 	@Override
 	public Icon getIcon(int side, int meta) {
 		return this.getBaseTexture();
+	}
+
+	@Override
+	public int getRenderColor(int par1)
+	{
+		return 0xffffffff;
 	}
 
 }
