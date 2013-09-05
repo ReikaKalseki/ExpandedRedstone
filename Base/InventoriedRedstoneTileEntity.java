@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
-import Reika.DragonAPI.Libraries.ReikaMathLibrary;
+import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 
 public abstract class InventoriedRedstoneTileEntity extends ExpandedRedstoneTileEntity implements ISidedInventory {
 

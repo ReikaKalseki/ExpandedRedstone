@@ -13,7 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneLogic;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import Reika.DragonAPI.Libraries.ReikaRedstoneHelper;
+import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
 import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 

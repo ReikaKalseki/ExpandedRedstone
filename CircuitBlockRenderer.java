@@ -22,7 +22,7 @@ import net.minecraftforge.common.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
-import Reika.DragonAPI.Libraries.ReikaWorldHelper;
+import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
 import Reika.ExpandedRedstone.ItemBlocks.BlockRedTile;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;

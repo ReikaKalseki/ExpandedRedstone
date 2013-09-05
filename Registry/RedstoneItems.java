@@ -17,7 +17,7 @@ import net.minecraft.item.crafting.IRecipe;
 import Reika.DragonAPI.Exception.RegistrationException;
 import Reika.DragonAPI.Interfaces.IDRegistry;
 import Reika.DragonAPI.Interfaces.RegistrationList;
-import Reika.DragonAPI.Libraries.ReikaStringParser;
+import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 import Reika.ExpandedRedstone.ItemBlocks.ItemWirePlacer;
 import cpw.mods.fml.common.registry.GameRegistry;

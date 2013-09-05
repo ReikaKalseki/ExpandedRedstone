@@ -12,8 +12,8 @@ package Reika.ExpandedRedstone.TileEntities;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import Reika.DragonAPI.Instantiable.StepTimer;
-import Reika.DragonAPI.Libraries.ReikaChatHelper;
-import Reika.DragonAPI.Libraries.ReikaFormatHelper;
+import Reika.DragonAPI.Libraries.IO.ReikaChatHelper;
+import Reika.DragonAPI.Libraries.IO.ReikaFormatHelper;
 import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
