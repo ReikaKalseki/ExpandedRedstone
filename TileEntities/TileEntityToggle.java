@@ -29,7 +29,7 @@ public class TileEntityToggle extends ExpandedRedstoneTileEntity {
 			return;
 		ForgeDirection side = this.getFacing().getOpposite();
 		if (ReikaRedstoneHelper.isPositiveEdgeOnSide(world, x, y, z, lastPower, lastRepeat, side)) {
-			emit = !emit;
+			this.toggleEmitting();
 		}
 		lastPower = this.wasLastPowered(world, x, y, z, side);
 		lastRepeat = ReikaRedstoneHelper.isReceivingPowerFromRepeater(world, x, y, z, side);
@@ -68,13 +68,13 @@ public class TileEntityToggle extends ExpandedRedstoneTileEntity {
 		int z = zCoord;
 		ForgeDirection side = this.getFacing().getOpposite();
 		boolean power = world.isBlockIndirectlyGettingPowered(x+side.offsetX, y+side.offsetY, z+side.offsetZ);
-		if (!emit && !power)
+		if (!this.isEmitting() && !power)
 			return 0;
-		if (!emit && power)
+		if (!this.isEmitting() && power)
 			return 3;
-		if (emit && !power)
+		if (this.isEmitting() && !power)
 			return 1;
-		if (emit && power)
+		if (this.isEmitting() && power)
 			return 2;
 		return 0;
 	}

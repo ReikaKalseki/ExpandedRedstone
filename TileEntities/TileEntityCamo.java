@@ -29,7 +29,7 @@ public class TileEntityCamo extends ExpandedRedstoneTileEntity {
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z);
-		emit = world.isBlockIndirectlyGettingPowered(x, y, z);
+		this.setEmitting(world.isBlockIndirectlyGettingPowered(x, y, z));
 		//ReikaJavaLibrary.pConsoleIf(this.getImitatedBlockID(), yCoord == 64);
 	}
 

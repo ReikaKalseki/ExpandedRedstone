@@ -18,7 +18,7 @@ public class TileEntityWeather extends ExpandedRedstoneTileEntity {
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z);
-		emit = world.isRaining() || world.isThundering();
+		this.setEmitting(world.isRaining() || world.isThundering());
 	}
 
 	@Override

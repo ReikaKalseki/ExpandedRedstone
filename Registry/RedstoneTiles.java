@@ -237,6 +237,10 @@ public enum RedstoneTiles {
 		case PLACER:
 		case EMITTER:
 		case RECEIVER:
+		case PROXIMITY:
+		case WEATHER:
+		case CHESTREADER:
+		case DRIVER:
 			return true;
 		default:
 			return false;

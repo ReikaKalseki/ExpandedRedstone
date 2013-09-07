@@ -31,9 +31,9 @@ public class TileEntityChestReader extends ExpandedRedstoneTileEntity {
 		TileEntity te = world.getBlockTileEntity(this.getFacingX(), this.getFacingY(), this.getFacingZ());
 		if (te instanceof IInventory) {
 			if (signalFull)
-				emit = ReikaInventoryHelper.isFull((IInventory)te);
+				this.setEmitting(ReikaInventoryHelper.isFull((IInventory)te));
 			else
-				emit = ReikaInventoryHelper.isEmpty((IInventory)te);
+				this.setEmitting(ReikaInventoryHelper.isEmpty((IInventory)te));
 		}
 	}
 
@@ -44,6 +44,7 @@ public class TileEntityChestReader extends ExpandedRedstoneTileEntity {
 
 	public void alternate() {
 		signalFull = !signalFull;
+		this.update();
 	}
 
 	@Override

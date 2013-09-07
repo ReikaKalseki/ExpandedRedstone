@@ -38,14 +38,14 @@ public class TileEntityReceiver extends ExpandedRedstoneTileEntity {
 		int y = target[1];
 		int z = target[2];
 		if (x == Integer.MIN_VALUE || y == Integer.MIN_VALUE || z == Integer.MIN_VALUE) {
-			emit = false;
+			this.setEmitting(false);
 			return;
 		}
 		TileEntityEmitter te = (TileEntityEmitter)world.getBlockTileEntity(x, y, z);
 		if (te != null && te.getFacing() == this.getFacing().getOpposite() && te.isBeaming())
-			emit = true;
+			this.setEmitting(true);
 		else
-			emit = false;
+			this.setEmitting(false);
 	}
 
 	private void drawBeam(World world, int x, int y, int z) {
@@ -96,7 +96,7 @@ public class TileEntityReceiver extends ExpandedRedstoneTileEntity {
 
 	@Override
 	public int getFrontTexture() {
-		return emit ? 1 : 0;
+		return this.isEmitting() ? 1 : 0;
 	}
 
 }

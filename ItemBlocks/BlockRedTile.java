@@ -84,10 +84,10 @@ public class BlockRedTile extends Block {
 	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z)
 	{
 		if (!player.capabilities.isCreativeMode)
-			this.harvestBlock(world, player, x, y, z, world.getBlockMetadata(x, y, z));
+			;//this.harvestBlock(world, player, x, y, z, world.getBlockMetadata(x, y, z));
 		return world.setBlock(x, y, z, 0);
 	}
-
+	/*
 	@Override
 	public void harvestBlock(World world, EntityPlayer ep, int x, int y, int z, int meta) {
 		RedstoneTiles r = RedstoneTiles.TEList[meta];
@@ -105,7 +105,7 @@ public class BlockRedTile extends Block {
 			ItemStack todrop = r.getItem();
 			ReikaItemHelper.dropItem(world, x+0.5, y+0.5, z+0.5, todrop);
 		}
-	}
+	}*/
 
 	@Override
 	public int isProvidingWeakPower(IBlockAccess iba, int x, int y, int z, int s)

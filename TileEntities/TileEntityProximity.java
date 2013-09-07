@@ -58,11 +58,11 @@ public class TileEntityProximity extends ExpandedRedstoneTileEntity {
 			Entity e = li.get(i);
 			double dd = ReikaMathLibrary.py3d(e.posX-x-0.5, e.posY-y-0.5, e.posZ-z-0.5);
 			if (dd <= range) {
-				emit = true;
+				this.setEmitting(true);
 				return;
 			}
 		}
-		emit = false;
+		this.setEmitting(false);
 	}
 
 	@Override
@@ -76,6 +76,7 @@ public class TileEntityProximity extends ExpandedRedstoneTileEntity {
 		if (c >= EntityType.list.length)
 			c = 0;
 		entity = EntityType.list[c];
+		this.update();
 	}
 
 	@Override
@@ -99,6 +100,6 @@ public class TileEntityProximity extends ExpandedRedstoneTileEntity {
 
 	@Override
 	public int getTopTexture() {
-		return entity.ordinal()*2+(emit ? 1 : 0);
+		return entity.ordinal()*2+(this.isEmitting() ? 1 : 0);
 	}
 }

@@ -23,7 +23,7 @@ public abstract class ExpandedRedstoneTileEntity extends TileEntityBase {
 
 	private ForgeDirection facing;
 
-	protected boolean emit;
+	private boolean emit;
 
 	private StepTimer pulsar = new StepTimer(0);
 	private boolean isPulsing = false;
@@ -31,12 +31,10 @@ public abstract class ExpandedRedstoneTileEntity extends TileEntityBase {
 	public abstract int getTEIndex();
 
 	public void updateEntity(World world, int x, int y, int z) {
-		world.markBlockForUpdate(x, y, z);
-		ReikaWorldHelper.causeAdjacentUpdates(world, x, y, z);
 		if (isPulsing) {
 			pulsar.update();
 			if (pulsar.checkCap())
-				emit = false;
+				this.setEmitting(false);
 		}
 	}
 
@@ -64,6 +62,8 @@ public abstract class ExpandedRedstoneTileEntity extends TileEntityBase {
 	}
 
 	public ForgeDirection getFacing() {
+		if (facing == null)
+			return ForgeDirection.UNKNOWN;
 		return facing;
 	}
 
@@ -201,5 +201,27 @@ public abstract class ExpandedRedstoneTileEntity extends TileEntityBase {
 
 	public boolean canProvideStrongPower() {
 		return true;
+	}
+
+	protected void setEmitting(boolean e) {
+		if (emit != e) {
+			emit = e;
+			this.update();
+		}
+	}
+
+	protected void toggleEmitting() {
+		this.update();
+		emit = !emit;
+	}
+
+	@Override
+	public boolean shouldRenderInPass(int pass) {
+		return pass == 0;
+	}
+
+	protected void update() {
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		ReikaWorldHelper.causeAdjacentUpdates(worldObj, xCoord, yCoord, zCoord);
 	}
 }

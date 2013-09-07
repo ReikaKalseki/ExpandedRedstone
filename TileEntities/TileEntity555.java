@@ -52,14 +52,14 @@ public class TileEntity555 extends ExpandedRedstoneTileEntity {
 			timer_off = new StepTimer(setting.low);
 		if (timer_on == null)
 			timer_on = new StepTimer(setting.hi);
-		if (emit)
+		if (this.isEmitting())
 			timer_on.update();
 		else
 			timer_off.update();
 		if (timer_on.checkCap())
-			emit = false;
+			this.setEmitting(false);
 		if (timer_off.checkCap())
-			emit = true;
+			this.setEmitting(true);
 	}
 
 	@Override
@@ -81,6 +81,7 @@ public class TileEntity555 extends ExpandedRedstoneTileEntity {
 			o = 0;
 		setting = Settings.list[o];
 		this.loadSettings();
+		this.update();
 	}
 
 	public void setLoTime(int time) {

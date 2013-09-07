@@ -42,12 +42,14 @@ public class TileEntityDriver extends ExpandedRedstoneTileEntity {
 		level++;
 		if (level > 15)
 			level = 0;
+		this.update();
 	}
 
 	public void decrement() {
 		level--;
 		if (level < 0)
 			level = 15;
+		this.update();
 	}
 
 	@Override
