@@ -271,7 +271,7 @@ public class CircuitBlockRenderer implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public int getRenderId() {
-		return ClientProxy.tileRender;
+		return ExpandedRedstone.proxy.tileRender;
 	}
 
 }
