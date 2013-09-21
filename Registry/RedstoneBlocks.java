@@ -135,4 +135,13 @@ public enum RedstoneBlocks implements RegistrationList, IDRegistry {
 		return blockClass == null;
 	}
 
+	public int getID() {
+		return this.getBlockID();
+	}
+
+	@Override
+	public boolean overwritingItem() {
+		return false;
+	}
+
 }

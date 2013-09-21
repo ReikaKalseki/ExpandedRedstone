@@ -94,10 +94,10 @@ public enum RedstoneItems implements RegistrationList, IDRegistry {
 	public String getUnlocalizedName() {
 		return ReikaStringParser.stripSpaces(name).toLowerCase();
 	}
-	/*
+
 	public int getID() {
-		return ExpandedRedstone.config.getItemID(this.ordinal());;
-	}*/
+		return ExpandedRedstone.config.getItemID(this.ordinal());
+	}
 
 	public int getShiftedID() {
 		return ExpandedRedstone.config.getItemID(this.ordinal())+256;
@@ -217,5 +217,10 @@ public enum RedstoneItems implements RegistrationList, IDRegistry {
 
 	public void addRecipe(IRecipe ir) {
 		GameRegistry.addRecipe(ir);
+	}
+
+	@Override
+	public boolean overwritingItem() {
+		return false;
 	}
 }
