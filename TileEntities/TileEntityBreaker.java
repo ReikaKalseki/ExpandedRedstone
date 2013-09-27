@@ -139,6 +139,8 @@ public class TileEntityBreaker extends ExpandedRedstoneTileEntity {
 
 	@Override
 	public int getFrontTexture() {
+		if (harvest == null)
+			return (worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) ? 1 : 0);
 		return harvest.ordinal()*2+(worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) ? 1 : 0);
 	}
 
@@ -163,7 +165,8 @@ public class TileEntityBreaker extends ExpandedRedstoneTileEntity {
 	{
 		super.writeToNBT(NBT);
 
-		NBT.setInteger("level", harvest.ordinal());
+		if (harvest != null)
+			NBT.setInteger("level", harvest.ordinal());
 		NBT.setInteger("dmg", dura);
 	}
 

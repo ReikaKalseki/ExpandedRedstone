@@ -75,6 +75,8 @@ public class BlockRedTile extends Block {
 				is.stackTagCompound.setInteger("nbt", te.getHarvestLevel());
 				is.stackTagCompound.setInteger("dmg", te.getDurability());
 			}
+			else
+				return li;
 		}
 		li.add(is);
 		return li;
@@ -84,7 +86,7 @@ public class BlockRedTile extends Block {
 	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z)
 	{
 		if (!player.capabilities.isCreativeMode)
-			;//this.harvestBlock(world, player, x, y, z, world.getBlockMetadata(x, y, z));
+			this.harvestBlock(world, player, x, y, z, world.getBlockMetadata(x, y, z));
 		return world.setBlock(x, y, z, 0);
 	}
 	/*
