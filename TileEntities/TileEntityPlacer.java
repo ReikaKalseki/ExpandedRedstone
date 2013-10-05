@@ -62,7 +62,7 @@ public class TileEntityPlacer extends InventoriedRedstoneTileEntity {
 	}
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 		int id = ReikaItemHelper.getWorldBlockIDFromItem(itemstack);
 		return id != 0;
 	}
