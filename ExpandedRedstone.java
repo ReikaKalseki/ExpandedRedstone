@@ -153,4 +153,9 @@ public class ExpandedRedstone extends DragonAPIMod {
 		return "Gamma";
 	}
 
+	@Override
+	public ModLogger getModLogger() {
+		return logger;
+	}
+
 }
