@@ -147,12 +147,6 @@ public class BlockRedTile extends Block {
 	}
 
 	@Override
-	public boolean canDragonDestroy(World world, int x, int y, int z)
-	{
-		return true;
-	}
-
-	@Override
 	public final boolean renderAsNormalBlock() {
 		return false;
 	}
