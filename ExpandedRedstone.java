@@ -84,11 +84,11 @@ public class ExpandedRedstone extends DragonAPIMod {
 	}
 
 	private static void addItems() {
-		ReikaRegistryHelper.instantiateAndRegisterItems(instance, RedstoneItems.itemList, items, logger.shouldLog());
+		ReikaRegistryHelper.instantiateAndRegisterItems(instance, RedstoneItems.itemList, items);
 	}
 
 	private static void addBlocks() {
-		ReikaRegistryHelper.instantiateAndRegisterBlocks(instance, RedstoneBlocks.blockList, blocks, logger.shouldLog());
+		ReikaRegistryHelper.instantiateAndRegisterBlocks(instance, RedstoneBlocks.blockList, blocks);
 		for (int i = 0; i < RedstoneTiles.TEList.length; i++)
 			GameRegistry.registerTileEntity(RedstoneTiles.TEList[i].getTEClass(), "ExpRedstone"+RedstoneTiles.TEList[i].getName());
 	}
