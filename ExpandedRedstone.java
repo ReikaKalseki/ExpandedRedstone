@@ -65,6 +65,9 @@ public class ExpandedRedstone extends DragonAPIMod {
 		config.initProps(evt);
 		logger = new ModLogger(instance, RedstoneOptions.LOGLOADING.getState(), RedstoneOptions.DEBUGMODE.getState(), false);
 		proxy.registerSounds();
+
+		ReikaRegistryHelper.setupModData(instance, evt);
+		ReikaRegistryHelper.setupVersionChecking(evt);
 	}
 
 	@Override
