@@ -31,7 +31,7 @@ public class TileEntityDriver extends ExpandedRedstoneTileEntity {
 
 		if (this.getFacing() == null)
 			return;
-		ForgeDirection side = this.getFacing().getOpposite();
+		ForgeDirection side = this.getFacing();
 		if (ReikaRedstoneHelper.isPositiveEdgeOnSide(world, x, y, z, lastPower, lastRepeat, side)) {
 			this.increment();
 		}
@@ -96,7 +96,7 @@ public class TileEntityDriver extends ExpandedRedstoneTileEntity {
 	public boolean canPowerSide(int s) {
 		if (this.getFacing() == null)
 			return false;
-		return s == this.getFacing().getOpposite().ordinal();
+		return s == this.getFacing().ordinal();
 	}
 
 	private boolean wasLastPowered(World world, int x, int y, int z, ForgeDirection side) {
