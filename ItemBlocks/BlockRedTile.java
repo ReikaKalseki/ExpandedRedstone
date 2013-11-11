@@ -279,31 +279,31 @@ public class BlockRedTile extends Block {
 				if (r.hasVariableTopTexture()) {
 					for (int j = 0; j < num; j++) {
 						icons[1][i][j] = ico.registerIcon("ExpandedRedstone:"+r.name().toLowerCase()+"_top"+"_"+j);
-						ExpandedRedstone.logger.log("Creating variable tile icon "+icons[1][i][j].getIconName()+" for "+r+"[1]["+i+"]["+j+"]");
+						ExpandedRedstone.logger.debug("Creating variable tile icon "+icons[1][i][j].getIconName()+" for "+r+"[1]["+i+"]["+j+"]");
 					}
 				}
 				else {
 					icons[1][i][0] = ico.registerIcon("ExpandedRedstone:"+r.name().toLowerCase()+"_top");
-					ExpandedRedstone.logger.log("Creating static tile icon "+icons[1][i][0].getIconName()+" for "+r);
+					ExpandedRedstone.logger.debug("Creating static tile icon "+icons[1][i][0].getIconName()+" for "+r);
 				}
 			}
 			else if (!r.isOmniTexture()) {
 				if (r.isVariableTexture()) {
 					for (int j = 0; j < num; j++) {
 						front[i][j] = ico.registerIcon("ExpandedRedstone:"+r.name().toLowerCase()+"_front_"+j);
-						ExpandedRedstone.logger.log("Creating variable block icon "+front[i][j].getIconName()+" for "+r+"["+i+"]["+j+"]");
+						ExpandedRedstone.logger.debug("Creating variable block icon "+front[i][j].getIconName()+" for "+r+"["+i+"]["+j+"]");
 					}
 				}
 				else {
 					front[i][0] = ico.registerIcon("ExpandedRedstone:"+r.name().toLowerCase()+"_front");
-					ExpandedRedstone.logger.log("Creating static block icon "+front[i][0].getIconName()+" for "+r);
+					ExpandedRedstone.logger.debug("Creating static block icon "+front[i][0].getIconName()+" for "+r);
 				}
 			}
 			if (r.isOmniTexture()) {
 				for (int k = 0; k < 6; k++) {
 					icons[k][i][0] = ico.registerIcon("ExpandedRedstone:"+r.name().toLowerCase());
 				}
-				ExpandedRedstone.logger.log("Creating static full texture "+icons[0][i][0].getIconName()+" for "+r);
+				ExpandedRedstone.logger.debug("Creating static full texture "+icons[0][i][0].getIconName()+" for "+r);
 			}
 		}
 	}

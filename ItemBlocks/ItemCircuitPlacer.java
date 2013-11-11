@@ -22,7 +22,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import Reika.DragonAPI.Interfaces.IndexedItemSprites;
 import Reika.DragonAPI.Libraries.ReikaPlayerAPI;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.ExpandedRedstone.ExpandedRedstone;
@@ -34,7 +33,7 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker.Materials;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemCircuitPlacer extends ItemBlock implements IndexedItemSprites {
+public class ItemCircuitPlacer extends ItemBlock {
 
 	private int index;
 
@@ -119,11 +118,6 @@ public class ItemCircuitPlacer extends ItemBlock implements IndexedItemSprites {
 			else
 				list.add(item);
 		}
-	}
-
-	@Override
-	public int getItemSpriteIndex(ItemStack is) {
-		return index;
 	}
 
 	public void setIndex(int a) {
