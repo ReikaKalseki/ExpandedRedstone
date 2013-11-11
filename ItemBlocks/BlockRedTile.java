@@ -67,6 +67,10 @@ public class BlockRedTile extends Block {
 	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int meta, int fortune) {
 		ArrayList<ItemStack> li = new ArrayList<ItemStack>();
 		RedstoneTiles r = RedstoneTiles.TEList[meta];
+		if (r == null)
+			return li;
+		if (world.getBlockId(x, y, z) != blockID)
+			return li;
 		ItemStack is = r.getItem();
 		if (r == RedstoneTiles.BREAKER) {
 			TileEntityBreaker te = (TileEntityBreaker)world.getBlockTileEntity(x, y, z);
