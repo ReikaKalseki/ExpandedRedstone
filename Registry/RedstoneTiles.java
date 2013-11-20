@@ -48,7 +48,8 @@ public enum RedstoneTiles {
 	CLOCK("Redstone Clock", TileEntity555.class),
 	CAMOFLAGE("Camouflage Block", TileEntityCamo.class),
 	EMITTER("Signal Emitter", TileEntityEmitter.class),
-	RECEIVER("Signal Receiver", TileEntityReceiver.class);
+	RECEIVER("Signal Receiver", TileEntityReceiver.class),
+	SHOCK("Shock Panel", TileEntityShock.class);
 
 	private Class te;
 	private String name;
