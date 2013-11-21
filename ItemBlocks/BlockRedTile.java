@@ -35,6 +35,7 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
 import Reika.ExpandedRedstone.TileEntities.TileEntityChestReader;
 import Reika.ExpandedRedstone.TileEntities.TileEntityDriver;
 import Reika.ExpandedRedstone.TileEntities.TileEntityProximity;
+import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
 import buildcraft.api.tools.IToolWrench;
 
 public class BlockRedTile extends Block {
@@ -82,6 +83,15 @@ public class BlockRedTile extends Block {
 			else
 				return li;
 		}
+		if (r == RedstoneTiles.SHOCK) {
+			TileEntityShockPanel te = (TileEntityShockPanel)world.getBlockTileEntity(x, y, z);
+			if (te != null) {
+				is.stackTagCompound = new NBTTagCompound();
+				is.stackTagCompound.setInteger("nbt", te.getLensType().ordinal());
+			}
+			else
+				return li;
+		}
 		li.add(is);
 		return li;
 	}
@@ -93,25 +103,6 @@ public class BlockRedTile extends Block {
 			this.harvestBlock(world, player, x, y, z, world.getBlockMetadata(x, y, z));
 		return world.setBlock(x, y, z, 0);
 	}
-	/*
-	@Override
-	public void harvestBlock(World world, EntityPlayer ep, int x, int y, int z, int meta) {
-		RedstoneTiles r = RedstoneTiles.TEList[meta];
-		if (r == RedstoneTiles.BREAKER) {
-			TileEntityBreaker brk = (TileEntityBreaker)world.getBlockTileEntity(x, y, z);
-			if (brk != null) {
-				ItemStack todrop = r.getItem();
-				todrop.stackTagCompound = new NBTTagCompound();
-				todrop.stackTagCompound.setInteger("nbt", brk.getHarvestLevel());
-				todrop.stackTagCompound.setInteger("dmg", brk.getDurability());
-				ReikaItemHelper.dropItem(world, x+0.5, y+0.5, z+0.5, todrop);
-			}
-		}
-		else {
-			ItemStack todrop = r.getItem();
-			ReikaItemHelper.dropItem(world, x+0.5, y+0.5, z+0.5, todrop);
-		}
-	}*/
 
 	@Override
 	public int isProvidingWeakPower(IBlockAccess iba, int x, int y, int z, int s)
@@ -311,15 +302,6 @@ public class BlockRedTile extends Block {
 			}
 		}
 	}
-	/*
-	@Override
-	public final ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
-		int id = this.idPicked(world, x, y, z);
-		if (id == 0)
-			return null;
-		int meta = world.getBlockMetadata(target.blockX, target.blockY, target.blockZ);
-		return RedstoneItems.PLACER.getStackOfMetadata(meta);
-	}*/
 
 	@Override
 	public final void breakBlock(World world, int x, int y, int z, int par5, int par6) {
@@ -328,13 +310,6 @@ public class BlockRedTile extends Block {
 			ReikaItemHelper.dropInventory(world, x, y, z);
 		super.breakBlock(world, x, y, z, par5, par6);
 	}
-	/*
-	@Override
-	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int meta, int fortune) {
-		ArrayList<ItemStack> li = new ArrayList<ItemStack>();
-		li.add(RedstoneItems.PLACER.getStackOfMetadata(meta));
-		return li;
-	}*/
 
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess iba, int x, int y, int z) {

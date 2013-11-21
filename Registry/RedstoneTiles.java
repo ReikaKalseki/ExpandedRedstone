@@ -30,6 +30,7 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityEmitter;
 import Reika.ExpandedRedstone.TileEntities.TileEntityPlacer;
 import Reika.ExpandedRedstone.TileEntities.TileEntityProximity;
 import Reika.ExpandedRedstone.TileEntities.TileEntityReceiver;
+import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
 import Reika.ExpandedRedstone.TileEntities.TileEntityToggle;
 import Reika.ExpandedRedstone.TileEntities.TileEntityWeather;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -49,7 +50,7 @@ public enum RedstoneTiles {
 	CAMOFLAGE("Camouflage Block", TileEntityCamo.class),
 	EMITTER("Signal Emitter", TileEntityEmitter.class),
 	RECEIVER("Signal Receiver", TileEntityReceiver.class),
-	SHOCK("Shock Panel", TileEntityShock.class);
+	SHOCK("Shock Panel", TileEntityShockPanel.class);
 
 	private Class te;
 	private String name;
@@ -149,6 +150,8 @@ public enum RedstoneTiles {
 			return TileEntity555.Settings.list.length;
 		case DRIVER:
 			return 16;
+		case SHOCK:
+			return 2;
 		default:
 			return 1;
 		}
@@ -162,6 +165,7 @@ public enum RedstoneTiles {
 		case BUD:
 		case EMITTER:
 		case RECEIVER:
+		case SHOCK:
 			return true;
 		default:
 			return false;
@@ -175,6 +179,7 @@ public enum RedstoneTiles {
 		case EFFECTOR:
 		case RECEIVER:
 		case EMITTER:
+		case SHOCK:
 			return true;
 		default:
 			return false;
@@ -242,6 +247,7 @@ public enum RedstoneTiles {
 		case WEATHER:
 		case CHESTREADER:
 		case DRIVER:
+		case SHOCK:
 			return true;
 		default:
 			return false;
@@ -256,6 +262,7 @@ public enum RedstoneTiles {
 		case PLACER:
 		case EMITTER:
 		case RECEIVER:
+		case SHOCK:
 			return true;
 		default:
 			return false;

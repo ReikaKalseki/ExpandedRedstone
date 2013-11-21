@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import Reika.DragonAPI.Instantiable.StepTimer;
 import Reika.DragonAPI.Libraries.IO.ReikaChatHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaFormatHelper;
+import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
@@ -25,14 +26,15 @@ public class TileEntity555 extends ExpandedRedstoneTileEntity {
 	private Settings setting = Settings.L20;
 
 	public static enum Settings {
-		L5(5, 5),
-		L10(10, 10),
-		L20(20, 20),
-		L50(50, 50),
-		L100(100, 100),
-		L300(300, 300),
-		L1200(1200, 1200),
-		L7200(72000, 72000);
+		L5(5, 5), //0.25s
+		//L10(10, 10),
+		L20(20, 20), //1s
+		L50(50, 50), //2.5s
+		L100(100, 100), //5s
+		L300(300, 300), //15s
+		L1200(1200, 1200), //1m
+		L18000(18000, 18000), //15m
+		L7200(72000, 72000); //1h
 
 		public final int low;
 		public final int hi;
@@ -56,10 +58,14 @@ public class TileEntity555 extends ExpandedRedstoneTileEntity {
 			timer_on.update();
 		else
 			timer_off.update();
-		if (timer_on.checkCap())
+		if (timer_on.checkCap()) {
 			this.setEmitting(false);
-		if (timer_off.checkCap())
+			ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.25F, 0.5F);
+		}
+		if (timer_off.checkCap()) {
 			this.setEmitting(true);
+			ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.25F, 1F);
+		}
 	}
 
 	@Override
@@ -82,6 +88,7 @@ public class TileEntity555 extends ExpandedRedstoneTileEntity {
 		setting = Settings.list[o];
 		this.loadSettings();
 		this.update();
+		ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.5F, 0.8F);
 	}
 
 	public void setLoTime(int time) {
@@ -118,5 +125,11 @@ public class TileEntity555 extends ExpandedRedstoneTileEntity {
 	@Override
 	public int getTopTexture() {
 		return setting.ordinal();
-	}
+	}/*
+
+	public boolean canPowerSide(int s) {
+	if (this.getFacing() == null)
+	return false;
+		return s == this.getFacing().ordinal() || s == this.getFacing().getOpposite().ordinal();
+	}*/
 }

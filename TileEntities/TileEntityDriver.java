@@ -14,6 +14,7 @@ import net.minecraft.block.BlockRedstoneLogic;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
 import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
@@ -59,6 +60,7 @@ public class TileEntityDriver extends ExpandedRedstoneTileEntity {
 		if (level > 15)
 			level = 0;
 		this.update();
+		ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.5F, 0.8F);
 	}
 
 	public void decrement() {

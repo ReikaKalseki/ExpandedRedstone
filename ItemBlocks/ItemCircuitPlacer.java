@@ -30,6 +30,8 @@ import Reika.ExpandedRedstone.Registry.RedstoneBlocks;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker.Materials;
+import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
+import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel.Lens;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -97,6 +99,13 @@ public class ItemCircuitPlacer extends ItemBlock {
 				brk.setDurability(dura);
 			}
 		}
+		if (tile == RedstoneTiles.SHOCK) {
+			TileEntityShockPanel shk = (TileEntityShockPanel)te;
+			if (is.stackTagCompound != null) {
+				int level = is.stackTagCompound.getInteger("nbt");
+				shk.setDamageLevel(level);
+			}
+		}
 		return true;
 	}
 
@@ -106,12 +115,20 @@ public class ItemCircuitPlacer extends ItemBlock {
 		for (int i = 0; i < RedstoneTiles.TEList.length; i++) {
 			ItemStack item = new ItemStack(id, 1, i);
 			if (i == RedstoneTiles.BREAKER.ordinal()) {
-				for (int h = 0; h < 4; h++) {
+				for (int h = 0; h < Materials.mats.length; h++) {
 					ItemStack item1 = item.copy();
 					item1.stackTagCompound = new NBTTagCompound();
 					item1.stackTagCompound.setInteger("nbt", h);
 					if (h == 0)
 						item1.stackTagCompound.setInteger("dmg", 128);
+					list.add(item1);
+				}
+			}
+			else if (i == RedstoneTiles.SHOCK.ordinal()) {
+				for (int h = 0; h < Lens.list.length; h++) {
+					ItemStack item1 = item.copy();
+					item1.stackTagCompound = new NBTTagCompound();
+					item1.stackTagCompound.setInteger("nbt", h);
 					list.add(item1);
 				}
 			}
@@ -143,15 +160,27 @@ public class ItemCircuitPlacer extends ItemBlock {
 	@Override
 	public void addInformation(ItemStack is, EntityPlayer ep, List li, boolean par4) {
 		RedstoneTiles tile = RedstoneTiles.TEList[is.getItemDamage()];
-		if (tile == RedstoneTiles.BREAKER && is.stackTagCompound != null) {
-			int level = is.stackTagCompound.getInteger("nbt");
-			int dura = is.stackTagCompound.getInteger("dmg");
-			Materials mat = TileEntityBreaker.Materials.mats[level];
-			li.add(String.format("Harvest Level: %s", mat.getName()));
-			if (mat == Materials.WOOD) {
-				li.add(String.format("Durability: %d", dura));
-				if (dura == 0)
-					li.add("Breaker is worn out!");
+		if (is.stackTagCompound != null) {
+			if (tile == RedstoneTiles.BREAKER) {
+				int level = is.stackTagCompound.getInteger("nbt");
+				int dura = is.stackTagCompound.getInteger("dmg");
+				Materials mat = TileEntityBreaker.Materials.mats[level];
+				li.add(String.format("Harvest Level: %s", mat.getName()));
+				if (mat == Materials.WOOD) {
+					li.add(String.format("Durability: %d", dura));
+					if (dura == 0)
+						li.add("Breaker is worn out!");
+				}
+			}
+			if (tile == RedstoneTiles.SHOCK) {
+				int level = is.stackTagCompound.getInteger("nbt");
+				Lens mat = Lens.list[level];
+				li.add(String.format("Lens Type: %s", mat.name()));
+				if (mat == Lens.STAR)
+					li.add(String.format("Attack Damage: Instant-Kill"));
+				else
+					li.add(String.format("Attack Damage: %.1f Hearts", mat.attackDamage/2F));
+				li.add(String.format("Attack Range: %d", mat.attackRange));
 			}
 		}
 	}
