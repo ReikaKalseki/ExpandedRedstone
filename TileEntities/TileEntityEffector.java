@@ -16,8 +16,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import Reika.DragonAPI.DragonAPICore;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
+import Reika.DragonAPI.Libraries.Java.ReikaObfuscationHelper;
 import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
 import Reika.ExpandedRedstone.Base.InventoriedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
@@ -54,31 +54,17 @@ public class TileEntityEffector extends InventoriedRedstoneTileEntity {
 		Item it = is.getItem();
 		Class c = it.getClass();
 		try {
-			Method click = c.getMethod(this.getMethodName(), ItemStack.class, EntityPlayer.class, World.class, int.class, int.class, int.class, int.class, float.class, float.class, float.class);
-			Object o = click.invoke(it, is, ep, world, dx, dy, dz, 0, 0F, 0F, 0F);
+			Method click = ReikaObfuscationHelper.getMethod("onItemUse");
+			Object o = click.invoke(it, is, ep, world, dx, dy, dz, this.getFacing().getOpposite().ordinal(), 0F, 0F, 0F);
 			inv[slot] = is;
 		}
-		catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		}
-		catch (SecurityException e) {
-			e.printStackTrace();
-		}
 		catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		}
 		catch (InvocationTargetException e) {
 			e.printStackTrace();
 		}
 		ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click");
-	}
-
-	//should see if can autoupdate/autoread xml conf files, too
-	private String getMethodName() {
-		return DragonAPICore.isDeObfEnvironment() ? "onItemUse" : "func_77648_a";
 	}
 
 	@Override
