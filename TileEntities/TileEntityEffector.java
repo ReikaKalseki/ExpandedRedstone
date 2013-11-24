@@ -81,4 +81,14 @@ public class TileEntityEffector extends InventoriedRedstoneTileEntity {
 	public int getFrontTexture() {
 		return worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) ? 1 : 0;
 	}
+
+	@Override
+	public boolean canExtractItem(int i, ItemStack itemstack, int j) {
+		return false;
+	}
+
+	@Override
+	public int getSizeInventory() {
+		return 9;
+	}
 }

@@ -11,7 +11,7 @@ package Reika.ExpandedRedstone;
 
 import net.minecraft.world.World;
 import Reika.DragonAPI.Auxiliary.CustomSoundHandler;
-import Reika.DragonAPI.Instantiable.CustomWireRenderer;
+import Reika.DragonAPI.Instantiable.Rendering.CustomWireRenderer;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 

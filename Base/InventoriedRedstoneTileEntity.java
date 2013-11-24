@@ -19,12 +19,7 @@ import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 
 public abstract class InventoriedRedstoneTileEntity extends ExpandedRedstoneTileEntity implements ISidedInventory {
 
-	protected ItemStack[] inv = new ItemStack[9];
-
-	@Override
-	public int getSizeInventory() {
-		return 9;
-	}
+	protected ItemStack[] inv = new ItemStack[this.getSizeInventory()];
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
@@ -80,11 +75,6 @@ public abstract class InventoriedRedstoneTileEntity extends ExpandedRedstoneTile
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemstack, int j) {
 		return this.isItemValidForSlot(i, itemstack);
-	}
-
-	@Override
-	public boolean canExtractItem(int i, ItemStack itemstack, int j) {
-		return false;
 	}
 
 	@Override

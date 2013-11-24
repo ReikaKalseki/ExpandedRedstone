@@ -79,16 +79,21 @@ public class ItemCircuitPlacer extends ItemBlock {
 		}
 		world.playSoundEffect(x+0.5, y+0.5, z+0.5, "step.stone", 1F, 1.5F);
 		ExpandedRedstoneTileEntity te = (ExpandedRedstoneTileEntity)world.getBlockTileEntity(x, y, z);
-		if (tile.isReversedPlacement()) {
-			ForgeDirection dir = ReikaPlayerAPI.getDirectionFromPlayerLook(ep, tile.canBeVertical());
-			if (dir.ordinal() < 2)
-				te.setFacing(dir);
-			else
-				te.setFacing(dir.getOpposite());
+		if (tile.isDirectionable()) {
+			if (tile.isReversedPlacement()) {
+				ForgeDirection dir = ReikaPlayerAPI.getDirectionFromPlayerLook(ep, tile.canBeVertical());
+				if (dir.ordinal() < 2)
+					te.setFacing(dir);
+				else
+					te.setFacing(dir.getOpposite());
+			}
+			else {
+				te.setFacing(ReikaPlayerAPI.getDirectionFromPlayerLook(ep, tile.canBeVertical()));
+			}
 		}
-		else {
-			te.setFacing(ReikaPlayerAPI.getDirectionFromPlayerLook(ep, tile.canBeVertical()));
-		}
+		else
+			te.setFacing(ForgeDirection.UNKNOWN);
+
 		te.placer = ep.getEntityName();
 		if (tile == RedstoneTiles.BREAKER) {
 			TileEntityBreaker brk = (TileEntityBreaker)te;

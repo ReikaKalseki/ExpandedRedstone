@@ -30,6 +30,7 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityEmitter;
 import Reika.ExpandedRedstone.TileEntities.TileEntityPlacer;
 import Reika.ExpandedRedstone.TileEntities.TileEntityProximity;
 import Reika.ExpandedRedstone.TileEntities.TileEntityReceiver;
+import Reika.ExpandedRedstone.TileEntities.TileEntityRedstonePump;
 import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
 import Reika.ExpandedRedstone.TileEntities.TileEntityToggle;
 import Reika.ExpandedRedstone.TileEntities.TileEntityWeather;
@@ -50,7 +51,8 @@ public enum RedstoneTiles {
 	CAMOFLAGE("Camouflage Block", TileEntityCamo.class),
 	EMITTER("Signal Emitter", TileEntityEmitter.class),
 	RECEIVER("Signal Receiver", TileEntityReceiver.class),
-	SHOCK("Shock Panel", TileEntityShockPanel.class);
+	SHOCK("Shock Panel", TileEntityShockPanel.class),
+	PUMP("Redstone Pump", TileEntityRedstonePump.class);
 
 	private Class te;
 	private String name;
@@ -254,6 +256,15 @@ public enum RedstoneTiles {
 		}
 	}
 
+	public boolean isDirectionable() {
+		switch(this) {
+		case PUMP:
+			return false;
+		default:
+			return true;
+		}
+	}
+
 	public boolean isOpaque() {
 		switch(this) {
 		case BREAKER:
@@ -263,6 +274,7 @@ public enum RedstoneTiles {
 		case EMITTER:
 		case RECEIVER:
 		case SHOCK:
+		case PUMP:
 			return true;
 		default:
 			return false;
