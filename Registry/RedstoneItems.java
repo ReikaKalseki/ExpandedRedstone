@@ -15,14 +15,13 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import Reika.DragonAPI.Exception.RegistrationException;
-import Reika.DragonAPI.Interfaces.IDRegistry;
-import Reika.DragonAPI.Interfaces.RegistrationList;
+import Reika.DragonAPI.Interfaces.RegistryEnum;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 import Reika.ExpandedRedstone.ItemBlocks.ItemWirePlacer;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public enum RedstoneItems implements RegistrationList, IDRegistry {
+public enum RedstoneItems implements RegistryEnum {
 
 	BLUEWIRE(false, "Lapis Wire", ItemWirePlacer.class);
 

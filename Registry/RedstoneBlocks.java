@@ -12,15 +12,14 @@ package Reika.ExpandedRedstone.Registry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
-import Reika.DragonAPI.Interfaces.IDRegistry;
-import Reika.DragonAPI.Interfaces.RegistrationList;
+import Reika.DragonAPI.Interfaces.RegistryEnum;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 import Reika.ExpandedRedstone.ItemBlocks.BlockExpandedWire;
 import Reika.ExpandedRedstone.ItemBlocks.BlockRedTile;
 import Reika.ExpandedRedstone.ItemBlocks.ItemCircuitPlacer;
 
-public enum RedstoneBlocks implements RegistrationList, IDRegistry {
+public enum RedstoneBlocks implements RegistryEnum {
 
 	TILEENTITY(BlockRedTile.class),
 	WIRE(BlockExpandedWire.class);
