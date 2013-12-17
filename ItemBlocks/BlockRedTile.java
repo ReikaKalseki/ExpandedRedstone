@@ -205,12 +205,16 @@ public class BlockRedTile extends Block {
 		if (te == null)
 			return null;
 		RedstoneTiles r = RedstoneTiles.TEList[meta];
+		ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[s];
 		if (te.isOverridingIcon(s))
 			return te.getOverridingIcon(s);
 		if (r.isThinTile()) {
 			if (s == 1)
 				return icons[s][meta][te.getTopTexture()];
 			return icons[s][meta][te.getTextureForSide(s)];
+		}
+		else if (r.hasHardcodedDirectionTexture(dir)) {
+			return icons[s][r.ordinal()][te.getTextureForSide(s)];
 		}
 		else if (!r.isOmniTexture()) {
 			if (te.getFacing() != null && s == te.getFacing().ordinal()) {
@@ -280,6 +284,15 @@ public class BlockRedTile extends Block {
 				else {
 					icons[1][i][0] = ico.registerIcon("ExpandedRedstone:"+r.name().toLowerCase()+"_top");
 					ExpandedRedstone.logger.debug("Creating static tile icon "+icons[1][i][0].getIconName()+" for "+r);
+				}
+			}
+			else if (r.hasHardcodedDirectionTextures()) {
+				for (int j = 0; j < 6; j++) {
+					ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[j];
+					if (r.hasHardcodedDirectionTexture(dir)) {
+						icons[j][i][0] = ico.registerIcon("ExpandedRedstone:"+r.name().toLowerCase()+"_"+dir.name().toLowerCase());
+						ExpandedRedstone.logger.log("Creating directionable block icon "+icons[j][i][0].getIconName()+" for "+r+"["+j+"]["+i+"][0]");
+					}
 				}
 			}
 			else if (!r.isOmniTexture()) {

@@ -16,6 +16,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Exception.RegistrationException;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ExpandedRedstone.ExpandedRedstone;
@@ -263,6 +264,24 @@ public enum RedstoneTiles {
 		default:
 			return true;
 		}
+	}
+
+	public boolean hasHardcodedDirectionTexture(ForgeDirection dir) {
+		switch(this) {
+		case PUMP:
+			return dir == ForgeDirection.DOWN;
+		default:
+			return false;
+		}
+	}
+
+	public boolean hasHardcodedDirectionTextures() {
+		for (int i = 0; i < 6; i++) {
+			ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[i];
+			if (this.hasHardcodedDirectionTexture(dir))
+				return true;
+		}
+		return false;
 	}
 
 	public boolean isOpaque() {

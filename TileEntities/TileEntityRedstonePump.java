@@ -37,7 +37,13 @@ public class TileEntityRedstonePump extends InventoriedRedstoneTileEntity {
 
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
-
+		int idbelow = world.getBlockId(x, y-1, z);
+		if (idbelow == 0)
+			return;
+		Block b = Block.blocksList[idbelow];
+		Fluid f2 = FluidRegistry.lookupFluidForBlock(b);
+		if (f2 == null)
+			return;
 		if (blocks.isEmpty()) {
 			blocks.setLiquid(world.getBlockMaterial(x, y-1, z));
 			blocks.recursiveAddLiquidWithBounds(world, x, y-1, z, x-16, 0, z-16, x+16, y-1, z+16);
@@ -77,7 +83,7 @@ public class TileEntityRedstonePump extends InventoriedRedstoneTileEntity {
 
 	@Override
 	public int getTextureForSide(int s) {
-		return s == ForgeDirection.DOWN.ordinal() ? 1 : 0;
+		return s == ForgeDirection.DOWN.ordinal() ? 0 : 0;
 	}
 
 	@Override
