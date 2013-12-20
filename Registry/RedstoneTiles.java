@@ -28,6 +28,7 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityChestReader;
 import Reika.ExpandedRedstone.TileEntities.TileEntityDriver;
 import Reika.ExpandedRedstone.TileEntities.TileEntityEffector;
 import Reika.ExpandedRedstone.TileEntities.TileEntityEmitter;
+import Reika.ExpandedRedstone.TileEntities.TileEntityHopperTicker;
 import Reika.ExpandedRedstone.TileEntities.TileEntityPlacer;
 import Reika.ExpandedRedstone.TileEntities.TileEntityProximity;
 import Reika.ExpandedRedstone.TileEntities.TileEntityReceiver;
@@ -53,7 +54,8 @@ public enum RedstoneTiles {
 	EMITTER("Signal Emitter", TileEntityEmitter.class),
 	RECEIVER("Signal Receiver", TileEntityReceiver.class),
 	SHOCK("Shock Panel", TileEntityShockPanel.class),
-	PUMP("Redstone Pump", TileEntityRedstonePump.class);
+	PUMP("Redstone Pump", TileEntityRedstonePump.class),
+	HOPPER("Hopper Ticker", TileEntityHopperTicker.class);
 
 	private Class te;
 	private String name;
@@ -115,6 +117,7 @@ public enum RedstoneTiles {
 		case CLOCK:
 		case DRIVER:
 		case PROXIMITY:
+		case HOPPER:
 			return true;
 		default:
 			return false;
