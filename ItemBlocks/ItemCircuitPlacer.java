@@ -82,10 +82,7 @@ public class ItemCircuitPlacer extends ItemBlock {
 		if (tile.isDirectionable()) {
 			if (tile.isReversedPlacement()) {
 				ForgeDirection dir = ReikaPlayerAPI.getDirectionFromPlayerLook(ep, tile.canBeVertical());
-				if (dir.ordinal() < 2)
-					te.setFacing(dir);
-				else
-					te.setFacing(dir.getOpposite());
+				te.setFacing(dir.getOpposite());
 			}
 			else {
 				te.setFacing(ReikaPlayerAPI.getDirectionFromPlayerLook(ep, tile.canBeVertical()));
