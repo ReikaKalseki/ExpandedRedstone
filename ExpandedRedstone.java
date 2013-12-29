@@ -15,15 +15,18 @@ import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import Reika.DragonAPI.DragonAPICore;
+import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.Base.DragonAPIMod;
 import Reika.DragonAPI.Instantiable.IO.ControlledConfig;
 import Reika.DragonAPI.Instantiable.IO.ModLogger;
 import Reika.DragonAPI.Libraries.ReikaRegistryHelper;
+import Reika.DragonAPI.Libraries.IO.ReikaColorAPI;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ExpandedRedstone.Registry.RedstoneBlocks;
 import Reika.ExpandedRedstone.Registry.RedstoneItems;
 import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
+import Reika.RotaryCraft.API.BlockColorInterface;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -83,7 +86,13 @@ public class ExpandedRedstone extends DragonAPIMod {
 	@Override
 	@EventHandler
 	public void postload(FMLPostInitializationEvent evt) {
-
+		if (ModList.ROTARYCRAFT.isLoaded()) {
+			for (int i = 0; i < RedstoneBlocks.blockList.length; i++) {
+				RedstoneBlocks r = RedstoneBlocks.blockList[i];
+				for (int k = 0; k < r.getNumberMetadatas(); k++)
+					BlockColorInterface.addGPRBlockColor(r.getBlockID(), k, ReikaColorAPI.RGBtoHex(140, 140, 140));
+			}
+		}
 	}
 
 	private static void addItems() {
