@@ -25,6 +25,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import Reika.DragonAPI.Libraries.ReikaAABBHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
@@ -360,8 +361,11 @@ public class BlockRedTile extends Block {
 			else
 				return box.offset(x, y, z);
 		}
+		else if (r.isThinTile()) {
+			return AxisAlignedBB.getAABBPool().getAABB(x, y, z, x+1, y+0.1875, z);
+		}
 		else
-			return AxisAlignedBB.getAABBPool().getAABB(x + minX, y + minY, z + minZ, x + maxX, y + maxY, z + maxZ);
+			return ReikaAABBHelper.getBlockAABB(x, y, z);
 	}
 
 	@Override

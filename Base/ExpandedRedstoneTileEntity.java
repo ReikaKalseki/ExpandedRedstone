@@ -59,6 +59,8 @@ public abstract class ExpandedRedstoneTileEntity extends TileEntityBase {
 		pulsar = new StepTimer(length);
 		isPulsing = true;
 		emit = true;
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		ReikaWorldHelper.causeAdjacentUpdates(worldObj, xCoord, yCoord, zCoord);
 	}
 
 	public ForgeDirection getFacing() {

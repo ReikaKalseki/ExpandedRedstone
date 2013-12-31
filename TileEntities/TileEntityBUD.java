@@ -43,6 +43,7 @@ public class TileEntityBUD extends ExpandedRedstoneTileEntity {
 		int z = this.getFacingZ();
 		int id = world.getBlockId(x, y, z);
 		int meta = world.getBlockMetadata(x, y, z);
+		//ReikaJavaLibrary.pConsole(id+":"+meta+" - "+IDStored+":"+metaStored, Side.SERVER);
 		return id != IDStored || meta != metaStored;
 	}
 
