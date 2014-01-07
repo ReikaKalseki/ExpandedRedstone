@@ -16,6 +16,7 @@ import Reika.DragonAPI.Libraries.IO.ReikaChatHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaFormatHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntity555 extends ExpandedRedstoneTileEntity {
@@ -60,11 +61,13 @@ public class TileEntity555 extends ExpandedRedstoneTileEntity {
 			timer_off.update();
 		if (timer_on.checkCap()) {
 			this.setEmitting(false);
-			ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.25F, 0.5F);
+			if (RedstoneOptions.NOISES.getState())
+				ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.25F, 0.5F);
 		}
 		if (timer_off.checkCap()) {
 			this.setEmitting(true);
-			ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.25F, 1F);
+			if (RedstoneOptions.NOISES.getState())
+				ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.25F, 1F);
 		}
 	}
 

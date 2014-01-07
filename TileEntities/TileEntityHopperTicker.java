@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
 import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityHopperTicker extends ExpandedRedstoneTileEntity {
@@ -39,7 +40,8 @@ public class TileEntityHopperTicker extends ExpandedRedstoneTileEntity {
 				te.updateHopper();
 				te.setTransferCooldown(0);
 				boolean red = world.isBlockIndirectlyGettingPowered(dx, dy, dz);
-				ReikaSoundHelper.playSoundAtBlock(world, x, y, z, "random.click", 0.4F, red ? 0.25F : 0.8F);
+				if (RedstoneOptions.NOISES.getState())
+					ReikaSoundHelper.playSoundAtBlock(world, x, y, z, "random.click", 0.4F, red ? 0.25F : 0.8F);
 			}
 		}
 		lastPower = world.isBlockIndirectlyGettingPowered(x, y, z);

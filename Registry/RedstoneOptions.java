@@ -17,7 +17,8 @@ import Reika.ExpandedRedstone.ExpandedRedstone;
 public enum RedstoneOptions implements ConfigList {
 
 	LOGLOADING("Console Loading Info", true),
-	DEBUGMODE("Debug Mode", false);
+	DEBUGMODE("Debug Mode", false),
+	NOISES("Ticking Noises", true);
 
 	private String label;
 	private boolean defaultState;

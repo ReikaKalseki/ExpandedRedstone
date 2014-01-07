@@ -20,6 +20,7 @@ import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaObfuscationHelper;
 import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
 import Reika.ExpandedRedstone.Base.InventoriedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityEffector extends InventoriedRedstoneTileEntity {
@@ -64,7 +65,8 @@ public class TileEntityEffector extends InventoriedRedstoneTileEntity {
 		catch (InvocationTargetException e) {
 			e.printStackTrace();
 		}
-		ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click");
+		if (RedstoneOptions.NOISES.getState())
+			ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click");
 	}
 
 	@Override

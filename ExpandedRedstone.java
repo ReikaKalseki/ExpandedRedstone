@@ -116,6 +116,8 @@ public class ExpandedRedstone extends DragonAPIMod {
 		RedstoneTiles.PROXIMITY.addRecipe("rdr", "nen", "sss", 's', ReikaItemHelper.stoneSlab, 'r', Item.redstone, 'e', Item.enderPearl, 'd', Item.diamond, 'n', Item.netherQuartz);
 		RedstoneTiles.TOGGLE.addRecipe("tRt", "rer", "sRs", 't', Block.torchRedstoneActive, 'R', Item.redstoneRepeater, 's', ReikaItemHelper.stoneSlab, 'r', Item.redstone, 'e', Item.netherQuartz);
 		RedstoneTiles.WEATHER.addRecipe("nSn", "rnr", "sss", 's', ReikaItemHelper.stoneSlab, 'r', Item.redstone, 'n', Item.netherQuartz, 'S', Block.daylightSensor);
+		RedstoneTiles.PUMP.addRecipe("crc", "cCc", "cbc", 'c', Block.cobblestone, 'r', Item.redstone, 'C', Block.chest, 'b', Item.bucketEmpty);
+		RedstoneTiles.HOPPER.addRecipe(" n ", "rtr", " r ", 't', RedstoneTiles.CLOCK.getItem(), 'r', Item.redstone, 'n', Item.netherQuartz);
 
 		RedstoneItems.BLUEWIRE.addSizedShapelessRecipe(2, ReikaItemHelper.lapisDye, Item.redstone);
 
@@ -124,8 +126,8 @@ public class ExpandedRedstone extends DragonAPIMod {
 		RedstoneTiles.BREAKER.addNBTRecipe(1, "CCC", "CPC", "CRC", 'C', Block.cobblestone, 'R', Item.redstone, 'P', Item.pickaxeStone);
 		RedstoneTiles.BREAKER.addNBTRecipe(0, "CCC", "CPC", "CRC", 'C', Block.cobblestone, 'R', Item.redstone, 'P', Item.pickaxeWood);
 
-		RedstoneTiles.EMITTER.addRecipe("CCC", "CRG", "CCC", 'C', Block.cobblestone, 'R', Item.redstone, 'G', Block.glowStone);
-		RedstoneTiles.RECEIVER.addRecipe("CCC", "GRC", "CCC", 'C', Block.cobblestone, 'R', Item.emerald, 'G', Block.glass);
+		RedstoneTiles.EMITTER.addSizedRecipe(4, "CCC", "CRG", "CCC", 'C', Block.cobblestone, 'R', Item.redstone, 'G', Block.glowStone);
+		RedstoneTiles.RECEIVER.addSizedRecipe(4, "CCC", "GRC", "CCC", 'C', Block.cobblestone, 'R', Item.emerald, 'G', Block.glass);
 
 		RedstoneTiles.SHOCK.addNBTRecipe(0, "CCC", "LPC", "CRC", 'C', Block.cobblestone, 'R', Item.redstone, 'P', Item.eyeOfEnder, 'L', Block.thinGlass); 	//range 1; damage 0.5
 		RedstoneTiles.SHOCK.addNBTRecipe(1, "CCC", "LPC", "CRC", 'C', Block.cobblestone, 'R', Item.redstone, 'P', Item.eyeOfEnder, 'L', Item.netherQuartz); //range 1; damage 1

@@ -19,8 +19,10 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import Reika.DragonAPI.Instantiable.HybridTank;
 import Reika.DragonAPI.Instantiable.Data.BlockArray;
+import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
 import Reika.ExpandedRedstone.Base.InventoriedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityRedstonePump extends InventoriedRedstoneTileEntity {
@@ -57,6 +59,8 @@ public class TileEntityRedstonePump extends InventoriedRedstoneTileEntity {
 			if (f != null && this.canAccept(f)) {
 				tank.addLiquid(1000, f);
 				world.setBlock(xyz[0], xyz[1], xyz[2], 0);
+				if (RedstoneOptions.NOISES.getState())
+					ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click");
 			}
 		}
 		lastPower = world.isBlockIndirectlyGettingPowered(x, y, z);
@@ -68,6 +72,8 @@ public class TileEntityRedstonePump extends InventoriedRedstoneTileEntity {
 				tank.removeLiquid(1000);
 			}
 		}
+
+		//ReikaJavaLibrary.pConsole(inv[0]);
 	}
 
 	private boolean canAccept(Fluid f) {
@@ -99,6 +105,11 @@ public class TileEntityRedstonePump extends InventoriedRedstoneTileEntity {
 	@Override
 	public boolean canExtractItem(int i, ItemStack itemstack, int j) {
 		return !FluidContainerRegistry.isEmptyContainer(itemstack);
+	}
+
+	@Override
+	public int getInventoryStackLimit() {
+		return 1;
 	}
 
 }

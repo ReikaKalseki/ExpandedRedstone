@@ -52,13 +52,13 @@ public class BlockExpandedWire extends Block implements WireBlock {
 		if (id == 0)
 			return null;
 		int meta = world.getBlockMetadata(target.blockX, target.blockY, target.blockZ);
-		return RedstoneItems.BLUEWIRE.getStackOfMetadata(meta);
+		return RedstoneItems.BLUEWIRE.getStackOf();
 	}
 
 	@Override
 	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int meta, int fortune) {
 		ArrayList<ItemStack> li = new ArrayList<ItemStack>();
-		li.add(RedstoneItems.BLUEWIRE.getStackOfMetadata(meta));
+		li.add(RedstoneItems.BLUEWIRE.getStackOf());
 		return li;
 	}
 
@@ -443,10 +443,30 @@ public class BlockExpandedWire extends Block implements WireBlock {
 	 * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
 	 */
 	@Override
-	public int isProvidingStrongPower(IBlockAccess iba, int par2, int par3, int par4, int par5)
+	public int isProvidingStrongPower(IBlockAccess iba, int x, int y, int z, int s)
 	{
-		return !wiresProvidePower ? 0 : this.isProvidingWeakPower(iba, par2, par3, par4, par5);
+		//ReikaJavaLibrary.pConsole(s+": "+x+", "+y+", "+z, this.isTerminus(iba, x, y, z, s));
+		int level = iba.getBlockMetadata(x, y, z);
+		return wiresProvidePower && s > 1 && this.isTerminus(iba, x, y, z, s) ? level : 0;
+		//return 0;
+		//return !wiresProvidePower ? 0 : this.isProvidingWeakPower(iba, x, y, z, s);
 	}
+
+	public boolean isTerminus(IBlockAccess world, int x, int y, int z, int s) {
+		ArrayList<Integer> li = new ArrayList();
+		for (int i = 2; i < 6; i++) {
+			if (this.isDirectlyConnectedTo(world, x, y, z, i))
+				li.add(i);
+		}
+		ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[s];
+		int srv = dir.getOpposite().ordinal();
+		boolean conn = this.isConnectedTo(world, x, y, z, s);
+		if (conn)
+			li.remove(new Integer(s));
+		//ReikaJavaLibrary.pConsole(dir+":"+li+" ("+conn+" && "+li.contains(new Integer(s))+")");
+		return li.isEmpty();
+	}
+
 
 	/**
 	 * Returns true if the block is emitting indirect/weak redstone power on the specified side. If isBlockNormalCube
@@ -456,59 +476,17 @@ public class BlockExpandedWire extends Block implements WireBlock {
 	@Override
 	public int isProvidingWeakPower(IBlockAccess iba, int x, int y, int z, int s)
 	{
-		if (!wiresProvidePower)
-		{
-			return 0;
-		}
-		else
-		{
-			int i1 = iba.getBlockMetadata(x, y, z);
+		int level = iba.getBlockMetadata(x, y, z);
+		ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[s];
+		int side = dir.getOpposite().ordinal();
+		//ReikaJavaLibrary.pConsole(dir+" "+level);
+		return wiresProvidePower && this.isConnectedTo(iba, x, y, z, side) ? level : 0;
+	}
 
-			if (i1 == 0)
-			{
-				return 0;
-			}
-			else if (s == 1)
-			{
-				return i1;
-			}
-			else
-			{
-				boolean flag = iba.getBlockId(x-1, y, z) == Block.redstoneWire.blockID || isPoweredOrRepeater(iba, x - 1, y, z, 1) || !iba.isBlockNormalCube(x - 1, y, z) && isPoweredOrRepeater(iba, x - 1, y - 1, z, -1);
-				boolean flag1 = iba.getBlockId(x+1, y, z) == Block.redstoneWire.blockID || isPoweredOrRepeater(iba, x + 1, y, z, 3) || !iba.isBlockNormalCube(x + 1, y, z) && isPoweredOrRepeater(iba, x + 1, y - 1, z, -1);
-				boolean flag2 = iba.getBlockId(x, y, z-1) == Block.redstoneWire.blockID || isPoweredOrRepeater(iba, x, y, z - 1, 2) || !iba.isBlockNormalCube(x, y, z - 1) && isPoweredOrRepeater(iba, x, y - 1, z - 1, -1);
-				boolean flag3 = iba.getBlockId(x, y, z+1) == Block.redstoneWire.blockID || isPoweredOrRepeater(iba, x, y, z + 1, 0) || !iba.isBlockNormalCube(x, y, z + 1) && isPoweredOrRepeater(iba, x, y - 1, z + 1, -1);
-
-				if (!iba.isBlockNormalCube(x, y + 1, z))
-				{
-					if (iba.isBlockNormalCube(x - 1, y, z) && isPoweredOrRepeater(iba, x - 1, y + 1, z, -1))
-					{
-						flag = true;
-					}
-
-					if (iba.isBlockNormalCube(x + 1, y, z) && isPoweredOrRepeater(iba, x + 1, y + 1, z, -1))
-					{
-						flag1 = true;
-					}
-
-					if (iba.isBlockNormalCube(x, y, z - 1) && isPoweredOrRepeater(iba, x, y + 1, z - 1, -1))
-					{
-						flag2 = true;
-					}
-
-					if (iba.isBlockNormalCube(x, y, z + 1) && isPoweredOrRepeater(iba, x, y + 1, z + 1, -1))
-					{
-						flag3 = true;
-					}
-				}
-
-				//ReikaJavaLibrary.pConsole(flag+":"+flag1+":"+flag2+":"+flag3);
-
-				if (this.isConnectedTo(iba, x, y, z, ForgeDirection.values()[s].getOpposite().ordinal()))
-					return i1;
-				return !flag2 && !flag1 && !flag && !flag3 && s >= 2 && s <= 5 ? i1 : (s == 2 && flag2 && !flag && !flag1 ? i1 : (s == 3 && flag3 && !flag && !flag1 ? i1 : (s == 4 && flag && !flag2 && !flag3 ? i1 : (s == 5 && flag1 && !flag2 && !flag3 ? i1 : 0))));
-			}
-		}
+	@Override
+	public boolean shouldCheckWeakPower(World world, int x, int y, int z, int side)
+	{
+		return true;
 	}
 
 	/**
@@ -636,9 +614,38 @@ public class BlockExpandedWire extends Block implements WireBlock {
 		return world.getBlockMetadata(x, y, z);
 	}
 
+	public boolean isDirectlyConnectedTo(IBlockAccess world, int x, int y, int z, int s) {
+		ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[s];
+		int id = world.getBlockId(x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ);
+		int meta = world.getBlockMetadata(x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ);
+		int idup = world.getBlockId(x+dir.offsetX, y+dir.offsetY+1, z+dir.offsetZ);
+		int iddown = world.getBlockId(x+dir.offsetX, y+dir.offsetY-1, z+dir.offsetZ);
+		if (id == blockID)
+			return true;
+		if (idup == blockID)
+			return true;
+		if (iddown == blockID && !Block.opaqueCubeLookup[id])
+			return true;
+		if (id == 0)
+			return false;
+		if (id == Block.redstoneWire.blockID)
+			return false;
+
+		//Fully functional but not present in vanilla redstone
+		//if (id == Block.pistonBase.blockID || id == Block.pistonStickyBase.blockID || id == Block.pistonMoving.blockID)
+		//	return true;
+
+		Block b = Block.blocksList[id];
+		if (b instanceof BlockDirectional) {
+			int direct = BlockDirectional.getDirection(meta);
+			return (Direction.offsetX[direct] == -dir.offsetX && Direction.offsetZ[direct] == -dir.offsetZ) || (Direction.offsetX[direct] == dir.offsetX && Direction.offsetZ[direct] == dir.offsetZ);
+		}
+		return false;
+	}
+
 	@Override
 	public boolean isConnectedTo(IBlockAccess world, int x, int y, int z, int s) {
-		ForgeDirection dir = ForgeDirection.values()[s];
+		ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[s];
 		int id = world.getBlockId(x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ);
 		int meta = world.getBlockMetadata(x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ);
 		int idup = world.getBlockId(x+dir.offsetX, y+dir.offsetY+1, z+dir.offsetZ);
@@ -664,6 +671,8 @@ public class BlockExpandedWire extends Block implements WireBlock {
 			return (Direction.offsetX[direct] == -dir.offsetX && Direction.offsetZ[direct] == -dir.offsetZ) || (Direction.offsetX[direct] == dir.offsetX && Direction.offsetZ[direct] == dir.offsetZ);
 		}
 		if (b.canConnectRedstone(world, x, y, z, dir.getOpposite().ordinal()))
+			return true;
+		if (b.isOpaqueCube())
 			return true;
 		return false;
 	}

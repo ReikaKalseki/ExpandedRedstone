@@ -16,6 +16,7 @@ import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
 import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityToggle extends ExpandedRedstoneTileEntity {
@@ -31,7 +32,8 @@ public class TileEntityToggle extends ExpandedRedstoneTileEntity {
 		ForgeDirection side = this.getFacing().getOpposite();
 		if (ReikaRedstoneHelper.isPositiveEdgeOnSide(world, x, y, z, lastPower, lastRepeat, side)) {
 			this.toggleEmitting();
-			ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.5F, 0.5F);
+			if (RedstoneOptions.NOISES.getState())
+				ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.5F, 0.5F);
 		}
 		lastPower = this.wasLastPowered(world, x, y, z, side);
 		lastRepeat = ReikaRedstoneHelper.isReceivingPowerFromRepeater(world, x, y, z, side);

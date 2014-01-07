@@ -24,6 +24,7 @@ import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
 import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityBreaker extends ExpandedRedstoneTileEntity {
@@ -96,7 +97,8 @@ public class TileEntityBreaker extends ExpandedRedstoneTileEntity {
 	}
 
 	private void breakBlocks(World world) {
-		world.playSoundEffect(xCoord+0.5, yCoord+0.5, zCoord+0.5, "random.click", 0.4F, 1F);
+		if (RedstoneOptions.NOISES.getState())
+			world.playSoundEffect(xCoord+0.5, yCoord+0.5, zCoord+0.5, "random.click", 0.4F, 1F);
 		for (int k = 1; k <= harvest.getDigDistance(); k++) {
 			int dx = this.getFacingXScaled(k);
 			int dy = this.getFacingYScaled(k);
@@ -116,6 +118,8 @@ public class TileEntityBreaker extends ExpandedRedstoneTileEntity {
 				if (harvest.isDamageable())
 					dura--;
 			}
+			else
+				return;
 		}
 	}
 
