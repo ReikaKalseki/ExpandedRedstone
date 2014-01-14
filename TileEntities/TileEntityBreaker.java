@@ -118,7 +118,7 @@ public class TileEntityBreaker extends ExpandedRedstoneTileEntity {
 				if (harvest.isDamageable())
 					dura--;
 			}
-			else
+			else if (id == BARRIER_BLOCK.itemID && meta == BARRIER_BLOCK.getItemDamage())
 				return;
 		}
 	}

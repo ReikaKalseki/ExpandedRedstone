@@ -9,15 +9,11 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
-import Reika.DragonAPI.Libraries.Java.ReikaObfuscationHelper;
 import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
 import Reika.ExpandedRedstone.Base.InventoriedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneOptions;
@@ -53,18 +49,8 @@ public class TileEntityEffector extends InventoriedRedstoneTileEntity {
 		int dz = this.getFacingZ();
 		EntityPlayer ep = this.getPlacer();
 		Item it = is.getItem();
-		Class c = it.getClass();
-		try {
-			Method click = ReikaObfuscationHelper.getMethod("onItemUse");
-			Object o = click.invoke(it, is, ep, world, dx, dy, dz, this.getFacing().getOpposite().ordinal(), 0F, 0F, 0F);
-			inv[slot] = is;
-		}
-		catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		catch (InvocationTargetException e) {
-			e.printStackTrace();
-		}
+		it.onItemUse(is, ep, world, dx, dy, dz, this.getFacing().getOpposite().ordinal(), 0F, 0F, 0F);
+		inv[slot] = is;
 		if (RedstoneOptions.NOISES.getState())
 			ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click");
 	}
