@@ -10,7 +10,11 @@
 package Reika.ExpandedRedstone.ItemBlocks;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import mcp.mobius.waila.api.IWailaBlock;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -39,7 +43,7 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityProximity;
 import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
 import buildcraft.api.tools.IToolWrench;
 
-public class BlockRedTile extends Block {
+public class BlockRedTile extends Block implements IWailaBlock {
 
 	public static Icon trans;
 	private Icon[][][] icons = new Icon[6][RedstoneTiles.TEList.length][16];
@@ -396,6 +400,44 @@ public class BlockRedTile extends Block {
 			return pwr ? Block.blocksList[idb].getLightOpacity(world, x, y-1, z) : 0;
 		}
 		return r.isOpaque() ? 255 : 0;
+	}
+
+	@Override
+	public ItemStack getWailaStack(IWailaDataAccessor acc, IWailaConfigHandler config) {
+		World world = acc.getWorld();
+		MovingObjectPosition mov = acc.getPosition();
+		if (mov != null) {
+			int x = mov.blockX;
+			int y = mov.blockY;
+			int z = mov.blockZ;
+			RedstoneTiles r = RedstoneTiles.getTEAt(world, x, y, z);
+			if (r == RedstoneTiles.CAMOFLAGE) {
+				TileEntityCamo te = (TileEntityCamo)acc.getTileEntity();
+				int id = te.getImitatedBlockID();
+				if (id > 0) {
+					Block b = Block.blocksList[id];
+					if (b != null) {
+						return new ItemStack(b);
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public List<String> getWailaHead(ItemStack is, List<String> tip, IWailaDataAccessor acc, IWailaConfigHandler config) {
+		return tip;
+	}
+
+	@Override
+	public List<String> getWailaBody(ItemStack is, List<String> tip, IWailaDataAccessor acc, IWailaConfigHandler config) {
+		return tip;
+	}
+
+	@Override
+	public List<String> getWailaTail(ItemStack is, List<String> tip, IWailaDataAccessor acc, IWailaConfigHandler config) {
+		return tip;
 	}
 
 }
