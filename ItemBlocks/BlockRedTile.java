@@ -417,7 +417,7 @@ public class BlockRedTile extends Block implements IWailaBlock {
 				if (id > 0) {
 					Block b = Block.blocksList[id];
 					if (b != null) {
-						return new ItemStack(b);
+						return new ItemStack(b, 1, world.getBlockMetadata(x, y-1, z));
 					}
 				}
 			}
