@@ -59,6 +59,7 @@ public class TileEntityRedstonePump extends InventoriedRedstoneTileEntity {
 			if (f != null && this.canAccept(f)) {
 				tank.addLiquid(1000, f);
 				world.setBlock(xyz[0], xyz[1], xyz[2], 0);
+				world.markBlockForUpdate(xyz[0], xyz[1], xyz[2]);
 				if (RedstoneOptions.NOISES.getState())
 					ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click");
 			}

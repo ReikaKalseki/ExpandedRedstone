@@ -24,12 +24,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.ReikaAABBHelper;
+import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
@@ -42,6 +44,8 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityDriver;
 import Reika.ExpandedRedstone.TileEntities.TileEntityProximity;
 import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
 import buildcraft.api.tools.IToolWrench;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockRedTile extends Block implements IWailaBlock {
 
@@ -412,12 +416,14 @@ public class BlockRedTile extends Block implements IWailaBlock {
 			int z = mov.blockZ;
 			RedstoneTiles r = RedstoneTiles.getTEAt(world, x, y, z);
 			if (r == RedstoneTiles.CAMOFLAGE) {
-				TileEntityCamo te = (TileEntityCamo)acc.getTileEntity();
-				int id = te.getImitatedBlockID();
-				if (id > 0) {
-					Block b = Block.blocksList[id];
-					if (b != null) {
-						return new ItemStack(b, 1, world.getBlockMetadata(x, y-1, z));
+				if (world.isBlockIndirectlyGettingPowered(x, y, z)) {
+					TileEntityCamo te = (TileEntityCamo)acc.getTileEntity();
+					int id = te.getImitatedBlockID();
+					if (id > 0) {
+						Block b = Block.blocksList[id];
+						if (b != null) {
+							return new ItemStack(b, 1, world.getBlockMetadata(x, y-1, z));
+						}
 					}
 				}
 			}
@@ -427,6 +433,28 @@ public class BlockRedTile extends Block implements IWailaBlock {
 
 	@Override
 	public List<String> getWailaHead(ItemStack is, List<String> tip, IWailaDataAccessor acc, IWailaConfigHandler config) {
+		World world = acc.getWorld();
+		MovingObjectPosition mov = acc.getPosition();
+		if (mov != null) {
+			int x = mov.blockX;
+			int y = mov.blockY;
+			int z = mov.blockZ;
+			RedstoneTiles r = RedstoneTiles.getTEAt(world, x, y, z);
+			if (r == RedstoneTiles.CAMOFLAGE) {
+				if (world.isBlockIndirectlyGettingPowered(x, y, z)) {
+					TileEntityCamo te = (TileEntityCamo)acc.getTileEntity();
+					int id = te.getImitatedBlockID();
+					if (id > 0) {
+						Block b = Block.blocksList[id];
+						if (b != null) {
+							ItemStack mimic = new ItemStack(b, 1, world.getBlockMetadata(x, y-1, z));
+							return ReikaJavaLibrary.makeListFrom(EnumChatFormatting.WHITE+mimic.getDisplayName());
+						}
+					}
+					return new ArrayList();
+				}
+			}
+		}
 		return tip;
 	}
 
@@ -438,6 +466,26 @@ public class BlockRedTile extends Block implements IWailaBlock {
 	@Override
 	public List<String> getWailaTail(ItemStack is, List<String> tip, IWailaDataAccessor acc, IWailaConfigHandler config) {
 		return tip;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
+		RedstoneTiles r = RedstoneTiles.getTEAt(world, x, y, z);
+		if (r == RedstoneTiles.CAMOFLAGE) {
+			TileEntityCamo te = (TileEntityCamo)world.getBlockTileEntity(x, y, z);
+			if (te.isOverridingIcon(0)) {
+				int id = te.getImitatedBlockID();
+				if (id > 0) {
+					Block b = Block.blocksList[id];
+					if (b != null) {
+						return b.colorMultiplier(world, x, y-1, z);
+					}
+				}
+				return super.colorMultiplier(world, x, y, z);
+			}
+		}
+		return super.colorMultiplier(world, x, y, z);
 	}
 
 }

@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Exception.RegistrationException;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
@@ -82,7 +82,7 @@ public enum RedstoneTiles {
 		}
 	}
 
-	public static RedstoneTiles getTEAt(World world, int x, int y, int z) {
+	public static RedstoneTiles getTEAt(IBlockAccess world, int x, int y, int z) {
 		if (world.getBlockId(x, y, z) != RedstoneBlocks.TILEENTITY.getBlockID())
 			return null;
 		int meta = world.getBlockMetadata(x, y, z);
