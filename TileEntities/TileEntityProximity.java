@@ -12,7 +12,9 @@ package Reika.ExpandedRedstone.TileEntities;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -30,7 +32,9 @@ public class TileEntityProximity extends ExpandedRedstoneTileEntity {
 
 	enum EntityType {
 		PLAYER(EntityPlayer.class),
-		MOB(EntityMob.class);
+		MOB(EntityMob.class),
+		ANIMAL(EntityAnimal.class),
+		ALL(EntityLivingBase.class);
 
 		private Class<? extends Entity> cl;
 
