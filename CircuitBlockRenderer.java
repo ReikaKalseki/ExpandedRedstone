@@ -22,7 +22,7 @@ import net.minecraftforge.common.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
-import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
+import Reika.DragonAPI.Libraries.World.ReikaBiomeHelper;
 import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
 import Reika.ExpandedRedstone.ItemBlocks.BlockRedTile;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
@@ -143,7 +143,7 @@ public class CircuitBlockRenderer implements ISimpleBlockRenderingHandler {
 			TileEntityCamo cam = (TileEntityCamo)te;
 			int metaread = te.worldObj.getBlockMetadata(te.xCoord, te.yCoord-1, te.zCoord);
 			if (ico[1] == Block.grass.getBlockTextureFromSide(1)) {
-				color = ReikaWorldHelper.biomeToRGB(world, x, z, "Grass");
+				color = ReikaBiomeHelper.biomeToRGB(world, x, z, "Grass");
 				v5.setColorOpaque(color[0], color[1], color[2]);
 				if (rb.fancyGrass)
 					for (int i = 2; i < 6; i++) {
@@ -152,7 +152,7 @@ public class CircuitBlockRenderer implements ISimpleBlockRenderingHandler {
 			}
 			if (ico[1] == Block.leaves.getIcon(1, metaread)) {
 				metaread = metaread & 3;
-				color = ReikaWorldHelper.biomeToRGB(world, x, z, "Leaves");
+				color = ReikaBiomeHelper.biomeToRGB(world, x, z, "Leaves");
 				if (metaread == 0 || metaread == 3) {
 					for (int i = 0; i < 3; i++) {
 						mult[i] = color[i]/255F;
