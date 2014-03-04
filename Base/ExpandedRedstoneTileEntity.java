@@ -136,9 +136,9 @@ public abstract class ExpandedRedstoneTileEntity extends TileEntityBase {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound NBT)
+	protected void readSyncTag(NBTTagCompound NBT)
 	{
-		super.readFromNBT(NBT);
+		super.readSyncTag(NBT);
 
 		facing = dirs[NBT.getInteger("face")];
 
@@ -149,9 +149,9 @@ public abstract class ExpandedRedstoneTileEntity extends TileEntityBase {
 	 * Writes a tile entity to NBT.
 	 */
 	@Override
-	public void writeToNBT(NBTTagCompound NBT)
+	protected void writeSyncTag(NBTTagCompound NBT)
 	{
-		super.writeToNBT(NBT);
+		super.writeSyncTag(NBT);
 
 		if (facing != null)
 			NBT.setInteger("face", facing.ordinal());

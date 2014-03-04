@@ -9,10 +9,15 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
+import java.util.List;
+
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import Reika.DragonAPI.Libraries.ReikaAABBHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
 import Reika.ExpandedRedstone.Base.InventoriedRedstoneTileEntity;
@@ -49,7 +54,15 @@ public class TileEntityEffector extends InventoriedRedstoneTileEntity {
 		int dz = this.getFacingZ();
 		EntityPlayer ep = this.getPlacer();
 		Item it = is.getItem();
-		it.onItemUse(is, ep, world, dx, dy, dz, this.getFacing().getOpposite().ordinal(), 0F, 0F, 0F);
+		AxisAlignedBB box = ReikaAABBHelper.getBlockAABB(dx, dy, dz);
+		List<EntityLivingBase> li = world.getEntitiesWithinAABB(EntityLivingBase.class, box);
+		boolean flag = true;
+		for (int i = 0; i < li.size() && flag; i++) {
+			EntityLivingBase e = li.get(i);
+			flag = !it.itemInteractionForEntity(is, ep, e);
+		}
+		if (flag)
+			it.onItemUse(is, ep, world, dx, dy, dz, this.getFacing().getOpposite().ordinal(), 0F, 0F, 0F);
 		inv[slot] = is;
 		if (RedstoneOptions.NOISES.getState())
 			ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click");
