@@ -89,6 +89,7 @@ public class TileEntityProximity extends ExpandedRedstoneTileEntity {
 		range++;
 		if (range > 24)
 			range = 1;
+		ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.5F, 0.5F);
 	}
 
 	@Override
