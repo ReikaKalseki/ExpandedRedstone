@@ -145,9 +145,6 @@ public abstract class ExpandedRedstoneTileEntity extends TileEntityBase {
 		emit = NBT.getBoolean("emitting");
 	}
 
-	/**
-	 * Writes a tile entity to NBT.
-	 */
 	@Override
 	protected void writeSyncTag(NBTTagCompound NBT)
 	{

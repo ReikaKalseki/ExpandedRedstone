@@ -199,7 +199,10 @@ public class BlockRedTile extends Block implements IWailaBlock {
 			ep.openGui(ExpandedRedstone.instance, 0, world, x, y, z);
 			return true;
 		case PROXIMITY:
-			((TileEntityProximity)te).stepCreature();
+			if (ep.isSneaking())
+				((TileEntityProximity)te).stepRange();
+			else
+				((TileEntityProximity)te).stepCreature();
 			return true;
 		default:
 			return false;

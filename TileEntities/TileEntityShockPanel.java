@@ -154,9 +154,6 @@ public class TileEntityShockPanel extends ExpandedRedstoneTileEntity {
 		lens = Lens.list[NBT.getInteger("level")];
 	}
 
-	/**
-	 * Writes a tile entity to NBT.
-	 */
 	@Override
 	protected void writeSyncTag(NBTTagCompound NBT)
 	{

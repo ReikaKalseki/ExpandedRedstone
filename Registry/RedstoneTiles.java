@@ -102,6 +102,8 @@ public enum RedstoneTiles {
 	public boolean hasSneakActions() {
 		if (this == DRIVER)
 			return true;
+		if (this == PROXIMITY)
+			return true;
 		return false;
 	}
 

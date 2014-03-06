@@ -85,23 +85,28 @@ public class TileEntityProximity extends ExpandedRedstoneTileEntity {
 		ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.5F, 0.5F);
 	}
 
+	public void stepRange() {
+		range++;
+		if (range > 24)
+			range = 1;
+	}
+
 	@Override
 	protected void readSyncTag(NBTTagCompound NBT)
 	{
 		super.readSyncTag(NBT);
 
 		entity = EntityType.list[NBT.getInteger("type")];
+		range = NBT.getInteger("rng");
 	}
 
-	/**
-	 * Writes a tile entity to NBT.
-	 */
 	@Override
 	protected void writeSyncTag(NBTTagCompound NBT)
 	{
 		super.writeSyncTag(NBT);
 
 		NBT.setInteger("type", entity.ordinal());
+		NBT.setInteger("rng", range);
 	}
 
 	@Override

@@ -61,9 +61,6 @@ public class TileEntityBUD extends ExpandedRedstoneTileEntity {
 		metaStored = NBT.getInteger("metas");
 	}
 
-	/**
-	 * Writes a tile entity to NBT.
-	 */
 	@Override
 	protected void writeSyncTag(NBTTagCompound NBT)
 	{

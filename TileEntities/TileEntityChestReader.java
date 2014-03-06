@@ -57,9 +57,6 @@ public class TileEntityChestReader extends ExpandedRedstoneTileEntity {
 		signalFull = NBT.getBoolean("full");
 	}
 
-	/**
-	 * Writes a tile entity to NBT.
-	 */
 	@Override
 	protected void writeSyncTag(NBTTagCompound NBT)
 	{

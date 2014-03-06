@@ -78,9 +78,6 @@ public class TileEntityDriver extends ExpandedRedstoneTileEntity {
 		level = NBT.getInteger("lvl");
 	}
 
-	/**
-	 * Writes a tile entity to NBT.
-	 */
 	@Override
 	protected void writeSyncTag(NBTTagCompound NBT)
 	{
