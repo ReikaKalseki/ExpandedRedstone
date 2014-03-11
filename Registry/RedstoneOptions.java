@@ -113,4 +113,9 @@ public enum RedstoneOptions implements ConfigList {
 	public boolean isEnforcingDefaults() {
 		return false;
 	}
+
+	@Override
+	public boolean shouldLoad() {
+		return true;
+	}
 }
