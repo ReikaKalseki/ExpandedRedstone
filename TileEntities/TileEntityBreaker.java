@@ -90,7 +90,7 @@ public class TileEntityBreaker extends ExpandedRedstoneTileEntity {
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z);
-		if (ReikaRedstoneHelper.isPositiveEdge(world, x, y, z, lastPower)) {
+		if (ReikaRedstoneHelper.isPositiveEdge(world, x, y, z, lastPower) && harvest != null) {
 			this.breakBlocks(world);
 		}
 		lastPower = world.isBlockIndirectlyGettingPowered(x, y, z);
