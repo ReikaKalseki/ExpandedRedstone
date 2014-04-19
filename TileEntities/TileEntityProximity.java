@@ -52,7 +52,9 @@ public class TileEntityProximity extends ExpandedRedstoneTileEntity {
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z);
-		this.findCreatures(world, x, y, z);
+
+		if ((world.getTotalWorldTime()&3) == 0)
+			this.findCreatures(world, x, y, z);
 	}
 
 	private void findCreatures(World world, int x, int y, int z) {
