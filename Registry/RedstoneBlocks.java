@@ -17,12 +17,12 @@ import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 import Reika.ExpandedRedstone.ItemBlocks.BlockExpandedWire;
 import Reika.ExpandedRedstone.ItemBlocks.BlockRedTile;
-import Reika.ExpandedRedstone.ItemBlocks.ItemCircuitPlacer;
 
 public enum RedstoneBlocks implements RegistryEnum {
 
 	TILEENTITY(BlockRedTile.class),
-	WIRE(BlockExpandedWire.class);
+	WIRE(BlockExpandedWire.class),
+	TILEENTITY2(BlockRedTile.class);
 
 	private Class blockClass;
 
@@ -117,12 +117,7 @@ public enum RedstoneBlocks implements RegistryEnum {
 
 	@Override
 	public Class<? extends ItemBlock> getItemBlock() {
-		switch(this) {
-		case TILEENTITY:
-			return ItemCircuitPlacer.class;
-		default:
-			return null;
-		}
+		return null;
 	}
 
 	@Override

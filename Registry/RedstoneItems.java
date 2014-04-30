@@ -18,12 +18,14 @@ import Reika.DragonAPI.Exception.RegistrationException;
 import Reika.DragonAPI.Interfaces.RegistryEnum;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.ExpandedRedstone.ExpandedRedstone;
+import Reika.ExpandedRedstone.ItemBlocks.ItemCircuitPlacer;
 import Reika.ExpandedRedstone.ItemBlocks.ItemWirePlacer;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum RedstoneItems implements RegistryEnum {
 
-	BLUEWIRE(false, "Lapis Wire", ItemWirePlacer.class);
+	BLUEWIRE(false, "Lapis Wire", ItemWirePlacer.class),
+	PLACER(true, "#Placer", ItemCircuitPlacer.class);
 
 	private boolean hasSubtypes;
 	private String name;
@@ -87,6 +89,8 @@ public enum RedstoneItems implements RegistryEnum {
 	public String getMultiValuedName(int dmg) {
 		if (!this.hasMultiValuedName())
 			throw new RuntimeException("Item "+name+" was called for a multi-name, yet does not have one!");
+		if (this == PLACER)
+			return RedstoneTiles.TEList[dmg].getName();
 		throw new RuntimeException("Item "+name+" was called for a multi-name, but it was not registered!");
 	}
 
@@ -117,6 +121,8 @@ public enum RedstoneItems implements RegistryEnum {
 	public int getNumberMetadatas() {
 		if (!hasSubtypes)
 			return 1;
+		if (this == PLACER)
+			return RedstoneTiles.TEList.length;
 		throw new RegistrationException(ExpandedRedstone.instance, "Item "+name+" has subtypes but the number was not specified!");
 	}
 

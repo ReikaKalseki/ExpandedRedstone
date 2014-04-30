@@ -172,7 +172,7 @@ public class TileEntityBreaker extends ExpandedRedstoneTileEntity {
 	}
 
 	public int getHarvestLevel() {
-		return harvest.ordinal();
+		return harvest != null ? harvest.ordinal() : 0;
 	}
 
 	public int getDurability() {

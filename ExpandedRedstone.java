@@ -14,6 +14,9 @@ import java.net.URL;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.world.WorldEvent;
 import Reika.DragonAPI.DragonAPICore;
 import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.Base.DragonAPIMod;
@@ -26,6 +29,7 @@ import Reika.ExpandedRedstone.Registry.RedstoneBlocks;
 import Reika.ExpandedRedstone.Registry.RedstoneItems;
 import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
+import Reika.ExpandedRedstone.TileEntities.TileEntityWirelessAnalog;
 import Reika.RotaryCraft.API.BlockColorInterface;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -35,18 +39,21 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod( modid = "ExpandedRedstone", name="ExpandedRedstone", version="Gamma", certificateFingerprint = "@GET_FINGERPRINT@", dependencies="required-after:DragonAPI")
-@NetworkMod(clientSideRequired = true, serverSideRequired = true/*,
-clientPacketHandlerSpec = @SidedPacketHandler(channels = { "RealBiomesData" }, packetHandler = ClientPackets.class),
-serverPacketHandlerSpec = @SidedPacketHandler(channels = { "RealBiomesData" }, packetHandler = ServerPackets.class)*/)
+@NetworkMod(clientSideRequired = true, serverSideRequired = true,
+clientPacketHandlerSpec = @SidedPacketHandler(channels = { "ExpandedData" }, packetHandler = ExpandedClientPackets.class),
+serverPacketHandlerSpec = @SidedPacketHandler(channels = { "ExpandedData" }, packetHandler = ExpandedServerPackets.class))
 
 public class ExpandedRedstone extends DragonAPIMod {
 
 	@Instance("ExpandedRedstone")
 	public static ExpandedRedstone instance = new ExpandedRedstone();
+
+	public static final String packetChannel = "ExpandedData";
 
 	public static final ControlledConfig config = new ControlledConfig(instance, RedstoneOptions.optionList, RedstoneBlocks.blockList, RedstoneItems.itemList, null, 1);
 
@@ -64,6 +71,8 @@ public class ExpandedRedstone extends DragonAPIMod {
 	@Override
 	@EventHandler
 	public void preload(FMLPreInitializationEvent evt) {
+		MinecraftForge.EVENT_BUS.register(this);
+
 		config.loadSubfolderedConfigFile(evt);
 		config.initProps(evt);
 		logger = new ModLogger(instance, RedstoneOptions.LOGLOADING.getState(), RedstoneOptions.DEBUGMODE.getState(), false);
@@ -93,6 +102,14 @@ public class ExpandedRedstone extends DragonAPIMod {
 					BlockColorInterface.addGPRBlockColor(r.getBlockID(), k, ReikaColorAPI.RGBtoHex(140, 140, 140));
 			}
 		}
+	}
+
+	@ForgeSubscribe
+	public void onClose(WorldEvent.Unload evt) {
+		TileEntityWirelessAnalog.resetChannelData();
+		logger.debug("Resetting wireless data.");
+
+		//TileEntityEqualizer.unregisterAllInWorld(evt.world.provider.dimensionId);
 	}
 
 	private static void addItems() {
@@ -136,6 +153,10 @@ public class ExpandedRedstone extends DragonAPIMod {
 		RedstoneTiles.SHOCK.addNBTRecipe(4, "CCC", "LPC", "CRC", 'C', Block.cobblestone, 'R', Item.redstone, 'P', Item.eyeOfEnder, 'L', Item.diamond); 		//range 2; damage 2
 		RedstoneTiles.SHOCK.addNBTRecipe(5, "CCC", "LPC", "CRC", 'C', Block.cobblestone, 'R', Item.redstone, 'P', Item.eyeOfEnder, 'L', Item.emerald); 		//range 3; damage 2
 		RedstoneTiles.SHOCK.addNBTRecipe(6, "CCC", "LPC", "CRC", 'C', Block.cobblestone, 'R', Item.redstone, 'P', Item.eyeOfEnder, 'L', Item.netherStar);	//range 5; damage infinity
+
+		RedstoneTiles.SCALER.addRecipe("rnr", "sss", 'r', Item.redstone, 'n', Item.netherQuartz, 's', ReikaItemHelper.stoneSlab);
+		RedstoneTiles.ANALOG.addSizedRecipe(2, "rrr", "nen", "sss", 'r', Item.redstone, 'n', Item.netherQuartz, 's', ReikaItemHelper.stoneSlab, 'e', Item.enderPearl);
+		RedstoneTiles.COLUMN.addRecipe("CCC", "RRR", "CRC", 'R', Item.redstone, 'C', Block.cobblestone);
 	}
 
 	@Override

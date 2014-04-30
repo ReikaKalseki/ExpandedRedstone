@@ -33,7 +33,7 @@ public class CircuitBlockRenderer implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public void renderInventoryBlock(Block b, int meta, int modelID, RenderBlocks rb) {
-		RedstoneTiles r = RedstoneTiles.TEList[meta];
+		RedstoneTiles r = RedstoneTiles.TEList[RedstoneTiles.getIndexFromIDandMetadata(b.blockID, meta)];
 		Tessellator tessellator = Tessellator.instance;
 
 		rb.renderMaxY = 1;
@@ -48,33 +48,35 @@ public class CircuitBlockRenderer implements ISimpleBlockRenderingHandler {
 			rb.renderMinZ = 0;
 		}
 
+		int o = r.ordinal() >= 16 ? 10 : 0;
+
 		GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, -1.0F, 0.0F);
-		rb.renderFaceYNeg(b, 0.0D, 0.0D, 0.0D, rb.getBlockIconFromSideAndMetadata(b, 0, meta));
+		rb.renderFaceYNeg(b, 0.0D, 0.0D, 0.0D, rb.getBlockIconFromSideAndMetadata(b, 0+o, meta));
 		tessellator.draw();
 
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, 1.0F, 0.0F);
-		rb.renderFaceYPos(b, 0.0D, 0.0D, 0.0D, rb.getBlockIconFromSideAndMetadata(b, 1, meta));
+		rb.renderFaceYPos(b, 0.0D, 0.0D, 0.0D, rb.getBlockIconFromSideAndMetadata(b, 1+o, meta));
 		tessellator.draw();
 
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, 0.0F, -1.0F);
-		rb.renderFaceZNeg(b, 0.0D, 0.0D, 0.0D, rb.getBlockIconFromSideAndMetadata(b, 2, meta));
+		rb.renderFaceZNeg(b, 0.0D, 0.0D, 0.0D, rb.getBlockIconFromSideAndMetadata(b, 2+o, meta));
 		tessellator.draw();
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, 0.0F, 1.0F);
-		rb.renderFaceZPos(b, 0.0D, 0.0D, 0.0D, rb.getBlockIconFromSideAndMetadata(b, 3, meta));
+		rb.renderFaceZPos(b, 0.0D, 0.0D, 0.0D, rb.getBlockIconFromSideAndMetadata(b, 3+o, meta));
 		tessellator.draw();
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-		rb.renderFaceXNeg(b, 0.0D, 0.0D, 0.0D, rb.getBlockIconFromSideAndMetadata(b, 4, meta));
+		rb.renderFaceXNeg(b, 0.0D, 0.0D, 0.0D, rb.getBlockIconFromSideAndMetadata(b, 4+o, meta));
 		tessellator.draw();
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(1.0F, 0.0F, 0.0F);
-		rb.renderFaceXPos(b, 0.0D, 0.0D, 0.0D, rb.getBlockIconFromSideAndMetadata(b, 5, meta));
+		rb.renderFaceXPos(b, 0.0D, 0.0D, 0.0D, rb.getBlockIconFromSideAndMetadata(b, 5+o, meta));
 		tessellator.draw();
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 	}
@@ -83,7 +85,7 @@ public class CircuitBlockRenderer implements ISimpleBlockRenderingHandler {
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block b, int modelId, RenderBlocks rb) {
 		ExpandedRedstoneTileEntity te = (ExpandedRedstoneTileEntity)world.getBlockTileEntity(x, y, z);
 		int meta = world.getBlockMetadata(x, y, z);
-		RedstoneTiles r = RedstoneTiles.TEList[meta];
+		RedstoneTiles r = RedstoneTiles.getTEAt(world, x, y, z);
 		Icon[] ico = new Icon[6];
 		Icon[] overlay = new Icon[6];
 		Icon front = ((BlockRedTile)b).getFrontTexture(world, x, y, z);

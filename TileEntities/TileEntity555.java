@@ -107,20 +107,17 @@ public class TileEntity555 extends ExpandedRedstoneTileEntity {
 	}
 
 	@Override
-	protected void readSyncTag(NBTTagCompound NBT)
+	public void readFromNBT(NBTTagCompound NBT)
 	{
-		super.readSyncTag(NBT);
+		super.readFromNBT(NBT);
 
 		setting = Settings.list[NBT.getInteger("set")];
 	}
 
-	/**
-	 * Writes a tile entity to NBT.
-	 */
 	@Override
-	protected void writeSyncTag(NBTTagCompound NBT)
+	public void writeToNBT(NBTTagCompound NBT)
 	{
-		super.writeSyncTag(NBT);
+		super.writeToNBT(NBT);
 
 		NBT.setInteger("set", setting.ordinal());
 	}

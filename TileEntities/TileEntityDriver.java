@@ -38,6 +38,8 @@ public class TileEntityDriver extends ExpandedRedstoneTileEntity {
 		}
 		lastPower = this.wasLastPowered(world, x, y, z, side);
 		lastRepeat = ReikaRedstoneHelper.isReceivingPowerFromRepeater(world, x, y, z, side);
+
+		//ReikaJavaLibrary.pConsole(level);
 	}
 
 	@Override
@@ -68,20 +70,21 @@ public class TileEntityDriver extends ExpandedRedstoneTileEntity {
 		if (level < 0)
 			level = 15;
 		this.update();
+		ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.5F, 0.8F);
 	}
 
 	@Override
-	protected void readSyncTag(NBTTagCompound NBT)
+	public void readFromNBT(NBTTagCompound NBT)
 	{
-		super.readSyncTag(NBT);
+		super.readFromNBT(NBT);
 
 		level = NBT.getInteger("lvl");
 	}
 
 	@Override
-	protected void writeSyncTag(NBTTagCompound NBT)
+	public void writeToNBT(NBTTagCompound NBT)
 	{
-		super.writeSyncTag(NBT);
+		super.writeToNBT(NBT);
 
 		NBT.setInteger("lvl", level);
 	}

@@ -10,8 +10,10 @@
 package Reika.ExpandedRedstone;
 
 import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
 import Reika.DragonAPI.Auxiliary.CustomSoundHandler;
 import Reika.DragonAPI.Instantiable.Rendering.CustomWireRenderer;
+import Reika.ExpandedRedstone.Registry.RedstoneItems;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -35,6 +37,8 @@ public class ClientProxy extends CommonProxy {
 		wireRender = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(tileRender, circuit);
 		RenderingRegistry.registerBlockHandler(wireRender, wire);
+
+		MinecraftForgeClient.registerItemRenderer(RedstoneItems.PLACER.getShiftedID(), new CircuitPlacerRenderer());
 	}
 
 	// Override any other methods that need to be handled differently client side.

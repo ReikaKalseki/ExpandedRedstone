@@ -9,6 +9,7 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.Base;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
@@ -53,6 +54,16 @@ public abstract class ExpandedRedstoneTileEntity extends TileEntityBase {
 
 	public final boolean isEmitting() {
 		return emit;
+	}
+
+	public final int getPowerInBack() {
+		int x = this.getBackX();
+		int y = this.getBackY();
+		int z = this.getBackZ();
+		int lvl = worldObj.getIndirectPowerLevelTo(x, y, z, this.getFacing().ordinal());
+		int id = worldObj.getBlockId(x, y, z);
+		int meta = worldObj.getBlockMetadata(x, y, z);
+		return lvl >= 15 ? lvl : Math.max(lvl, id == Block.redstoneWire.blockID ? meta : 0);
 	}
 
 	protected void sendPulse(int length) {
@@ -222,5 +233,10 @@ public abstract class ExpandedRedstoneTileEntity extends TileEntityBase {
 	protected void update() {
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		ReikaWorldHelper.causeAdjacentUpdates(worldObj, xCoord, yCoord, zCoord);
+	}
+
+	@Override
+	public final int getRedstoneOverride() {
+		return 0;
 	}
 }

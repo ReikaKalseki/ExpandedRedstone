@@ -9,7 +9,6 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.Registry;
 
-import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -25,17 +24,21 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityBUD;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker;
 import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
 import Reika.ExpandedRedstone.TileEntities.TileEntityChestReader;
+import Reika.ExpandedRedstone.TileEntities.TileEntityColumnDecrementer;
 import Reika.ExpandedRedstone.TileEntities.TileEntityDriver;
 import Reika.ExpandedRedstone.TileEntities.TileEntityEffector;
 import Reika.ExpandedRedstone.TileEntities.TileEntityEmitter;
+import Reika.ExpandedRedstone.TileEntities.TileEntityEqualizer;
 import Reika.ExpandedRedstone.TileEntities.TileEntityHopperTicker;
 import Reika.ExpandedRedstone.TileEntities.TileEntityPlacer;
 import Reika.ExpandedRedstone.TileEntities.TileEntityProximity;
 import Reika.ExpandedRedstone.TileEntities.TileEntityReceiver;
 import Reika.ExpandedRedstone.TileEntities.TileEntityRedstonePump;
 import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
+import Reika.ExpandedRedstone.TileEntities.TileEntitySignalScaler;
 import Reika.ExpandedRedstone.TileEntities.TileEntityToggle;
 import Reika.ExpandedRedstone.TileEntities.TileEntityWeather;
+import Reika.ExpandedRedstone.TileEntities.TileEntityWirelessAnalog;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum RedstoneTiles {
@@ -55,7 +58,11 @@ public enum RedstoneTiles {
 	RECEIVER("Signal Receiver", TileEntityReceiver.class),
 	SHOCK("Shock Panel", TileEntityShockPanel.class),
 	PUMP("Redstone Pump", TileEntityRedstonePump.class),
-	HOPPER("Hopper Ticker", TileEntityHopperTicker.class);
+	HOPPER("Hopper Ticker", TileEntityHopperTicker.class),
+	SCALER("Signal Scaler", TileEntitySignalScaler.class),
+	COLUMN("Column Decrementer", TileEntityColumnDecrementer.class),
+	ANALOG("Analog Wireless Transmitter", TileEntityWirelessAnalog.class),
+	EQUALIZER("Equalizer", TileEntityEqualizer.class);
 
 	private Class te;
 	private String name;
@@ -67,8 +74,21 @@ public enum RedstoneTiles {
 		name = n;
 	}
 
-	public static TileEntity createTEFromMetadata(int meta) {
-		Class TEClass = TEList[meta].te;
+	public RedstoneBlocks getBlockVariable() {
+		return this.ordinal() >= 16 ? RedstoneBlocks.TILEENTITY2 : RedstoneBlocks.TILEENTITY;
+	}
+
+	public int getBlockID() {
+		return this.getBlockVariable().getBlockID();
+	}
+
+	public int getBlockMetadata() {
+		return this.ordinal()%16;
+	}
+
+	public static TileEntity createTEFromIDandMetadata(int id, int meta) {
+		int index = getIndexFromIDandMetadata(id, meta);
+		Class TEClass = TEList[index].te;
 		try {
 			return (TileEntity)TEClass.newInstance();
 		}
@@ -83,12 +103,18 @@ public enum RedstoneTiles {
 	}
 
 	public static RedstoneTiles getTEAt(IBlockAccess world, int x, int y, int z) {
-		if (world.getBlockId(x, y, z) != RedstoneBlocks.TILEENTITY.getBlockID())
+		int id = world.getBlockId(x, y, z);
+		if (id != RedstoneBlocks.TILEENTITY.getBlockID() && id != RedstoneBlocks.TILEENTITY2.getBlockID())
 			return null;
+		int offset = id == RedstoneBlocks.TILEENTITY.getBlockID() ? 0 : 16;
 		int meta = world.getBlockMetadata(x, y, z);
-		if (meta >= TEList.length)
-			return null;
-		return TEList[meta];
+		int index = getIndexFromIDandMetadata(id, meta);
+		return TEList[index];
+	}
+
+	public static int getIndexFromIDandMetadata(int id, int meta) {
+		int offset = id == RedstoneBlocks.TILEENTITY.getBlockID() ? 0 : 16;
+		return meta+offset;
 	}
 
 	public Class<? extends TileEntity> getTEClass() {
@@ -100,11 +126,15 @@ public enum RedstoneTiles {
 	}
 
 	public boolean hasSneakActions() {
-		if (this == DRIVER)
+		switch(this) {
+		case DRIVER:
+		case PROXIMITY:
+		case SCALER:
+		case EQUALIZER:
 			return true;
-		if (this == PROXIMITY)
-			return true;
-		return false;
+		default:
+			return false;
+		}
 	}
 
 	public boolean hasInventory() {
@@ -120,6 +150,9 @@ public enum RedstoneTiles {
 		case DRIVER:
 		case PROXIMITY:
 		case HOPPER:
+		case SCALER:
+		case ANALOG:
+		case EQUALIZER:
 			return true;
 		default:
 			return false;
@@ -153,7 +186,7 @@ public enum RedstoneTiles {
 		case TOGGLE:
 			return 4;
 		case PROXIMITY:
-			return 4;
+			return 8;
 		case CLOCK:
 			return TileEntity555.Settings.list.length;
 		case DRIVER:
@@ -215,7 +248,7 @@ public enum RedstoneTiles {
 	}
 
 	public ItemStack getItem() {
-		return new ItemStack(Block.blocksList[RedstoneBlocks.TILEENTITY.getBlockID()], 1, this.ordinal());
+		return new ItemStack(RedstoneItems.PLACER.getShiftedID(), 1, this.ordinal());
 	}
 
 	public void addRecipe(Object... params) {
@@ -299,6 +332,7 @@ public enum RedstoneTiles {
 		case RECEIVER:
 		case SHOCK:
 		case PUMP:
+		case COLUMN:
 			return true;
 		default:
 			return false;

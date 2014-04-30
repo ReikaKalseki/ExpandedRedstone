@@ -50,17 +50,17 @@ public class TileEntityChestReader extends ExpandedRedstoneTileEntity {
 	}
 
 	@Override
-	protected void readSyncTag(NBTTagCompound NBT)
+	public void readFromNBT(NBTTagCompound NBT)
 	{
-		super.readSyncTag(NBT);
+		super.readFromNBT(NBT);
 
 		signalFull = NBT.getBoolean("full");
 	}
 
 	@Override
-	protected void writeSyncTag(NBTTagCompound NBT)
+	public void writeToNBT(NBTTagCompound NBT)
 	{
-		super.writeSyncTag(NBT);
+		super.writeToNBT(NBT);
 
 		NBT.setBoolean("full", signalFull);
 	}

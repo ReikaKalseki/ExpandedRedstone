@@ -16,7 +16,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -26,16 +26,16 @@ import Reika.DragonAPI.Libraries.ReikaPlayerAPI;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
-import Reika.ExpandedRedstone.Registry.RedstoneBlocks;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker.Materials;
 import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
 import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel.Lens;
+import Reika.ExpandedRedstone.TileEntities.TileEntityWirelessAnalog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemCircuitPlacer extends ItemBlock {
+public class ItemCircuitPlacer extends Item {
 
 	private int index;
 
@@ -75,7 +75,7 @@ public class ItemCircuitPlacer extends ItemBlock {
 		{
 			if (!ep.capabilities.isCreativeMode)
 				--is.stackSize;
-			world.setBlock(x, y, z, RedstoneBlocks.TILEENTITY.getBlockID(), is.getItemDamage(), 3);
+			world.setBlock(x, y, z, tile.getBlockID(), tile.getBlockMetadata(), 3);
 		}
 		world.playSoundEffect(x+0.5, y+0.5, z+0.5, "step.stone", 1F, 1.5F);
 		ExpandedRedstoneTileEntity te = (ExpandedRedstoneTileEntity)world.getBlockTileEntity(x, y, z);
@@ -107,6 +107,10 @@ public class ItemCircuitPlacer extends ItemBlock {
 				int level = is.stackTagCompound.getInteger("nbt");
 				shk.setDamageLevel(level);
 			}
+		}
+		if (tile == RedstoneTiles.ANALOG) {
+			TileEntityWirelessAnalog ana = (TileEntityWirelessAnalog)te;
+			ana.add();
 		}
 		return true;
 	}

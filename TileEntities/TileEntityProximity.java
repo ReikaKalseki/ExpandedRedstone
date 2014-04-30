@@ -95,18 +95,18 @@ public class TileEntityProximity extends ExpandedRedstoneTileEntity {
 	}
 
 	@Override
-	protected void readSyncTag(NBTTagCompound NBT)
+	public void readFromNBT(NBTTagCompound NBT)
 	{
-		super.readSyncTag(NBT);
+		super.readFromNBT(NBT);
 
 		entity = EntityType.list[NBT.getInteger("type")];
 		range = NBT.getInteger("rng");
 	}
 
 	@Override
-	protected void writeSyncTag(NBTTagCompound NBT)
+	public void writeToNBT(NBTTagCompound NBT)
 	{
-		super.writeSyncTag(NBT);
+		super.writeToNBT(NBT);
 
 		NBT.setInteger("type", entity.ordinal());
 		NBT.setInteger("rng", range);

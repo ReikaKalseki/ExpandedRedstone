@@ -30,6 +30,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.Libraries.ReikaAABBHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
@@ -41,8 +42,12 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker;
 import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
 import Reika.ExpandedRedstone.TileEntities.TileEntityChestReader;
 import Reika.ExpandedRedstone.TileEntities.TileEntityDriver;
+import Reika.ExpandedRedstone.TileEntities.TileEntityEqualizer;
 import Reika.ExpandedRedstone.TileEntities.TileEntityProximity;
 import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
+import Reika.ExpandedRedstone.TileEntities.TileEntitySignalScaler;
+import Reika.ExpandedRedstone.TileEntities.TileEntityWirelessAnalog;
+import Reika.RotaryCraft.API.ItemFetcher;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -50,14 +55,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockRedTile extends Block implements IWailaBlock {
 
 	public static Icon trans;
-	private Icon[][][] icons = new Icon[6][RedstoneTiles.TEList.length][16];
-	private Icon[][] front = new Icon[RedstoneTiles.TEList.length][16];
+	private static final Icon[][][] icons = new Icon[6][RedstoneTiles.TEList.length][16];
+	private static final Icon[][] front = new Icon[RedstoneTiles.TEList.length][16];
 	private static final String BLANK_TEX = "ExpandedRedstone:basic";
 	private static final String BLANK_TEX_2 = "ExpandedRedstone:basic_side";
 
 	public BlockRedTile(int ID, Material mat) {
 		super(ID, mat);
-		this.setCreativeTab(ExpandedRedstone.tab);
+		this.setCreativeTab(null);
 		this.setHardness(0.75F);
 		this.setResistance(2.5F);
 		this.setLightOpacity(0);
@@ -65,18 +70,19 @@ public class BlockRedTile extends Block implements IWailaBlock {
 
 	@Override
 	public TileEntity createTileEntity(World world, int meta) {
-		return RedstoneTiles.createTEFromMetadata(meta);
+		return RedstoneTiles.createTEFromIDandMetadata(blockID, meta);
 	}
 
 	@Override
 	public boolean hasTileEntity(int meta) {
+		this.setCreativeTab(null);
 		return true;
 	}
 
 	@Override
 	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int meta, int fortune) {
 		ArrayList<ItemStack> li = new ArrayList<ItemStack>();
-		RedstoneTiles r = RedstoneTiles.TEList[meta];
+		RedstoneTiles r = RedstoneTiles.getTEAt(world, x, y, z);
 		if (r == null)
 			return li;
 		if (world.getBlockId(x, y, z) != blockID)
@@ -123,7 +129,24 @@ public class BlockRedTile extends Block implements IWailaBlock {
 			else
 				return te.getEmission();
 		}
-		else return 0;
+		else
+			return 0;
+	}
+
+	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, int neighborID) {
+		RedstoneTiles r = RedstoneTiles.getTEAt(world, x, y, z);
+		switch (r) {
+		case COLUMN:
+			world.notifyBlocksOfNeighborChange(x, y+1, z, blockID, 0);
+			break;
+		case ANALOG:
+			TileEntityWirelessAnalog te = (TileEntityWirelessAnalog)world.getBlockTileEntity(x, y, z);
+			te.recalculate();
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override
@@ -179,23 +202,27 @@ public class BlockRedTile extends Block implements IWailaBlock {
 			te.rotate();
 			return true;
 		}
+		if (ModList.ROTARYCRAFT.isLoaded() && ItemFetcher.isPlayerHoldingAngularTransducer(ep))
+			return false;
 		switch (r) {
 		case CHESTREADER:
 			((TileEntityChestReader)te).alternate();
+			te.syncAllData();
 			return true;
 		case CLOCK:
 			((TileEntity555)te).incrementSetting();
+			te.syncAllData();
 			return true;
 		case DRIVER:
 			if (ep.isSneaking())
 				((TileEntityDriver)te).decrement();
 			else
 				((TileEntityDriver)te).increment();
+			te.syncAllData();
 			return true;
 		case EFFECTOR:
-			ep.openGui(ExpandedRedstone.instance, 0, world, x, y, z);
-			return true;
 		case PLACER:
+		case ANALOG:
 			ep.openGui(ExpandedRedstone.instance, 0, world, x, y, z);
 			return true;
 		case PROXIMITY:
@@ -203,6 +230,20 @@ public class BlockRedTile extends Block implements IWailaBlock {
 				((TileEntityProximity)te).stepRange();
 			else
 				((TileEntityProximity)te).stepCreature();
+			te.syncAllData();
+			return true;
+		case SCALER:
+			if (ep.isSneaking())
+				((TileEntitySignalScaler)te).incrementMinValue();
+			else
+				((TileEntitySignalScaler)te).incrementMaxValue();
+			te.syncAllData();
+			return true;
+		case EQUALIZER:
+			int n = ep.isSneaking() ? 10 : 1;
+			for (int i = 0; i < n; i++)
+				((TileEntityEqualizer)te).incrementValue();
+			te.syncAllData();
 			return true;
 		default:
 			return false;
@@ -216,41 +257,47 @@ public class BlockRedTile extends Block implements IWailaBlock {
 		int meta = iba.getBlockMetadata(x, y, z);
 		if (te == null)
 			return null;
-		RedstoneTiles r = RedstoneTiles.TEList[meta];
+		RedstoneTiles r = RedstoneTiles.getTEAt(iba, x, y, z);
 		ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[s];
 		if (te.isOverridingIcon(s))
 			return te.getOverridingIcon(s);
 		if (r.isThinTile()) {
 			if (s == 1)
-				return icons[s][meta][te.getTopTexture()];
-			return icons[s][meta][te.getTextureForSide(s)];
+				return icons[s][r.ordinal()][te.getTopTexture()];
+			return icons[s][r.ordinal()][te.getTextureForSide(s)];
 		}
 		else if (r.hasHardcodedDirectionTexture(dir)) {
 			return icons[s][r.ordinal()][te.getTextureForSide(s)];
 		}
 		else if (!r.isOmniTexture()) {
 			if (te.getFacing() != null && s == te.getFacing().ordinal()) {
-				return front[meta][te.getFrontTexture()];
+				//ReikaJavaLibrary.pConsole(front[r.ordinal()][te.getFrontTexture()]);
+				return front[r.ordinal()][te.getFrontTexture()];
 			}
 			else {
-				return icons[s][meta][te.getTextureForSide(s)];
+				return icons[s][r.ordinal()][te.getTextureForSide(s)];
 			}
 		}
 		else
-			return icons[s][meta][te.getTextureForSide(s)];
+			return icons[s][r.ordinal()][te.getTextureForSide(s)];
 	}
 
 	@Override
 	public Icon getIcon(int s, int meta)
 	{
-		RedstoneTiles r = RedstoneTiles.TEList[meta];
+		int offset = 0;
+		if (s >= 10) {
+			s -= 10;
+			offset = 16;
+		}
+		RedstoneTiles r = RedstoneTiles.TEList[meta+offset];
 		if (s == 4 && !r.isThinTile() && !r.isOmniTexture()) {
 			if (r == RedstoneTiles.BREAKER)
-				return front[meta][4];
+				return front[r.ordinal()][4];
 			else
-				return front[meta][0];
+				return front[r.ordinal()][0];
 		}
-		return icons[s][meta][0];
+		return icons[s][r.ordinal()][0];
 	}
 
 	private void registerBlankTextures(IconRegister ico) {
@@ -333,13 +380,15 @@ public class BlockRedTile extends Block implements IWailaBlock {
 		TileEntity te = world.getBlockTileEntity(x, y, z);
 		if (te instanceof IInventory)
 			ReikaItemHelper.dropInventory(world, x, y, z);
+		if (te instanceof TileEntityWirelessAnalog)
+			((TileEntityWirelessAnalog)te).remove();
 		super.breakBlock(world, x, y, z, par5, par6);
 	}
 
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess iba, int x, int y, int z) {
 		int meta = iba.getBlockMetadata(x, y, z);
-		RedstoneTiles r = RedstoneTiles.TEList[meta];
+		RedstoneTiles r = RedstoneTiles.getTEAt(iba, x, y, z);
 		if (r == RedstoneTiles.CAMOFLAGE) {
 			TileEntityCamo tc = (TileEntityCamo)iba.getBlockTileEntity(x, y, z);
 			AxisAlignedBB box = tc.getBoundingBox();
@@ -361,9 +410,7 @@ public class BlockRedTile extends Block implements IWailaBlock {
 		if (id != blockID)
 			return id == 0 ? null : Block.blocksList[id].getCollisionBoundingBoxFromPool(world, x, y, z);
 		int meta = world.getBlockMetadata(x, y, z);
-		if (meta < 0 || meta >= RedstoneTiles.TEList.length)
-			meta = 0;
-		RedstoneTiles r = RedstoneTiles.TEList[meta];
+		RedstoneTiles r = RedstoneTiles.getTEAt(world, x, y, z);
 		if (r == RedstoneTiles.CAMOFLAGE) {
 			TileEntityCamo tc = (TileEntityCamo)world.getBlockTileEntity(x, y, z);
 			AxisAlignedBB box = tc.getBoundingBox();
@@ -463,6 +510,15 @@ public class BlockRedTile extends Block implements IWailaBlock {
 
 	@Override
 	public List<String> getWailaBody(ItemStack is, List<String> tip, IWailaDataAccessor acc, IWailaConfigHandler config) {
+		TileEntity te = acc.getTileEntity();
+		if (te instanceof TileEntitySignalScaler) {
+			TileEntitySignalScaler sc = (TileEntitySignalScaler)te;
+			tip.add("Scaling inputs to ["+sc.getMinValue()+"-"+sc.getMaxValue()+"]");
+		}
+		if (te instanceof TileEntityEqualizer) {
+			TileEntityEqualizer eq = (TileEntityEqualizer)te;
+			tip.add("Watching note "+eq.getPitch());
+		}
 		return tip;
 	}
 
