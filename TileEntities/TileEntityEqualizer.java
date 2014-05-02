@@ -18,6 +18,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import Reika.DragonAPI.Libraries.IO.ReikaChatHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
+import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 import Reika.RotaryCraft.API.Event.NoteEvent;
@@ -56,7 +57,7 @@ public class TileEntityEqualizer extends ExpandedRedstoneTileEntity {
 			redstone = Math.max(redstone, 4);
 		else if (dp == 2)
 			redstone = Math.max(redstone, 1);
-		//ReikaWorldHelper.causeAdjacentUpdates(worldObj, xCoord, yCoord, zCoord);
+		ReikaWorldHelper.causeAdjacentUpdates(worldObj, xCoord, yCoord, zCoord);
 	}
 
 	@Override
@@ -76,7 +77,7 @@ public class TileEntityEqualizer extends ExpandedRedstoneTileEntity {
 
 		if (redstone > 0) {
 			redstone--;
-			//ReikaWorldHelper.causeAdjacentUpdates(worldObj, xCoord, yCoord, zCoord);
+			ReikaWorldHelper.causeAdjacentUpdates(worldObj, xCoord, yCoord, zCoord);
 		}
 	}
 

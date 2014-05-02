@@ -142,7 +142,7 @@ public class BlockRedTile extends Block implements IWailaBlock {
 			break;
 		case ANALOG:
 			TileEntityWirelessAnalog te = (TileEntityWirelessAnalog)world.getBlockTileEntity(x, y, z);
-			te.recalculate();
+			//te.recalculate();
 			break;
 		default:
 			break;

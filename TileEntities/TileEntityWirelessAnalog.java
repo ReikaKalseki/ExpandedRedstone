@@ -43,17 +43,35 @@ public class TileEntityWirelessAnalog extends ExpandedRedstoneTileEntity impleme
 		super.updateEntity(world, x, y, z);
 		//ReikaJavaLibrary.pConsole(channel, Side.SERVER);
 
+		int d = this.getUpdateDelay();
+		if ((world.getTotalWorldTime()&d) == 0)
+			this.recalculate();
+
 		if (tiles[channel] == null || !tiles[channel].contains(this))
 			this.add();
+	}
+
+	private int getUpdateDelay() {
+		int s = tiles[channel] != null ? tiles[channel].size() : 0;
+		if (s < 10)
+			return 3;
+		else if (s < 25)
+			return 7;
+		else if (s < 100)
+			return 15;
+		else
+			return 31;
 	}
 
 	public int getChannel() {
 		return channel;
 	}
 
-	public void recalculate() {
+	private void recalculate() {
+		int prev = channels[channel];
 		this.recalculateChannel(channel);
-		this.updateOthersOfChannel();
+		if (channels[channel] == prev)
+			this.updateOthersOfChannel();
 	}
 
 	public void remove() {
