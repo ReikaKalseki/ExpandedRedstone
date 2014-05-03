@@ -31,7 +31,6 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker.Materials;
 import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
 import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel.Lens;
-import Reika.ExpandedRedstone.TileEntities.TileEntityWirelessAnalog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -107,10 +106,6 @@ public class ItemCircuitPlacer extends Item {
 				int level = is.stackTagCompound.getInteger("nbt");
 				shk.setDamageLevel(level);
 			}
-		}
-		if (tile == RedstoneTiles.ANALOG) {
-			TileEntityWirelessAnalog ana = (TileEntityWirelessAnalog)te;
-			ana.add();
 		}
 		return true;
 	}

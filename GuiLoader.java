@@ -12,13 +12,13 @@ package Reika.ExpandedRedstone;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import Reika.DragonAPI.Base.CoreContainer;
+import Reika.ExpandedRedstone.Base.AnalogWireless;
 import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Base.InventoriedRedstoneTileEntity;
 import Reika.ExpandedRedstone.GUI.ContainerRedstone;
 import Reika.ExpandedRedstone.GUI.GuiAnalog;
 import Reika.ExpandedRedstone.GUI.GuiRedstone;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
-import Reika.ExpandedRedstone.TileEntities.TileEntityWirelessAnalog;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 public class GuiLoader implements IGuiHandler {
@@ -30,7 +30,7 @@ public class GuiLoader implements IGuiHandler {
 		if (r.hasInventory()) {
 			return new ContainerRedstone(player, (InventoriedRedstoneTileEntity)te);
 		}
-		if (r == RedstoneTiles.ANALOG)
+		if (r == RedstoneTiles.ANALOGTRANSMITTER || r == RedstoneTiles.ANALOGRECEIVER)
 			return new CoreContainer(player, te);
 		return null;
 	}
@@ -42,8 +42,8 @@ public class GuiLoader implements IGuiHandler {
 		if (r.hasInventory()) {
 			return new GuiRedstone(player, (InventoriedRedstoneTileEntity)te);
 		}
-		if (r == RedstoneTiles.ANALOG)
-			return new GuiAnalog(player, (TileEntityWirelessAnalog)te);
+		if (r == RedstoneTiles.ANALOGTRANSMITTER || r == RedstoneTiles.ANALOGRECEIVER)
+			return new GuiAnalog(player, (AnalogWireless)te);
 		return null;
 	}
 

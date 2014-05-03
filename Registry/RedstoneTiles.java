@@ -19,7 +19,10 @@ import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Exception.RegistrationException;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ExpandedRedstone.ExpandedRedstone;
+import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
 import Reika.ExpandedRedstone.TileEntities.TileEntity555;
+import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogReceiver;
+import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogTransmitter;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBUD;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker;
 import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
@@ -38,7 +41,6 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
 import Reika.ExpandedRedstone.TileEntities.TileEntitySignalScaler;
 import Reika.ExpandedRedstone.TileEntities.TileEntityToggle;
 import Reika.ExpandedRedstone.TileEntities.TileEntityWeather;
-import Reika.ExpandedRedstone.TileEntities.TileEntityWirelessAnalog;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum RedstoneTiles {
@@ -61,7 +63,8 @@ public enum RedstoneTiles {
 	HOPPER("Hopper Ticker", TileEntityHopperTicker.class),
 	SCALER("Signal Scaler", TileEntitySignalScaler.class),
 	COLUMN("Column Decrementer", TileEntityColumnDecrementer.class),
-	ANALOG("Analog Wireless Transmitter", TileEntityWirelessAnalog.class),
+	ANALOGTRANSMITTER("Analog Wireless Transmitter", TileEntityAnalogTransmitter.class),
+	ANALOGRECEIVER("Analog Wireless Receiver", TileEntityAnalogReceiver.class),
 	EQUALIZER("Equalizer", TileEntityEqualizer.class);
 
 	private Class te;
@@ -69,7 +72,7 @@ public enum RedstoneTiles {
 
 	public static final RedstoneTiles[] TEList = RedstoneTiles.values();
 
-	private RedstoneTiles(String n, Class<? extends TileEntity> cl) {
+	private RedstoneTiles(String n, Class<? extends ExpandedRedstoneTileEntity> cl) {
 		te = cl;
 		name = n;
 	}
@@ -151,7 +154,8 @@ public enum RedstoneTiles {
 		case PROXIMITY:
 		case HOPPER:
 		case SCALER:
-		case ANALOG:
+		case ANALOGTRANSMITTER:
+		case ANALOGRECEIVER:
 		case EQUALIZER:
 			return true;
 		default:

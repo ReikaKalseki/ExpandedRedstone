@@ -19,16 +19,16 @@ import org.lwjgl.opengl.GL11;
 import Reika.DragonAPI.Base.CoreContainer;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
 import Reika.ExpandedRedstone.ExpandedRedstone;
-import Reika.ExpandedRedstone.TileEntities.TileEntityWirelessAnalog;
+import Reika.ExpandedRedstone.Base.AnalogWireless;
 
 public class GuiAnalog extends GuiContainer {
 
 	private static final ResourceLocation texture = new ResourceLocation("expandedredstone:textures/gui/analog.png");
 
-	public TileEntityWirelessAnalog tile;
+	public AnalogWireless tile;
 	private int channel;
 
-	public GuiAnalog(EntityPlayer player, TileEntityWirelessAnalog te) {
+	public GuiAnalog(EntityPlayer player, AnalogWireless te) {
 		super(new CoreContainer(player, te));
 		tile = te;
 		channel = te.getChannel();
@@ -63,9 +63,9 @@ public class GuiAnalog extends GuiContainer {
 
 		channel += b.id;
 		if (channel < 0)
-			channel += TileEntityWirelessAnalog.CHANNELS;
-		else if (channel >= TileEntityWirelessAnalog.CHANNELS)
-			channel -= TileEntityWirelessAnalog.CHANNELS;
+			channel += AnalogWireless.CHANNELS;
+		else if (channel >= AnalogWireless.CHANNELS)
+			channel -= AnalogWireless.CHANNELS;
 
 		this.initGui();
 

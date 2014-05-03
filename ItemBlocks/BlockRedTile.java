@@ -35,9 +35,11 @@ import Reika.DragonAPI.Libraries.ReikaAABBHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ExpandedRedstone.ExpandedRedstone;
+import Reika.ExpandedRedstone.Base.AnalogWireless;
 import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 import Reika.ExpandedRedstone.TileEntities.TileEntity555;
+import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogTransmitter;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker;
 import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
 import Reika.ExpandedRedstone.TileEntities.TileEntityChestReader;
@@ -46,7 +48,6 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityEqualizer;
 import Reika.ExpandedRedstone.TileEntities.TileEntityProximity;
 import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
 import Reika.ExpandedRedstone.TileEntities.TileEntitySignalScaler;
-import Reika.ExpandedRedstone.TileEntities.TileEntityWirelessAnalog;
 import Reika.RotaryCraft.API.ItemFetcher;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.relauncher.Side;
@@ -140,9 +141,9 @@ public class BlockRedTile extends Block implements IWailaBlock {
 		case COLUMN:
 			world.notifyBlocksOfNeighborChange(x, y+1, z, blockID, 0);
 			break;
-		case ANALOG:
-			TileEntityWirelessAnalog te = (TileEntityWirelessAnalog)world.getBlockTileEntity(x, y, z);
-			//te.recalculate();
+		case ANALOGTRANSMITTER:
+			TileEntityAnalogTransmitter te = (TileEntityAnalogTransmitter)world.getBlockTileEntity(x, y, z);
+			te.markRecalculationIn(2);
 			break;
 		default:
 			break;
@@ -222,7 +223,8 @@ public class BlockRedTile extends Block implements IWailaBlock {
 			return true;
 		case EFFECTOR:
 		case PLACER:
-		case ANALOG:
+		case ANALOGTRANSMITTER:
+		case ANALOGRECEIVER:
 			ep.openGui(ExpandedRedstone.instance, 0, world, x, y, z);
 			return true;
 		case PROXIMITY:
@@ -380,8 +382,8 @@ public class BlockRedTile extends Block implements IWailaBlock {
 		TileEntity te = world.getBlockTileEntity(x, y, z);
 		if (te instanceof IInventory)
 			ReikaItemHelper.dropInventory(world, x, y, z);
-		if (te instanceof TileEntityWirelessAnalog)
-			((TileEntityWirelessAnalog)te).remove();
+		if (te instanceof AnalogWireless)
+			((AnalogWireless)te).remove();
 		super.breakBlock(world, x, y, z, par5, par6);
 	}
 

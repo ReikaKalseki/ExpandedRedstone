@@ -23,7 +23,7 @@ import Reika.DragonAPI.Auxiliary.PacketTypes;
 import Reika.DragonAPI.Libraries.IO.ReikaChatHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
-import Reika.ExpandedRedstone.TileEntities.TileEntityWirelessAnalog;
+import Reika.ExpandedRedstone.Base.AnalogWireless;
 import Reika.ReactorCraft.Registry.ReactorSounds;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
@@ -31,7 +31,7 @@ import cpw.mods.fml.common.network.Player;
 
 public abstract class ExpandedPacketCore implements IPacketHandler {
 
-	private TileEntityWirelessAnalog ana;
+	private AnalogWireless ana;
 
 	protected PacketTypes packetType;
 
@@ -116,7 +116,7 @@ public abstract class ExpandedPacketCore implements IPacketHandler {
 		try {
 			switch (control) {
 			case 0:
-				ana = (TileEntityWirelessAnalog)te;
+				ana = (AnalogWireless)te;
 				ana.setChannel(data[0]);
 				break;
 			}

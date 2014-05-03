@@ -25,11 +25,11 @@ import Reika.DragonAPI.Instantiable.IO.ModLogger;
 import Reika.DragonAPI.Libraries.ReikaRegistryHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaColorAPI;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
+import Reika.ExpandedRedstone.Base.AnalogWireless;
 import Reika.ExpandedRedstone.Registry.RedstoneBlocks;
 import Reika.ExpandedRedstone.Registry.RedstoneItems;
 import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
-import Reika.ExpandedRedstone.TileEntities.TileEntityWirelessAnalog;
 import Reika.RotaryCraft.API.BlockColorInterface;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -106,7 +106,7 @@ public class ExpandedRedstone extends DragonAPIMod {
 
 	@ForgeSubscribe
 	public void onClose(WorldEvent.Unload evt) {
-		TileEntityWirelessAnalog.resetChannelData();
+		AnalogWireless.resetChannelData();
 		logger.debug("Resetting wireless data.");
 
 		//TileEntityEqualizer.unregisterAllInWorld(evt.world.provider.dimensionId);
@@ -155,7 +155,8 @@ public class ExpandedRedstone extends DragonAPIMod {
 		RedstoneTiles.SHOCK.addNBTRecipe(6, "CCC", "LPC", "CRC", 'C', Block.cobblestone, 'R', Item.redstone, 'P', Item.eyeOfEnder, 'L', Item.netherStar);	//range 5; damage infinity
 
 		RedstoneTiles.SCALER.addRecipe("rnr", "sss", 'r', Item.redstone, 'n', Item.netherQuartz, 's', ReikaItemHelper.stoneSlab);
-		RedstoneTiles.ANALOG.addSizedRecipe(2, "rrr", "nen", "sss", 'r', Item.redstone, 'n', Item.netherQuartz, 's', ReikaItemHelper.stoneSlab, 'e', Item.enderPearl);
+		RedstoneTiles.ANALOGTRANSMITTER.addSizedRecipe(2, "rrr", "nen", "sss", 'r', Item.redstone, 'n', Item.netherQuartz, 's', ReikaItemHelper.stoneSlab, 'e', Item.enderPearl);
+		RedstoneTiles.ANALOGRECEIVER.addSizedRecipe(2, "rrr", "ene", "sss", 'r', Item.redstone, 'n', Item.netherQuartz, 's', ReikaItemHelper.stoneSlab, 'e', Item.enderPearl);
 		RedstoneTiles.COLUMN.addRecipe("CCC", "RRR", "CRC", 'R', Item.redstone, 'C', Block.cobblestone);
 	}
 
