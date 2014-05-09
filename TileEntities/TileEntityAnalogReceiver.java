@@ -25,6 +25,11 @@ public class TileEntityAnalogReceiver extends AnalogWireless {
 	}
 
 	@Override
+	public boolean canPowerSide(int s) {
+		return s == this.getFacing().getOpposite().ordinal();
+	}
+
+	@Override
 	public int getEmission() {
 		return channels[channel];
 	}
