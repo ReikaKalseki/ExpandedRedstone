@@ -505,6 +505,12 @@ public class BlockRedTile extends Block implements IWailaBlock {
 					}
 					return new ArrayList();
 				}
+				else {
+					tip.add(EnumChatFormatting.WHITE+this.getPickBlock(mov, world, x, y, z).getDisplayName());
+				}
+			}
+			else {
+				tip.add(EnumChatFormatting.WHITE+this.getPickBlock(mov, world, x, y, z).getDisplayName());
 			}
 		}
 		return tip;
@@ -524,9 +530,11 @@ public class BlockRedTile extends Block implements IWailaBlock {
 		return tip;
 	}
 
-	@Override
-	public List<String> getWailaTail(ItemStack is, List<String> tip, IWailaDataAccessor acc, IWailaConfigHandler config) {
-		return tip;
+	public List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor acc, IWailaConfigHandler config) {
+		String s1 = EnumChatFormatting.ITALIC.toString();
+		String s2 = EnumChatFormatting.BLUE.toString();
+		currenttip.add(s2+s1+"Expanded Redstone");
+		return currenttip;
 	}
 
 	@Override
