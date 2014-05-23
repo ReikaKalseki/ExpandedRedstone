@@ -11,10 +11,13 @@ package Reika.ExpandedRedstone.TileEntities;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockSkull;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import Reika.DragonAPI.Libraries.ReikaAABBHelper;
@@ -61,8 +64,19 @@ public class TileEntityEffector extends InventoriedRedstoneTileEntity {
 			EntityLivingBase e = li.get(i);
 			flag = !it.itemInteractionForEntity(is, ep, e);
 		}
-		if (flag)
-			it.onItemUse(is, ep, world, dx, dy, dz, this.getFacing().getOpposite().ordinal(), 0F, 0F, 0F);
+		if (flag) {
+			if (is.itemID == Item.skull.itemID) {
+				it.onItemUse(is, ep, world, dx, dy-1, dz, 1, 0F, 0F, 0F);
+				if (is.getItemDamage() == 1) {
+					TileEntitySkull te = (TileEntitySkull)world.getBlockTileEntity(dx, dy, dz);
+					if (te != null)
+						((BlockSkull)Block.skull).makeWither(world, dx, dy, dz, te);
+				}
+			}
+			else {
+				it.onItemUse(is, ep, world, dx, dy, dz, this.getFacing().getOpposite().ordinal(), 0F, 0F, 0F);
+			}
+		}
 		inv[slot] = is;
 		if (RedstoneOptions.NOISES.getState())
 			ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click");

@@ -19,6 +19,7 @@ import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.WorldEvent;
 import Reika.DragonAPI.DragonAPICore;
 import Reika.DragonAPI.ModList;
+import Reika.DragonAPI.Auxiliary.NEI_AnonymousHideConfig;
 import Reika.DragonAPI.Base.DragonAPIMod;
 import Reika.DragonAPI.Instantiable.IO.ControlledConfig;
 import Reika.DragonAPI.Instantiable.IO.ModLogger;
@@ -90,6 +91,8 @@ public class ExpandedRedstone extends DragonAPIMod {
 		NetworkRegistry.instance().registerGuiHandler(instance, new GuiLoader());
 		proxy.registerRenderers();
 		this.addRecipes();
+
+		NEI_AnonymousHideConfig.addBlocks(blocks);
 	}
 
 	@Override

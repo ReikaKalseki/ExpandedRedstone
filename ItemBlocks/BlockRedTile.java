@@ -176,16 +176,27 @@ public class BlockRedTile extends Block implements IWailaBlock {
 
 	@Override
 	public final boolean renderAsNormalBlock() {
-		return false;
+		return true;
+	}
+
+	@Override
+	public boolean isBlockNormalCube(World world, int x, int y, int z)
+	{
+		return RedstoneTiles.getTEAt(world, x, y, z).isOpaque();
 	}
 
 	@Override
 	public final boolean isOpaqueCube() {
+		return true;
+	}
+
+	@Override
+	public final boolean canProvidePower() {
 		return false;
 	}
 
 	@Override
-	public final boolean canProvidePower()
+	public boolean shouldCheckWeakPower(World world, int x, int y, int z, int side)
 	{
 		return true;
 	}

@@ -11,11 +11,13 @@ package Reika.ExpandedRedstone.TileEntities;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaParticleHelper;
 import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
@@ -63,7 +65,7 @@ public class TileEntityShockPanel extends ExpandedRedstoneTileEntity {
 	}
 
 	private void attack(World world, int x, int y, int z) {
-		AxisAlignedBB box = this.getBox();
+		AxisAlignedBB box = this.getBox(world, x, y, z);
 		//ReikaJavaLibrary.pConsole(box);
 		List<EntityLivingBase> li = world.getEntitiesWithinAABB(EntityLivingBase.class, box);
 		for (int i = 0; i < li.size(); i++) {
@@ -107,15 +109,32 @@ public class TileEntityShockPanel extends ExpandedRedstoneTileEntity {
 		return false;
 	}
 
-	private AxisAlignedBB getBox() {
+	private AxisAlignedBB getBox(World world, int x, int y, int z) {
 		int d = this.getLensType().attackRange;
-		int dx = -this.getFacing().offsetX*d;
-		int dy = -this.getFacing().offsetY*d;
-		int dz = -this.getFacing().offsetZ*d;
 
-		int dx2 = this.getFacing().offsetX*d;
-		int dy2 = this.getFacing().offsetY*d;
-		int dz2 = this.getFacing().offsetZ*d;
+		ForgeDirection dir = this.getFacing();
+
+		for (int i = 1; i < d; i++) {
+			int dx = x+dir.offsetX*i;
+			int dy = y+dir.offsetY*i;
+			int dz = z+dir.offsetZ*i;
+			int id = world.getBlockId(dx, dy, dz);
+			if (id != 0) {
+				Block b = Block.blocksList[id];
+				if (b.isOpaqueCube() || Block.opaqueCubeLookup[id] || b.blockMaterial.isSolid()) {
+					d = i;
+					break;
+				}
+			}
+		}
+
+		int dx = -dir.offsetX*d;
+		int dy = -dir.offsetY*d;
+		int dz = -dir.offsetZ*d;
+
+		int dx2 = dir.offsetX*d;
+		int dy2 = dir.offsetY*d;
+		int dz2 = dir.offsetZ*d;
 
 		if (dx > 0)
 			dx2 = 0;
@@ -130,7 +149,8 @@ public class TileEntityShockPanel extends ExpandedRedstoneTileEntity {
 		else
 			dz = 0;
 
-		AxisAlignedBB box = AxisAlignedBB.getAABBPool().getAABB(xCoord-dx, yCoord-dy, zCoord-dz, xCoord+1+dx2, yCoord+1+dy2, zCoord+1+dz2);
+		AxisAlignedBB box = AxisAlignedBB.getAABBPool().getAABB(x-dx, y-dy, z-dz, x+1+dx2, y+1+dy2, z+1+dz2);
+		//ReikaJavaLibrary.pConsole(box, Side.SERVER);
 		return box;
 	}
 
