@@ -176,7 +176,7 @@ public class BlockRedTile extends Block implements IWailaBlock {
 
 	@Override
 	public final boolean renderAsNormalBlock() {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -187,12 +187,12 @@ public class BlockRedTile extends Block implements IWailaBlock {
 
 	@Override
 	public final boolean isOpaqueCube() {
-		return true;
+		return false;
 	}
 
 	@Override
 	public final boolean canProvidePower() {
-		return false;
+		return true;
 	}
 
 	@Override
