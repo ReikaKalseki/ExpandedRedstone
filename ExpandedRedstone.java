@@ -92,7 +92,8 @@ public class ExpandedRedstone extends DragonAPIMod {
 		proxy.registerRenderers();
 		this.addRecipes();
 
-		NEI_AnonymousHideConfig.addBlocks(blocks);
+		if (ModList.NEI.isLoaded())
+			NEI_AnonymousHideConfig.addBlocks(blocks);
 	}
 
 	@Override
