@@ -191,6 +191,11 @@ public class BlockRedTile extends Block implements IWailaBlock {
 	}
 
 	@Override
+	public boolean canSilkHarvest() {
+		return false;
+	}
+
+	@Override
 	public final boolean canProvidePower() {
 		return true;
 	}
