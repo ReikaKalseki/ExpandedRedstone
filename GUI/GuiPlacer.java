@@ -21,14 +21,14 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GuiRedstone extends GuiContainer
+public class GuiPlacer extends GuiContainer
 {
 	private static final ResourceLocation textures = new ResourceLocation("textures/gui/container/dispenser.png");
 	public InventoriedRedstoneTileEntity tile;
 
-	public GuiRedstone(EntityPlayer player, InventoriedRedstoneTileEntity te)
+	public GuiPlacer(EntityPlayer player, InventoriedRedstoneTileEntity te)
 	{
-		super(new ContainerRedstone(player, te));
+		super(new ContainerPlacer(player, te));
 		tile = te;
 	}
 

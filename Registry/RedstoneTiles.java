@@ -28,6 +28,7 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker;
 import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
 import Reika.ExpandedRedstone.TileEntities.TileEntityChestReader;
 import Reika.ExpandedRedstone.TileEntities.TileEntityColumnDecrementer;
+import Reika.ExpandedRedstone.TileEntities.TileEntityCountdown;
 import Reika.ExpandedRedstone.TileEntities.TileEntityDriver;
 import Reika.ExpandedRedstone.TileEntities.TileEntityEffector;
 import Reika.ExpandedRedstone.TileEntities.TileEntityEmitter;
@@ -65,7 +66,8 @@ public enum RedstoneTiles {
 	COLUMN("Column Decrementer", TileEntityColumnDecrementer.class),
 	ANALOGTRANSMITTER("Analog Wireless Transmitter", TileEntityAnalogTransmitter.class),
 	ANALOGRECEIVER("Analog Wireless Receiver", TileEntityAnalogReceiver.class),
-	EQUALIZER("Equalizer", TileEntityEqualizer.class);
+	EQUALIZER("Equalizer", TileEntityEqualizer.class),
+	COUNTDOWN("Countdown Timer", TileEntityCountdown.class);
 
 	private Class te;
 	private String name;
@@ -134,6 +136,7 @@ public enum RedstoneTiles {
 		case PROXIMITY:
 		case SCALER:
 		case EQUALIZER:
+		case COUNTDOWN:
 			return true;
 		default:
 			return false;
@@ -157,6 +160,7 @@ public enum RedstoneTiles {
 		case ANALOGTRANSMITTER:
 		case ANALOGRECEIVER:
 		case EQUALIZER:
+		case COUNTDOWN:
 			return true;
 		default:
 			return false;
@@ -170,6 +174,7 @@ public enum RedstoneTiles {
 		case DRIVER:
 		case TOGGLE:
 		case PROXIMITY:
+		case COUNTDOWN:
 			return true;
 		default:
 			return false;
@@ -197,6 +202,8 @@ public enum RedstoneTiles {
 			return 16;
 		case SHOCK:
 			return 2;
+		case COUNTDOWN:
+			return 11;
 		default:
 			return 1;
 		}

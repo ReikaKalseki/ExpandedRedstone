@@ -14,11 +14,11 @@ import net.minecraft.inventory.Slot;
 import Reika.DragonAPI.Base.CoreContainer;
 import Reika.ExpandedRedstone.Base.InventoriedRedstoneTileEntity;
 
-public class ContainerRedstone extends CoreContainer
+public class ContainerPlacer extends CoreContainer
 {
 	private InventoriedRedstoneTileEntity tile;
 
-	public ContainerRedstone(EntityPlayer ep, InventoriedRedstoneTileEntity te)
+	public ContainerPlacer(EntityPlayer ep, InventoriedRedstoneTileEntity te)
 	{
 		super(ep, te);
 		tile = te;

@@ -74,7 +74,7 @@ public class ExpandedRedstone extends DragonAPIMod {
 	public void preload(FMLPreInitializationEvent evt) {
 		config.loadSubfolderedConfigFile(evt);
 		config.initProps(evt);
-		logger = new ModLogger(instance, RedstoneOptions.LOGLOADING.getState(), RedstoneOptions.DEBUGMODE.getState(), false);
+		logger = new ModLogger(instance, false);
 		proxy.registerSounds();
 
 		this.basicSetup(evt);
@@ -159,6 +159,8 @@ public class ExpandedRedstone extends DragonAPIMod {
 		RedstoneTiles.ANALOGTRANSMITTER.addSizedRecipe(2, "rrr", "nen", "sss", 'r', Item.redstone, 'n', Item.netherQuartz, 's', ReikaItemHelper.stoneSlab, 'e', Item.enderPearl);
 		RedstoneTiles.ANALOGRECEIVER.addSizedRecipe(2, "rrr", "ene", "sss", 'r', Item.redstone, 'n', Item.netherQuartz, 's', ReikaItemHelper.stoneSlab, 'e', Item.enderPearl);
 		RedstoneTiles.COLUMN.addRecipe("CCC", "RRR", "CRC", 'R', Item.redstone, 'C', Block.cobblestone);
+
+		RedstoneTiles.COUNTDOWN.addRecipe("RQR", "QCQ", "RQR", 'R', Item.redstone, 'Q', Item.netherQuartz, 'C', RedstoneTiles.CLOCK.getItem());
 	}
 
 	@Override

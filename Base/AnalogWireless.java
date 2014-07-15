@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import Reika.DragonAPI.Instantiable.SyncPacket;
 import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogReceiver;
 import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogTransmitter;
 import Reika.RotaryCraft.API.Transducerable;

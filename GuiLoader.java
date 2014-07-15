@@ -15,9 +15,9 @@ import Reika.DragonAPI.Base.CoreContainer;
 import Reika.ExpandedRedstone.Base.AnalogWireless;
 import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Base.InventoriedRedstoneTileEntity;
-import Reika.ExpandedRedstone.GUI.ContainerRedstone;
+import Reika.ExpandedRedstone.GUI.ContainerPlacer;
 import Reika.ExpandedRedstone.GUI.GuiAnalog;
-import Reika.ExpandedRedstone.GUI.GuiRedstone;
+import Reika.ExpandedRedstone.GUI.GuiPlacer;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 import cpw.mods.fml.common.network.IGuiHandler;
 
@@ -28,7 +28,7 @@ public class GuiLoader implements IGuiHandler {
 		ExpandedRedstoneTileEntity te = (ExpandedRedstoneTileEntity)world.getBlockTileEntity(x, y, z);
 		RedstoneTiles r = RedstoneTiles.getTEAt(world, x, y, z);
 		if (r.hasInventory()) {
-			return new ContainerRedstone(player, (InventoriedRedstoneTileEntity)te);
+			return new ContainerPlacer(player, (InventoriedRedstoneTileEntity)te);
 		}
 		if (r == RedstoneTiles.ANALOGTRANSMITTER || r == RedstoneTiles.ANALOGRECEIVER)
 			return new CoreContainer(player, te);
@@ -40,7 +40,7 @@ public class GuiLoader implements IGuiHandler {
 		ExpandedRedstoneTileEntity te = (ExpandedRedstoneTileEntity)world.getBlockTileEntity(x, y, z);
 		RedstoneTiles r = RedstoneTiles.getTEAt(world, x, y, z);
 		if (r.hasInventory()) {
-			return new GuiRedstone(player, (InventoriedRedstoneTileEntity)te);
+			return new GuiPlacer(player, (InventoriedRedstoneTileEntity)te);
 		}
 		if (r == RedstoneTiles.ANALOGTRANSMITTER || r == RedstoneTiles.ANALOGRECEIVER)
 			return new GuiAnalog(player, (AnalogWireless)te);

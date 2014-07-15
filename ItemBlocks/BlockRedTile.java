@@ -43,6 +43,7 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogTransmitter;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker;
 import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
 import Reika.ExpandedRedstone.TileEntities.TileEntityChestReader;
+import Reika.ExpandedRedstone.TileEntities.TileEntityCountdown;
 import Reika.ExpandedRedstone.TileEntities.TileEntityDriver;
 import Reika.ExpandedRedstone.TileEntities.TileEntityEqualizer;
 import Reika.ExpandedRedstone.TileEntities.TileEntityProximity;
@@ -262,6 +263,14 @@ public class BlockRedTile extends Block implements IWailaBlock {
 			for (int i = 0; i < n; i++)
 				((TileEntityEqualizer)te).incrementValue();
 			te.syncAllData();
+			return true;
+		case COUNTDOWN:
+			if (ep.isSneaking()) {
+				((TileEntityCountdown)te).resetTimer();
+			}
+			else {
+				((TileEntityCountdown)te).incrementDelay();
+			}
 			return true;
 		default:
 			return false;
@@ -542,6 +551,10 @@ public class BlockRedTile extends Block implements IWailaBlock {
 		if (te instanceof TileEntityEqualizer) {
 			TileEntityEqualizer eq = (TileEntityEqualizer)te;
 			tip.add("Watching note "+eq.getPitch());
+		}
+		if (te instanceof TileEntityCountdown) {
+			TileEntityCountdown cd = (TileEntityCountdown)te;
+			tip.add("Time Remaining: "+cd.getCountdownDisplay());
 		}
 		return tip;
 	}
