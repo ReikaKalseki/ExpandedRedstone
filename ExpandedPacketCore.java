@@ -49,7 +49,9 @@ public abstract class ExpandedPacketCore implements IPacketHandler {
 		int[] data = new int[0];
 		long longdata = 0;
 		float floatdata = 0;
-		int x,y,z;
+		int x = 0;
+		int y = 0;
+		int z = 0;
 		boolean readinglong = false;
 		String stringdata = null;
 		//System.out.print(packet.length);
@@ -103,10 +105,19 @@ public abstract class ExpandedPacketCore implements IPacketHandler {
 				int level = inputStream.readInt();
 				ReikaPacketHelper.updateTileEntityTankData(world, x, y, z, tank, level);
 				return;
+			case RAW:
+				control = inputStream.readInt();
+				len = 1;
+				data = new int[len];
+				for (int i = 0; i < len; i++)
+					data[i] = inputStream.readInt();
+				break;
 			}
-			x = inputStream.readInt();
-			y = inputStream.readInt();
-			z = inputStream.readInt();
+			if (packetType != PacketTypes.RAW) {
+				x = inputStream.readInt();
+				y = inputStream.readInt();
+				z = inputStream.readInt();
+			}
 		}
 		catch (IOException e) {
 			e.printStackTrace();
