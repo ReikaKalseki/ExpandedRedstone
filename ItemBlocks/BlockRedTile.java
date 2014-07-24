@@ -31,6 +31,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.ModList;
+import Reika.DragonAPI.Base.TileEntityBase;
 import Reika.DragonAPI.Libraries.ReikaAABBHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
@@ -216,6 +217,7 @@ public class BlockRedTile extends Block implements IWailaBlock {
 		ExpandedRedstoneTileEntity te = (ExpandedRedstoneTileEntity)world.getBlockTileEntity(x, y, z);
 		if (te == null)
 			return false;
+		te.syncAllData(true);
 		if (is != null && is.getItem() instanceof IToolWrench) {
 			te.rotate();
 			return true;
@@ -225,18 +227,18 @@ public class BlockRedTile extends Block implements IWailaBlock {
 		switch (r) {
 		case CHESTREADER:
 			((TileEntityChestReader)te).alternate();
-			te.syncAllData();
+			te.syncAllData(true);
 			return true;
 		case CLOCK:
 			((TileEntity555)te).incrementSetting();
-			te.syncAllData();
+			te.syncAllData(true);
 			return true;
 		case DRIVER:
 			if (ep.isSneaking())
 				((TileEntityDriver)te).decrement();
 			else
 				((TileEntityDriver)te).increment();
-			te.syncAllData();
+			te.syncAllData(true);
 			return true;
 		case EFFECTOR:
 		case PLACER:
@@ -249,20 +251,20 @@ public class BlockRedTile extends Block implements IWailaBlock {
 				((TileEntityProximity)te).stepRange();
 			else
 				((TileEntityProximity)te).stepCreature();
-			te.syncAllData();
+			te.syncAllData(true);
 			return true;
 		case SCALER:
 			if (ep.isSneaking())
 				((TileEntitySignalScaler)te).incrementMinValue();
 			else
 				((TileEntitySignalScaler)te).incrementMaxValue();
-			te.syncAllData();
+			te.syncAllData(true);
 			return true;
 		case EQUALIZER:
 			int n = ep.isSneaking() ? 10 : 1;
 			for (int i = 0; i < n; i++)
 				((TileEntityEqualizer)te).incrementValue();
-			te.syncAllData();
+			te.syncAllData(true);
 			return true;
 		case COUNTDOWN:
 			if (ep.isSneaking()) {
@@ -544,6 +546,7 @@ public class BlockRedTile extends Block implements IWailaBlock {
 	@Override
 	public List<String> getWailaBody(ItemStack is, List<String> tip, IWailaDataAccessor acc, IWailaConfigHandler config) {
 		TileEntity te = acc.getTileEntity();
+		((TileEntityBase)te).syncAllData(false);
 		if (te instanceof TileEntitySignalScaler) {
 			TileEntitySignalScaler sc = (TileEntitySignalScaler)te;
 			tip.add("Scaling inputs to ["+sc.getMinValue()+"-"+sc.getMaxValue()+"]");
