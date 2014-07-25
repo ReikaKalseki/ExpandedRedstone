@@ -47,6 +47,14 @@ public class CircuitBlockRenderer implements ISimpleBlockRenderingHandler {
 			rb.renderMinX = 0;
 			rb.renderMinZ = 0;
 		}
+		else {
+			rb.renderMaxX = 1;
+			rb.renderMinY = 0;
+			rb.renderMaxZ = 1;
+			rb.renderMinX = 0;
+			rb.renderMinZ = 0;
+			rb.renderMaxY = 1;
+		}
 
 		int o = r.ordinal() >= 16 ? 10 : 0;
 
