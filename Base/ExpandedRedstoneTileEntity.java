@@ -239,9 +239,4 @@ public abstract class ExpandedRedstoneTileEntity extends TileEntityBase {
 	public final int getRedstoneOverride() {
 		return 0;
 	}
-
-	@Override
-	public final boolean hasModel() {
-		return false;
-	}
 }
