@@ -9,15 +9,17 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.Base;
 
+import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
+import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
+
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
-import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 
-public abstract class InventoriedRedstoneTileEntity extends ExpandedRedstoneTileEntity implements ISidedInventory {
+public abstract class InventoriedRedstoneTileEntity extends TileRedstoneBase implements ISidedInventory {
 
 	protected ItemStack[] inv = new ItemStack[this.getSizeInventory()];
 
@@ -41,14 +43,28 @@ public abstract class InventoriedRedstoneTileEntity extends ExpandedRedstoneTile
 		inv[i] = itemstack;
 	}
 
-	@Override
-	public String getInvName() {
+	public final String getInventoryName() {
 		return this.getTEName();
 	}
 
+	public void openInventory() {}
+
+	public void closeInventory() {}
+
 	@Override
-	public boolean isInvNameLocalized() {
-		return false;
+	public final boolean hasCustomInventoryName() {
+		return true;
+	}
+
+	@Override
+	public final void markDirty() {
+		blockMetadata = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
+		worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
+
+		if (this.getBlockType() != Blocks.air)
+		{
+			worldObj.func_147453_f(xCoord, yCoord, zCoord, this.getBlockType());
+		}
 	}
 
 	@Override
@@ -60,12 +76,6 @@ public abstract class InventoriedRedstoneTileEntity extends ExpandedRedstoneTile
 	public boolean isUseableByPlayer(EntityPlayer ep) {
 		return ReikaMathLibrary.py3d(ep.posX-xCoord-0.5, ep.posY-yCoord-0.5, ep.posZ-zCoord-0.5) <= 8;
 	}
-
-	@Override
-	public void openChest() {}
-
-	@Override
-	public void closeChest() {}
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int var1) {
@@ -81,12 +91,12 @@ public abstract class InventoriedRedstoneTileEntity extends ExpandedRedstoneTile
 	public void readFromNBT(NBTTagCompound NBT)
 	{
 		super.readFromNBT(NBT);
-		NBTTagList nbttaglist = NBT.getTagList("Items");
+		NBTTagList nbttaglist = NBT.getTagList("Items", NBT.getId());
 		inv = new ItemStack[this.getSizeInventory()];
 
 		for (int i = 0; i < nbttaglist.tagCount(); i++)
 		{
-			NBTTagCompound nbttagcompound = (NBTTagCompound)nbttaglist.tagAt(i);
+			NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(i);
 			byte byte0 = nbttagcompound.getByte("Slot");
 
 			if (byte0 >= 0 && byte0 < inv.length)

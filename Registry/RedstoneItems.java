@@ -9,20 +9,20 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.Registry;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import Reika.DragonAPI.Exception.RegistrationException;
-import Reika.DragonAPI.Interfaces.RegistryEnum;
+import Reika.DragonAPI.Interfaces.ItemEnum;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 import Reika.ExpandedRedstone.ItemBlocks.ItemCircuitPlacer;
 import Reika.ExpandedRedstone.ItemBlocks.ItemWirePlacer;
+
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public enum RedstoneItems implements RegistryEnum {
+public enum RedstoneItems implements ItemEnum {
 
 	BLUEWIRE(false, "Lapis Wire", ItemWirePlacer.class),
 	PLACER(true, "#Placer", ItemCircuitPlacer.class);
@@ -41,28 +41,28 @@ public enum RedstoneItems implements RegistryEnum {
 
 
 	public Class[] getConstructorParamTypes() {
-		return new Class[]{int.class};
+		return new Class[]{};
 	}
 
 	public Object[] getConstructorParams() {
-		return new Object[]{ExpandedRedstone.config.getItemID(this.ordinal())};
+		return new Object[]{};
 	}
 
 	public static boolean isRegistered(ItemStack is) {
-		return isRegistered(is.itemID);
+		return isRegistered(is.getItem());
 	}
 
-	public static boolean isRegistered(int id) {
+	public static boolean isRegistered(Item id) {
 		for (int i = 0; i < itemList.length; i++) {
-			if (itemList[i].getShiftedID() == id)
+			if (itemList[i].getItemInstance() == id)
 				return true;
 		}
 		return false;
 	}
 
-	public static RedstoneItems getEntryByID(int id) {
+	public static RedstoneItems getEntryByID(Item id) {
 		for (int i = 0; i < itemList.length; i++) {
-			if (itemList[i].getShiftedID() == id)
+			if (itemList[i].getItemInstance() == id)
 				return itemList[i];
 		}
 		throw new RegistrationException(ExpandedRedstone.instance, "Item ID "+id+" was called to the item registry but does not exist there!");
@@ -71,7 +71,7 @@ public enum RedstoneItems implements RegistryEnum {
 	public static RedstoneItems getEntry(ItemStack is) {
 		if (is == null)
 			return null;
-		return getEntryByID(is.itemID);
+		return getEntryByID(is.getItem());
 	}
 
 	public String getName(int dmg) {
@@ -98,14 +98,6 @@ public enum RedstoneItems implements RegistryEnum {
 		return ReikaStringParser.stripSpaces(name).toLowerCase();
 	}
 
-	public int getID() {
-		return ExpandedRedstone.config.getItemID(this.ordinal());
-	}
-
-	public int getShiftedID() {
-		return ExpandedRedstone.config.getItemID(this.ordinal())+256;
-	}
-
 	public Item getItemInstance() {
 		return ExpandedRedstone.items[this.ordinal()];
 	}
@@ -127,11 +119,11 @@ public enum RedstoneItems implements RegistryEnum {
 	}
 
 	public ItemStack getCraftedProduct(int amt) {
-		return new ItemStack(this.getShiftedID(), amt, 0);
+		return new ItemStack(this.getItemInstance(), amt, 0);
 	}
 
 	public ItemStack getCraftedMetadataProduct(int amt, int meta) {
-		return new ItemStack(this.getShiftedID(), amt, meta);
+		return new ItemStack(this.getItemInstance(), amt, meta);
 	}
 
 	public ItemStack getStackOf() {
@@ -149,41 +141,6 @@ public enum RedstoneItems implements RegistryEnum {
 	@Override
 	public Class getObjectClass() {
 		return itemClass;
-	}
-
-	@Override
-	public Class<? extends ItemBlock> getItemBlock() {
-		return null;
-	}
-
-	@Override
-	public boolean hasItemBlock() {
-		return false;
-	}
-
-	@Override
-	public String getConfigName() {
-		return this.getBasicName();
-	}
-
-	@Override
-	public int getDefaultID() {
-		return 20500+this.ordinal();
-	}
-
-	@Override
-	public boolean isBlock() {
-		return false;
-	}
-
-	@Override
-	public boolean isItem() {
-		return true;
-	}
-
-	@Override
-	public String getCategory() {
-		return "Item IDs";
 	}
 
 	public boolean isDummiedOut() {

@@ -9,18 +9,19 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.Base;
 
-import net.minecraft.block.Block;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.Icon;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Base.TileEntityBase;
 import Reika.DragonAPI.Instantiable.StepTimer;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
-import Reika.ExpandedRedstone.Registry.RedstoneBlocks;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
-public abstract class ExpandedRedstoneTileEntity extends TileEntityBase {
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
+public abstract class TileRedstoneBase extends TileEntityBase {
 
 	private ForgeDirection facing;
 
@@ -48,8 +49,8 @@ public abstract class ExpandedRedstoneTileEntity extends TileEntityBase {
 	protected void animateWithTick(World world, int x, int y, int z) {}
 
 	@Override
-	public final int getTileEntityBlockID() {
-		return RedstoneBlocks.TILEENTITY.getBlockID();
+	public final Block getTileEntityBlockID() {
+		return RedstoneTiles.TEList[this.getTEIndex()].getBlock();
 	}
 
 	public final boolean isEmitting() {
@@ -61,9 +62,9 @@ public abstract class ExpandedRedstoneTileEntity extends TileEntityBase {
 		int y = this.getBackY();
 		int z = this.getBackZ();
 		int lvl = worldObj.getIndirectPowerLevelTo(x, y, z, this.getFacing().ordinal());
-		int id = worldObj.getBlockId(x, y, z);
+		Block id = worldObj.getBlock(x, y, z);
 		int meta = worldObj.getBlockMetadata(x, y, z);
-		return lvl >= 15 ? lvl : Math.max(lvl, id == Block.redstoneWire.blockID ? meta : 0);
+		return lvl >= 15 ? lvl : Math.max(lvl, id == Blocks.redstone_wire ? meta : 0);
 	}
 
 	protected void sendPulse(int length) {
@@ -175,7 +176,7 @@ public abstract class ExpandedRedstoneTileEntity extends TileEntityBase {
 		return false;
 	}
 
-	public Icon getOverridingIcon(int side) {
+	public IIcon getOverridingIcon(int side) {
 		return null;
 	}
 

@@ -9,22 +9,22 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
+import Reika.DragonAPI.Libraries.IO.ReikaChatHelper;
+import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
+import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
+import Reika.ExpandedRedstone.Registry.RedstoneTiles;
+import Reika.RotaryCraft.API.Event.NoteEvent;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ForgeSubscribe;
-import Reika.DragonAPI.Instantiable.SyncPacket;
-import Reika.DragonAPI.Libraries.IO.ReikaChatHelper;
-import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
-import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
-import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
-import Reika.ExpandedRedstone.Registry.RedstoneTiles;
-import Reika.RotaryCraft.API.Event.NoteEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-public class TileEntityEqualizer extends ExpandedRedstoneTileEntity {
+public class TileEntityEqualizer extends TileRedstoneBase {
 
 	private int pitch;
 	private int redstone;
@@ -49,7 +49,7 @@ public class TileEntityEqualizer extends ExpandedRedstoneTileEntity {
 		}
 	}
 
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void onMusicBoxNote(NoteEvent e) {
 		int dp = Math.abs(e.notePitch-pitch);
 		if (dp == 0)

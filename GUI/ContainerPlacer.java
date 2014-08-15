@@ -9,10 +9,11 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.GUI;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Slot;
 import Reika.DragonAPI.Base.CoreContainer;
 import Reika.ExpandedRedstone.Base.InventoriedRedstoneTileEntity;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Slot;
 
 public class ContainerPlacer extends CoreContainer
 {

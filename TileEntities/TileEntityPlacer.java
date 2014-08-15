@@ -9,9 +9,6 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
@@ -20,6 +17,11 @@ import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.ExpandedRedstone.Base.InventoriedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
+
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 public class TileEntityPlacer extends InventoriedRedstoneTileEntity {
 
@@ -48,12 +50,12 @@ public class TileEntityPlacer extends InventoriedRedstoneTileEntity {
 		for (int i = 0; i < inv.length; i++) {
 			ItemStack is = inv[i];
 			if (is != null) {
-				int id = ReikaItemHelper.getWorldBlockIDFromItem(is);
+				Block id = ReikaItemHelper.getWorldBlockIDFromItem(is);
 				int meta = ReikaItemHelper.getWorldBlockMetaFromItem(is);
-				if (id != 0) {
+				if (id != Blocks.air) {
 					if (world.setBlock(dx, dy, dz, id, meta, 3)) {
 						ReikaInventoryHelper.decrStack(i, inv);
-						ReikaSoundHelper.playPlaceSound(world, dx, dy, dz, Block.blocksList[id]);
+						ReikaSoundHelper.playPlaceSound(world, dx, dy, dz, id);
 					}
 					return;
 				}
@@ -70,8 +72,8 @@ public class TileEntityPlacer extends InventoriedRedstoneTileEntity {
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-		int id = ReikaItemHelper.getWorldBlockIDFromItem(itemstack);
-		return id != 0;
+		Block id = ReikaItemHelper.getWorldBlockIDFromItem(itemstack);
+		return id != Blocks.air;
 	}
 
 	@Override

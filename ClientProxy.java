@@ -9,11 +9,13 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone;
 
-import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
-import Reika.DragonAPI.Auxiliary.CustomSoundHandler;
+import Reika.DragonAPI.Instantiable.IO.SoundLoader;
 import Reika.DragonAPI.Instantiable.Rendering.CustomWireRenderer;
 import Reika.ExpandedRedstone.Registry.RedstoneItems;
+import Reika.ExpandedRedstone.Registry.RedstoneSounds;
+
+import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -28,7 +30,9 @@ public class ClientProxy extends CommonProxy {
 		//MinecraftForge.EVENT_BUS.register(new SoundLoader(RotaryCraft.instance, SoundRegistry.soundList));
 		//MinecraftForge.EVENT_BUS.register(new SoundLoader(ExpandedRedstone.instance, SoundRegistry.soundList, SoundRegistry.SOUND_FOLDER));
 
-		CustomSoundHandler.instance.addSound("ExpandedRedstone", "shock");
+		//CustomSoundHandler.instance.addSound("ExpandedRedstone", "shock", SoundCategory.BLOCKS);
+
+		new SoundLoader(ExpandedRedstone.class, RedstoneSounds.soundList).register();
 	}
 
 	@Override
@@ -38,7 +42,7 @@ public class ClientProxy extends CommonProxy {
 		RenderingRegistry.registerBlockHandler(tileRender, circuit);
 		RenderingRegistry.registerBlockHandler(wireRender, wire);
 
-		MinecraftForgeClient.registerItemRenderer(RedstoneItems.PLACER.getShiftedID(), new CircuitPlacerRenderer());
+		MinecraftForgeClient.registerItemRenderer(RedstoneItems.PLACER.getItemInstance(), new CircuitPlacerRenderer());
 	}
 
 	// Override any other methods that need to be handled differently client side.

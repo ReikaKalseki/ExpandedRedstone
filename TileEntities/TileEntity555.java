@@ -9,17 +9,18 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 import Reika.DragonAPI.Instantiable.StepTimer;
 import Reika.DragonAPI.Libraries.IO.ReikaChatHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaFormatHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
-import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
-public class TileEntity555 extends ExpandedRedstoneTileEntity {
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+
+public class TileEntity555 extends TileRedstoneBase {
 
 	private StepTimer timer_on;
 	private StepTimer timer_off;

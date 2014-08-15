@@ -9,10 +9,11 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone;
 
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
-import Reika.ExpandedRedstone.Registry.RedstoneBlocks;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
+
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -25,12 +26,18 @@ public class TabRedstone extends CreativeTabs {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ItemStack getIconItemStack() {
-		return new ItemStack(RedstoneBlocks.TILEENTITY.getBlockID(), 1, RedstoneTiles.BREAKER.ordinal());
+		return RedstoneTiles.BREAKER.getItem();
 	}
 
 	@Override
 	public String getTranslatedTabLabel() {
 		return "Expanded Redstone"; //The name of the tab ingame
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Item getTabIconItem() {
+		return null;
 	}
 
 }

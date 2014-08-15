@@ -9,15 +9,15 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import Reika.DragonAPI.Instantiable.SyncPacket;
 import Reika.DragonAPI.Libraries.IO.ReikaChatHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
-import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
-public class TileEntitySignalScaler extends ExpandedRedstoneTileEntity {
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+
+public class TileEntitySignalScaler extends TileRedstoneBase {
 
 	private int minScale;
 	private int maxScale;

@@ -9,12 +9,13 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
-import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
-public class TileEntityColumnDecrementer extends ExpandedRedstoneTileEntity {
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
+public class TileEntityColumnDecrementer extends TileRedstoneBase {
 
 	@Override
 	public int getTEIndex() {

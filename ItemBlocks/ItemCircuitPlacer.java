@@ -9,10 +9,20 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.ItemBlocks;
 
+import Reika.DragonAPI.Libraries.ReikaPlayerAPI;
+import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
+import Reika.ExpandedRedstone.ExpandedRedstone;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
+import Reika.ExpandedRedstone.Registry.RedstoneTiles;
+import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker;
+import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker.Materials;
+import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
+import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel.Lens;
+
 import java.util.List;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,16 +31,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
-import Reika.DragonAPI.Libraries.ReikaPlayerAPI;
-import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
-import Reika.ExpandedRedstone.ExpandedRedstone;
-import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
-import Reika.ExpandedRedstone.Registry.RedstoneTiles;
-import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker;
-import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker.Materials;
-import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
-import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel.Lens;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -38,8 +39,8 @@ public class ItemCircuitPlacer extends Item {
 
 	private int index;
 
-	public ItemCircuitPlacer(int id) {
-		super(id);
+	public ItemCircuitPlacer() {
+		super();
 		hasSubtypes = true;
 		this.setMaxDamage(0);
 		this.setCreativeTab(ExpandedRedstone.tab);
@@ -47,7 +48,7 @@ public class ItemCircuitPlacer extends Item {
 
 	@Override
 	public boolean onItemUse(ItemStack is, EntityPlayer ep, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
-		if (!ReikaWorldHelper.softBlocks(world, x, y, z) && world.getBlockMaterial(x, y, z) != Material.water && world.getBlockMaterial(x, y, z) != Material.lava) {
+		if (!ReikaWorldHelper.softBlocks(world, x, y, z) && ReikaWorldHelper.getMaterial(world, x, y, z) != Material.water && ReikaWorldHelper.getMaterial(world, x, y, z) != Material.lava) {
 			if (side == 0)
 				--y;
 			if (side == 1)
@@ -60,7 +61,7 @@ public class ItemCircuitPlacer extends Item {
 				--x;
 			if (side == 5)
 				++x;
-			if (!ReikaWorldHelper.softBlocks(world, x, y, z) && world.getBlockMaterial(x, y, z) != Material.water && world.getBlockMaterial(x, y, z) != Material.lava)
+			if (!ReikaWorldHelper.softBlocks(world, x, y, z) && ReikaWorldHelper.getMaterial(world, x, y, z) != Material.water && ReikaWorldHelper.getMaterial(world, x, y, z) != Material.lava)
 				return false;
 		}
 		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(x, y, z, x+1, y+1, z+1);
@@ -74,10 +75,10 @@ public class ItemCircuitPlacer extends Item {
 		{
 			if (!ep.capabilities.isCreativeMode)
 				--is.stackSize;
-			world.setBlock(x, y, z, tile.getBlockID(), tile.getBlockMetadata(), 3);
+			world.setBlock(x, y, z, tile.getBlock(), tile.getBlockMetadata(), 3);
 		}
 		world.playSoundEffect(x+0.5, y+0.5, z+0.5, "step.stone", 1F, 1.5F);
-		ExpandedRedstoneTileEntity te = (ExpandedRedstoneTileEntity)world.getBlockTileEntity(x, y, z);
+		TileRedstoneBase te = (TileRedstoneBase)world.getTileEntity(x, y, z);
 		if (tile.isDirectionable()) {
 			if (tile.isReversedPlacement()) {
 				ForgeDirection dir = ReikaPlayerAPI.getDirectionFromPlayerLook(ep, tile.canBeVertical());
@@ -90,7 +91,7 @@ public class ItemCircuitPlacer extends Item {
 		else
 			te.setFacing(ForgeDirection.UNKNOWN);
 
-		te.placer = ep.getEntityName();
+		te.setPlacer(ep);
 		if (tile == RedstoneTiles.BREAKER) {
 			TileEntityBreaker brk = (TileEntityBreaker)te;
 			if (is.stackTagCompound != null) {
@@ -112,7 +113,7 @@ public class ItemCircuitPlacer extends Item {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(int id, CreativeTabs tab, List list) {
+	public void getSubItems(Item id, CreativeTabs tab, List list) {
 		for (int i = 0; i < RedstoneTiles.TEList.length; i++) {
 			ItemStack item = new ItemStack(id, 1, i);
 			if (i == RedstoneTiles.BREAKER.ordinal()) {
@@ -144,7 +145,7 @@ public class ItemCircuitPlacer extends Item {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public final void registerIcons(IconRegister ico) {}
+	public final void registerIcons(IIconRegister ico) {}
 
 	@Override
 	public int getMetadata(int meta) {
@@ -184,6 +185,11 @@ public class ItemCircuitPlacer extends Item {
 				li.add(String.format("Attack Range: %d", mat.attackRange));
 			}
 		}
+	}
+
+	@Override
+	public final String getItemStackDisplayName(ItemStack is) {
+		return RedstoneTiles.TEList[is.getItemDamage()].getName();
 	}
 
 }

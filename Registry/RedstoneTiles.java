@@ -9,17 +9,15 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.Registry;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Exception.RegistrationException;
+import Reika.DragonAPI.Instantiable.Data.BlockMap;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ExpandedRedstone.ExpandedRedstone;
-import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Base.BlockRedstoneBase;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
+import Reika.ExpandedRedstone.ItemBlocks.BlockRedstoneCamo;
+import Reika.ExpandedRedstone.ItemBlocks.BlockRedstoneMachine;
+import Reika.ExpandedRedstone.ItemBlocks.BlockRedstoneTile;
 import Reika.ExpandedRedstone.TileEntities.TileEntity555;
 import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogReceiver;
 import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogTransmitter;
@@ -42,56 +40,70 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
 import Reika.ExpandedRedstone.TileEntities.TileEntitySignalScaler;
 import Reika.ExpandedRedstone.TileEntities.TileEntityToggle;
 import Reika.ExpandedRedstone.TileEntities.TileEntityWeather;
+
+import net.minecraft.block.Block;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum RedstoneTiles {
 
-	BUD("Block Update Detector", TileEntityBUD.class),
-	BREAKER("Block Breaker", TileEntityBreaker.class),
-	PLACER("Block Placer", TileEntityPlacer.class),
-	EFFECTOR("Item Effector", TileEntityEffector.class),
-	PROXIMITY("Proximity Detector", TileEntityProximity.class),
-	TOGGLE("Toggle Latch", TileEntityToggle.class),
-	WEATHER("Weather Sensor", TileEntityWeather.class),
-	CHESTREADER("Chest Reader", TileEntityChestReader.class),
-	DRIVER("Signal Driver", TileEntityDriver.class),
-	CLOCK("Redstone Clock", TileEntity555.class),
-	CAMOFLAGE("Camouflage Block", TileEntityCamo.class),
-	EMITTER("Signal Emitter", TileEntityEmitter.class),
-	RECEIVER("Signal Receiver", TileEntityReceiver.class),
-	SHOCK("Shock Panel", TileEntityShockPanel.class),
-	PUMP("Redstone Pump", TileEntityRedstonePump.class),
-	HOPPER("Hopper Ticker", TileEntityHopperTicker.class),
-	SCALER("Signal Scaler", TileEntitySignalScaler.class),
-	COLUMN("Column Decrementer", TileEntityColumnDecrementer.class),
-	ANALOGTRANSMITTER("Analog Wireless Transmitter", TileEntityAnalogTransmitter.class),
-	ANALOGRECEIVER("Analog Wireless Receiver", TileEntityAnalogReceiver.class),
-	EQUALIZER("Equalizer", TileEntityEqualizer.class),
-	COUNTDOWN("Countdown Timer", TileEntityCountdown.class);
+	BUD("Block Update Detector", 						TileEntityBUD.class, 				BlockRedstoneMachine.class, 	0),
+	BREAKER("Block Breaker", 							TileEntityBreaker.class, 			BlockRedstoneMachine.class, 	1),
+	PLACER("Block Placer", 								TileEntityPlacer.class, 			BlockRedstoneMachine.class, 	2),
+	EFFECTOR("Item Effector", 							TileEntityEffector.class, 			BlockRedstoneMachine.class, 	3),
+	PROXIMITY("Proximity Detector",						TileEntityProximity.class, 			BlockRedstoneTile.class, 		0),
+	TOGGLE("Toggle Latch", 								TileEntityToggle.class, 			BlockRedstoneTile.class, 		1),
+	WEATHER("Weather Sensor", 							TileEntityWeather.class, 			BlockRedstoneTile.class, 		2),
+	CHESTREADER("Chest Reader", 						TileEntityChestReader.class, 		BlockRedstoneTile.class, 		3),
+	DRIVER("Signal Driver", 							TileEntityDriver.class, 			BlockRedstoneTile.class, 		4),
+	CLOCK("Redstone Clock", 							TileEntity555.class, 				BlockRedstoneTile.class, 		5),
+	CAMOFLAGE("Camouflage Block", 						TileEntityCamo.class, 				BlockRedstoneCamo.class, 		0),
+	EMITTER("Signal Emitter", 							TileEntityEmitter.class, 			BlockRedstoneMachine.class, 	4),
+	RECEIVER("Signal Receiver", 						TileEntityReceiver.class, 			BlockRedstoneMachine.class, 	5),
+	SHOCK("Shock Panel", 								TileEntityShockPanel.class, 		BlockRedstoneMachine.class, 	6),
+	PUMP("Redstone Pump", 								TileEntityRedstonePump.class, 		BlockRedstoneMachine.class, 	7),
+	HOPPER("Hopper Ticker", 							TileEntityHopperTicker.class, 		BlockRedstoneTile.class, 		6),
+	SCALER("Signal Scaler", 							TileEntitySignalScaler.class, 		BlockRedstoneTile.class, 		7),
+	COLUMN("Column Decrementer", 						TileEntityColumnDecrementer.class, 	BlockRedstoneMachine.class, 	8),
+	ANALOGTRANSMITTER("Analog Wireless Transmitter", 	TileEntityAnalogTransmitter.class, 	BlockRedstoneTile.class, 		8),
+	ANALOGRECEIVER("Analog Wireless Receiver", 			TileEntityAnalogReceiver.class, 	BlockRedstoneTile.class, 		9),
+	EQUALIZER("Equalizer", 								TileEntityEqualizer.class, 			BlockRedstoneTile.class, 		10),
+	COUNTDOWN("Countdown Timer", 						TileEntityCountdown.class, 			BlockRedstoneTile.class, 		11);
 
-	private Class te;
-	private String name;
+	private final Class te;
+	private final String name;
+	private final RedstoneBlocks block;
+	private final int meta;
+
+	private static final BlockMap<RedstoneTiles> tileMappings = new BlockMap();
 
 	public static final RedstoneTiles[] TEList = RedstoneTiles.values();
 
-	private RedstoneTiles(String n, Class<? extends ExpandedRedstoneTileEntity> cl) {
+	private RedstoneTiles(String n, Class<? extends TileRedstoneBase> cl, Class<? extends BlockRedstoneBase> b, int m) {
 		te = cl;
 		name = n;
+		block = RedstoneBlocks.getBlockFromClassAndOffset(b, m/16);
+		if (block == null) {
+			throw new RegistrationException(ExpandedRedstone.instance, "Tile "+this.name()+" registered with a null block!");
+		}
+		meta = m%16;
 	}
 
-	public RedstoneBlocks getBlockVariable() {
-		return this.ordinal() >= 16 ? RedstoneBlocks.TILEENTITY2 : RedstoneBlocks.TILEENTITY;
-	}
-
-	public int getBlockID() {
-		return this.getBlockVariable().getBlockID();
+	public Block getBlock() {
+		return block.getBlockInstance();
 	}
 
 	public int getBlockMetadata() {
-		return this.ordinal()%16;
+		return meta;
 	}
 
-	public static TileEntity createTEFromIDandMetadata(int id, int meta) {
+	public static TileEntity createTEFromIDandMetadata(Block id, int meta) {
 		int index = getIndexFromIDandMetadata(id, meta);
 		Class TEClass = TEList[index].te;
 		try {
@@ -108,18 +120,18 @@ public enum RedstoneTiles {
 	}
 
 	public static RedstoneTiles getTEAt(IBlockAccess world, int x, int y, int z) {
-		int id = world.getBlockId(x, y, z);
-		if (id != RedstoneBlocks.TILEENTITY.getBlockID() && id != RedstoneBlocks.TILEENTITY2.getBlockID())
-			return null;
-		int offset = id == RedstoneBlocks.TILEENTITY.getBlockID() ? 0 : 16;
+		Block id = world.getBlock(x, y, z);
 		int meta = world.getBlockMetadata(x, y, z);
-		int index = getIndexFromIDandMetadata(id, meta);
-		return TEList[index];
+		return getTEFromIDAndMetadata(id, meta);
 	}
 
-	public static int getIndexFromIDandMetadata(int id, int meta) {
-		int offset = id == RedstoneBlocks.TILEENTITY.getBlockID() ? 0 : 16;
-		return meta+offset;
+	public static RedstoneTiles getTEFromIDAndMetadata(Block id, int meta) {
+		return tileMappings.get(id, meta);
+	}
+
+	public static int getIndexFromIDandMetadata(Block id, int meta) {
+		RedstoneTiles r = tileMappings.get(id, meta);
+		return r != null ? r.ordinal() : -1;
 	}
 
 	public Class<? extends TileEntity> getTEClass() {
@@ -259,7 +271,7 @@ public enum RedstoneTiles {
 	}
 
 	public ItemStack getItem() {
-		return new ItemStack(RedstoneItems.PLACER.getShiftedID(), 1, this.ordinal());
+		return new ItemStack(RedstoneItems.PLACER.getItemInstance(), 1, this.ordinal());
 	}
 
 	public void addRecipe(Object... params) {
@@ -333,20 +345,12 @@ public enum RedstoneTiles {
 		return false;
 	}
 
-	public boolean isOpaque() {
-		switch(this) {
-		case BREAKER:
-		case BUD:
-		case EFFECTOR:
-		case PLACER:
-		case EMITTER:
-		case RECEIVER:
-		case SHOCK:
-		case PUMP:
-		case COLUMN:
-			return true;
-		default:
-			return false;
+	public static void loadMappings() {
+		for (int i = 0; i < RedstoneTiles.TEList.length; i++) {
+			RedstoneTiles r = RedstoneTiles.TEList[i];
+			Block id = r.getBlock();
+			int meta = r.getBlockMetadata();
+			tileMappings.put(id, meta, r);
 		}
 	}
 

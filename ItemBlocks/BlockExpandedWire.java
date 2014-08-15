@@ -9,6 +9,11 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.ItemBlocks;
 
+import Reika.DragonAPI.Interfaces.WireBlock;
+import Reika.ExpandedRedstone.ExpandedRedstone;
+import Reika.ExpandedRedstone.Registry.RedstoneBlocks;
+import Reika.ExpandedRedstone.Registry.RedstoneItems;
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,45 +23,39 @@ import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Facing;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
-import Reika.DragonAPI.Interfaces.WireBlock;
-import Reika.ExpandedRedstone.ExpandedRedstone;
-import Reika.ExpandedRedstone.Registry.RedstoneBlocks;
-import Reika.ExpandedRedstone.Registry.RedstoneItems;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockExpandedWire extends Block implements WireBlock {
 
-	private Icon[] icons = new Icon[2];
+	private IIcon[] icons = new IIcon[2];
 
-	public BlockExpandedWire(int ID, Material mat) {
-		super(ID, mat);
+	public BlockExpandedWire(Material mat) {
+		super(mat);
 		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.0625F, 1.0F);
 	}
 
 
 	@Override
 	public final ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
-		int id = this.idPicked(world, x, y, z);
-		if (id == 0)
-			return null;
-		int meta = world.getBlockMetadata(target.blockX, target.blockY, target.blockZ);
 		return RedstoneItems.BLUEWIRE.getStackOf();
 	}
 
 	@Override
-	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int meta, int fortune) {
+	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int meta, int fortune) {
 		ArrayList<ItemStack> li = new ArrayList<ItemStack>();
 		li.add(RedstoneItems.BLUEWIRE.getStackOf());
 		return li;
@@ -81,7 +80,7 @@ public class BlockExpandedWire extends Block implements WireBlock {
 
 	/**
 	 * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-	 * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
+	 * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this Blocks.
 	 */
 	@Override
 	public boolean isOpaqueCube()
@@ -125,7 +124,7 @@ public class BlockExpandedWire extends Block implements WireBlock {
 	@Override
 	public boolean canPlaceBlockAt(World world, int par2, int par3, int par4)
 	{
-		return world.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) || world.getBlockId(par2, par3 - 1, par4) == Block.glowStone.blockID;
+		return world.doesBlockHaveSolidTopSurface(world, par2, par3 - 1, par4) || world.getBlock(par2, par3 - 1, par4) == Blocks.glowstone;
 	}
 
 	/**
@@ -141,7 +140,7 @@ public class BlockExpandedWire extends Block implements WireBlock {
 		for (int l = 0; l < arraylist.size(); ++l)
 		{
 			ChunkPosition chunkposition = (ChunkPosition)arraylist.get(l);
-			world.notifyBlocksOfNeighborChange(chunkposition.x, chunkposition.y, chunkposition.z, blockID);
+			world.notifyBlocksOfNeighborChange(chunkposition.chunkPosX, chunkposition.chunkPosY, chunkposition.chunkPosZ, this);
 		}
 	}
 
@@ -151,8 +150,8 @@ public class BlockExpandedWire extends Block implements WireBlock {
 
 		for (int i1 = 0; i1 < 6; ++i1)
 		{
-			int id = world.getBlockId(par1 + Facing.offsetsXForSide[i1], par2 + Facing.offsetsYForSide[i1], par3 + Facing.offsetsZForSide[i1]);
-			if (id != Block.redstoneWire.blockID) {
+			Block b = world.getBlock(par1 + Facing.offsetsXForSide[i1], par2 + Facing.offsetsYForSide[i1], par3 + Facing.offsetsZForSide[i1]);
+			if (b != Blocks.redstone_wire) {
 				int j1 = world.getIndirectPowerLevelTo(par1 + Facing.offsetsXForSide[i1], par2 + Facing.offsetsYForSide[i1], par3 + Facing.offsetsZForSide[i1], i1);
 
 				if (j1 >= 15)
@@ -216,14 +215,14 @@ public class BlockExpandedWire extends Block implements WireBlock {
 				j2 = this.getMaxCurrentStrength(world, l2, par3, i3, j2);
 			}
 
-			if (world.isBlockNormalCube(l2, par3, i3) && !world.isBlockNormalCube(par2, par3 + 1, par4))
+			if (world.getBlock(l2, par3, i3).isNormalCube() && !world.getBlock(par2, par3 + 1, par4).isNormalCube())
 			{
 				if ((l2 != par5 || i3 != par7) && par3 >= par6)
 				{
 					j2 = this.getMaxCurrentStrength(world, l2, par3 + 1, i3, j2);
 				}
 			}
-			else if (!world.isBlockNormalCube(l2, par3, i3) && (l2 != par5 || i3 != par7) && par3 <= par6)
+			else if (!world.getBlock(l2, par3, i3).isNormalCube() && (l2 != par5 || i3 != par7) && par3 <= par6)
 			{
 				j2 = this.getMaxCurrentStrength(world, l2, par3 - 1, i3, j2);
 			}
@@ -266,16 +265,16 @@ public class BlockExpandedWire extends Block implements WireBlock {
 	 */
 	private void notifyWireNeighborsOfNeighborChange(World world, int x, int y, int z)
 	{
-		int id = world.getBlockId(x, y, z);
-		if (id == blockID)
+		Block b = world.getBlock(x, y, z);
+		if (b == this)
 		{
-			world.notifyBlocksOfNeighborChange(x, y, z, blockID);
-			world.notifyBlocksOfNeighborChange(x - 1, y, z, blockID);
-			world.notifyBlocksOfNeighborChange(x + 1, y, z, blockID);
-			world.notifyBlocksOfNeighborChange(x, y, z - 1, blockID);
-			world.notifyBlocksOfNeighborChange(x, y, z + 1, blockID);
-			world.notifyBlocksOfNeighborChange(x, y - 1, z, blockID);
-			world.notifyBlocksOfNeighborChange(x, y + 1, z, blockID);
+			world.notifyBlocksOfNeighborChange(x, y, z, this);
+			world.notifyBlocksOfNeighborChange(x - 1, y, z, this);
+			world.notifyBlocksOfNeighborChange(x + 1, y, z, this);
+			world.notifyBlocksOfNeighborChange(x, y, z - 1, this);
+			world.notifyBlocksOfNeighborChange(x, y, z + 1, this);
+			world.notifyBlocksOfNeighborChange(x, y - 1, z, this);
+			world.notifyBlocksOfNeighborChange(x, y + 1, z, this);
 		}
 	}
 
@@ -290,14 +289,14 @@ public class BlockExpandedWire extends Block implements WireBlock {
 		if (!world.isRemote)
 		{
 			this.updateAndPropagateCurrentStrength(world, par2, par3, par4);
-			world.notifyBlocksOfNeighborChange(par2, par3 + 1, par4, blockID);
-			world.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, blockID);
+			world.notifyBlocksOfNeighborChange(par2, par3 + 1, par4, this);
+			world.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, this);
 			this.notifyWireNeighborsOfNeighborChange(world, par2 - 1, par3, par4);
 			this.notifyWireNeighborsOfNeighborChange(world, par2 + 1, par3, par4);
 			this.notifyWireNeighborsOfNeighborChange(world, par2, par3, par4 - 1);
 			this.notifyWireNeighborsOfNeighborChange(world, par2, par3, par4 + 1);
 
-			if (world.isBlockNormalCube(par2 - 1, par3, par4))
+			if (world.getBlock(par2 - 1, par3, par4).isNormalCube())
 			{
 				this.notifyWireNeighborsOfNeighborChange(world, par2 - 1, par3 + 1, par4);
 			}
@@ -306,7 +305,7 @@ public class BlockExpandedWire extends Block implements WireBlock {
 				this.notifyWireNeighborsOfNeighborChange(world, par2 - 1, par3 - 1, par4);
 			}
 
-			if (world.isBlockNormalCube(par2 + 1, par3, par4))
+			if (world.getBlock(par2 + 1, par3, par4).isNormalCube())
 			{
 				this.notifyWireNeighborsOfNeighborChange(world, par2 + 1, par3 + 1, par4);
 			}
@@ -315,7 +314,7 @@ public class BlockExpandedWire extends Block implements WireBlock {
 				this.notifyWireNeighborsOfNeighborChange(world, par2 + 1, par3 - 1, par4);
 			}
 
-			if (world.isBlockNormalCube(par2, par3, par4 - 1))
+			if (world.getBlock(par2, par3, par4 - 1).isNormalCube())
 			{
 				this.notifyWireNeighborsOfNeighborChange(world, par2, par3 + 1, par4 - 1);
 			}
@@ -324,7 +323,7 @@ public class BlockExpandedWire extends Block implements WireBlock {
 				this.notifyWireNeighborsOfNeighborChange(world, par2, par3 - 1, par4 - 1);
 			}
 
-			if (world.isBlockNormalCube(par2, par3, par4 + 1))
+			if (world.getBlock(par2, par3, par4 + 1).isNormalCube())
 			{
 				this.notifyWireNeighborsOfNeighborChange(world, par2, par3 + 1, par4 + 1);
 			}
@@ -339,25 +338,25 @@ public class BlockExpandedWire extends Block implements WireBlock {
 	 * ejects contained items into the world, and notifies neighbours of an update, as appropriate
 	 */
 	@Override
-	public void breakBlock(World world, int par2, int par3, int par4, int par5, int par6)
+	public void breakBlock(World world, int par2, int par3, int par4, Block par5, int par6)
 	{
 		super.breakBlock(world, par2, par3, par4, par5, par6);
 
 		if (!world.isRemote)
 		{
-			world.notifyBlocksOfNeighborChange(par2, par3 + 1, par4, blockID);
-			world.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, blockID);
-			world.notifyBlocksOfNeighborChange(par2 + 1, par3, par4, blockID);
-			world.notifyBlocksOfNeighborChange(par2 - 1, par3, par4, blockID);
-			world.notifyBlocksOfNeighborChange(par2, par3, par4 + 1, blockID);
-			world.notifyBlocksOfNeighborChange(par2, par3, par4 - 1, blockID);
+			world.notifyBlocksOfNeighborChange(par2, par3 + 1, par4, this);
+			world.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, this);
+			world.notifyBlocksOfNeighborChange(par2 + 1, par3, par4, this);
+			world.notifyBlocksOfNeighborChange(par2 - 1, par3, par4, this);
+			world.notifyBlocksOfNeighborChange(par2, par3, par4 + 1, this);
+			world.notifyBlocksOfNeighborChange(par2, par3, par4 - 1, this);
 			this.updateAndPropagateCurrentStrength(world, par2, par3, par4);
 			this.notifyWireNeighborsOfNeighborChange(world, par2 - 1, par3, par4);
 			this.notifyWireNeighborsOfNeighborChange(world, par2 + 1, par3, par4);
 			this.notifyWireNeighborsOfNeighborChange(world, par2, par3, par4 - 1);
 			this.notifyWireNeighborsOfNeighborChange(world, par2, par3, par4 + 1);
 
-			if (world.isBlockNormalCube(par2 - 1, par3, par4))
+			if (world.getBlock(par2 - 1, par3, par4).isNormalCube())
 			{
 				this.notifyWireNeighborsOfNeighborChange(world, par2 - 1, par3 + 1, par4);
 			}
@@ -366,7 +365,7 @@ public class BlockExpandedWire extends Block implements WireBlock {
 				this.notifyWireNeighborsOfNeighborChange(world, par2 - 1, par3 - 1, par4);
 			}
 
-			if (world.isBlockNormalCube(par2 + 1, par3, par4))
+			if (world.getBlock(par2 + 1, par3, par4).isNormalCube())
 			{
 				this.notifyWireNeighborsOfNeighborChange(world, par2 + 1, par3 + 1, par4);
 			}
@@ -375,7 +374,7 @@ public class BlockExpandedWire extends Block implements WireBlock {
 				this.notifyWireNeighborsOfNeighborChange(world, par2 + 1, par3 - 1, par4);
 			}
 
-			if (world.isBlockNormalCube(par2, par3, par4 - 1))
+			if (world.getBlock(par2, par3, par4 - 1).isNormalCube())
 			{
 				this.notifyWireNeighborsOfNeighborChange(world, par2, par3 + 1, par4 - 1);
 			}
@@ -384,7 +383,7 @@ public class BlockExpandedWire extends Block implements WireBlock {
 				this.notifyWireNeighborsOfNeighborChange(world, par2, par3 - 1, par4 - 1);
 			}
 
-			if (world.isBlockNormalCube(par2, par3, par4 + 1))
+			if (world.getBlock(par2, par3, par4 + 1).isNormalCube())
 			{
 				this.notifyWireNeighborsOfNeighborChange(world, par2, par3 + 1, par4 + 1);
 			}
@@ -401,8 +400,8 @@ public class BlockExpandedWire extends Block implements WireBlock {
 	 */
 	private int getMaxCurrentStrength(World world, int par2, int par3, int par4, int par5)
 	{
-		//ReikaJavaLibrary.pConsole(world.getBlockId(par2, par3, par4));
-		if (world.getBlockId(par2, par3, par4) != blockID)
+		//ReikaJavaLibrary.pConsole(world.getBlock(par2, par3, par4));
+		if (world.getBlock(par2, par3, par4) != this)
 		{
 			return par5;
 		}
@@ -418,7 +417,7 @@ public class BlockExpandedWire extends Block implements WireBlock {
 	 * their own) Args: x, y, z, neighbor blockID
 	 */
 	@Override
-	public void onNeighborBlockChange(World world, int par2, int par3, int par4, int par5)
+	public void onNeighborBlockChange(World world, int par2, int par3, int par4, Block par5)
 	{
 		if (!world.isRemote)
 		{
@@ -440,7 +439,7 @@ public class BlockExpandedWire extends Block implements WireBlock {
 
 	/**
 	 * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
-	 * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
+	 * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the Blocks.
 	 */
 	@Override
 	public int isProvidingStrongPower(IBlockAccess iba, int x, int y, int z, int s)
@@ -471,7 +470,7 @@ public class BlockExpandedWire extends Block implements WireBlock {
 	/**
 	 * Returns true if the block is emitting indirect/weak redstone power on the specified side. If isBlockNormalCube
 	 * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
-	 * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
+	 * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the Blocks.
 	 */
 	@Override
 	public int isProvidingWeakPower(IBlockAccess iba, int x, int y, int z, int s)
@@ -483,11 +482,12 @@ public class BlockExpandedWire extends Block implements WireBlock {
 		return wiresProvidePower && this.isConnectedTo(iba, x, y, z, side) ? level : 0;
 	}
 
+	/*
 	@Override
 	public boolean shouldCheckWeakPower(World world, int x, int y, int z, int side)
 	{
 		return true;
-	}
+	}*/
 
 	/**
 	 * Can this block provide power. Only wire currently seems to have this change based on its state.
@@ -499,12 +499,12 @@ public class BlockExpandedWire extends Block implements WireBlock {
 	}
 
 	/**
-	 * Returns true if redstone wire can connect to the specified block. Params: World, X, Y, Z, side (not a normal
+	 * Returns true if redstone wire can connect to the specified Blocks. Params: World, X, Y, Z, side (not a normal
 	 * notch-side, this can be 0, 1, 2, 3 or -1)
 	 */
 	public static boolean isPowerProviderOrWire(IBlockAccess iba, int x, int y, int z, int s)
 	{
-		return iba.getBlockId(x, y, z) == getBlockInstance().blockID;
+		return iba.getBlock(x, y, z) == getBlockInstance();
 	}
 
 	@Override
@@ -560,9 +560,9 @@ public class BlockExpandedWire extends Block implements WireBlock {
 		}
 		else
 		{
-			int i1 = par0IBlockAccess.getBlockId(par1, par2, par3);
+			Block i1 = par0IBlockAccess.getBlock(par1, par2, par3);
 
-			if (i1 == Block.redstoneRepeaterActive.blockID)
+			if (i1 == Blocks.powered_repeater)
 			{
 				int j1 = par0IBlockAccess.getBlockMetadata(par1, par2, par3);
 				flag = par4 == (j1 & 3);
@@ -581,9 +581,9 @@ public class BlockExpandedWire extends Block implements WireBlock {
 	/**
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
-	public int idPicked(World world, int par2, int par3, int par4)
+	public Item getItem(World world, int par2, int par3, int par4)
 	{
-		return RedstoneItems.BLUEWIRE.getShiftedID();
+		return RedstoneItems.BLUEWIRE.getItemInstance();
 	}
 
 	@Override
@@ -593,7 +593,7 @@ public class BlockExpandedWire extends Block implements WireBlock {
 	 * When this method is called, your block should register all the icons it needs with the given IconRegister. This
 	 * is the only chance you get to register icons.
 	 */
-	public void registerIcons(IconRegister ico)
+	public void registerBlockIcons(IIconRegister ico)
 	{
 		icons[0] = ico.registerIcon("ExpandedRedstone:wire_core");
 		icons[1] = ico.registerIcon("ExpandedRedstone:wire_side");
@@ -606,7 +606,7 @@ public class BlockExpandedWire extends Block implements WireBlock {
 	@Override
 	public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side)
 	{
-		return false;//world.getBlockId(x, y, z) == blockID;//Block.blocksList[blockID].canProvidePower() && side != -1;
+		return false;//world.getBlock(x, y, z) == blockID;//Blocks.blocksList[blockID].canProvidePower() && side != -1;
 	}
 
 	@Override
@@ -616,26 +616,26 @@ public class BlockExpandedWire extends Block implements WireBlock {
 
 	public boolean isDirectlyConnectedTo(IBlockAccess world, int x, int y, int z, int s) {
 		ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[s];
-		int id = world.getBlockId(x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ);
+		Block b = world.getBlock(x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ);
 		int meta = world.getBlockMetadata(x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ);
-		int idup = world.getBlockId(x+dir.offsetX, y+dir.offsetY+1, z+dir.offsetZ);
-		int iddown = world.getBlockId(x+dir.offsetX, y+dir.offsetY-1, z+dir.offsetZ);
-		if (id == blockID)
+		Block idup = world.getBlock(x+dir.offsetX, y+dir.offsetY+1, z+dir.offsetZ);
+		Block iddown = world.getBlock(x+dir.offsetX, y+dir.offsetY-1, z+dir.offsetZ);
+		if (b == this)
 			return true;
-		if (idup == blockID)
+		if (idup == this)
 			return true;
-		if (iddown == blockID && !Block.opaqueCubeLookup[id])
+		if (iddown == this && !b.isOpaqueCube())
 			return true;
-		if (id == 0)
+		if (b == Blocks.air)
 			return false;
-		if (id == Block.redstoneWire.blockID)
+		if (b == Blocks.redstone_wire)
 			return false;
 
 		//Fully functional but not present in vanilla redstone
-		//if (id == Block.pistonBase.blockID || id == Block.pistonStickyBase.blockID || id == Block.pistonMoving.blockID)
+		//if (id == Blocks.piston.blockID || id == Blocks.pistonStickyBase.blockID || id == Blocks.pistonMoving.blockID)
 		//	return true;
 
-		Block b = Block.blocksList[id];
+		;
 		if (b instanceof BlockDirectional) {
 			int direct = BlockDirectional.getDirection(meta);
 			return (Direction.offsetX[direct] == -dir.offsetX && Direction.offsetZ[direct] == -dir.offsetZ) || (Direction.offsetX[direct] == dir.offsetX && Direction.offsetZ[direct] == dir.offsetZ);
@@ -646,26 +646,26 @@ public class BlockExpandedWire extends Block implements WireBlock {
 	@Override
 	public boolean isConnectedTo(IBlockAccess world, int x, int y, int z, int s) {
 		ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[s];
-		int id = world.getBlockId(x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ);
+		Block b = world.getBlock(x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ);
 		int meta = world.getBlockMetadata(x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ);
-		int idup = world.getBlockId(x+dir.offsetX, y+dir.offsetY+1, z+dir.offsetZ);
-		int iddown = world.getBlockId(x+dir.offsetX, y+dir.offsetY-1, z+dir.offsetZ);
-		if (id == blockID)
+		Block idup = world.getBlock(x+dir.offsetX, y+dir.offsetY+1, z+dir.offsetZ);
+		Block iddown = world.getBlock(x+dir.offsetX, y+dir.offsetY-1, z+dir.offsetZ);
+		if (b == this)
 			return true;
-		if (idup == blockID)
+		if (idup == this)
 			return true;
-		if (iddown == blockID && !Block.opaqueCubeLookup[id])
+		if (iddown == this && !b.isOpaqueCube())
 			return true;
-		if (id == 0)
+		if (b == Blocks.air)
 			return false;
-		if (id == Block.redstoneWire.blockID)
+		if (b == Blocks.redstone_wire)
 			return false;
 
 		//Fully functional but not present in vanilla redstone
-		//if (id == Block.pistonBase.blockID || id == Block.pistonStickyBase.blockID || id == Block.pistonMoving.blockID)
+		//if (id == Blocks.piston.blockID || id == Blocks.pistonStickyBase.blockID || id == Blocks.pistonMoving.blockID)
 		//	return true;
 
-		Block b = Block.blocksList[id];
+		;
 		if (b instanceof BlockDirectional) {
 			int direct = BlockDirectional.getDirection(meta);
 			return (Direction.offsetX[direct] == -dir.offsetX && Direction.offsetZ[direct] == -dir.offsetZ) || (Direction.offsetX[direct] == dir.offsetX && Direction.offsetZ[direct] == dir.offsetZ);
@@ -679,12 +679,12 @@ public class BlockExpandedWire extends Block implements WireBlock {
 
 	public boolean drawWireUp(IBlockAccess world, int x, int y, int z, int s) {
 		ForgeDirection dir = ForgeDirection.values()[s];
-		int id = world.getBlockId(x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ);
-		int idup = world.getBlockId(x+dir.offsetX, y+dir.offsetY+1, z+dir.offsetZ);
-		int iddown = world.getBlockId(x+dir.offsetX, y+dir.offsetY-1, z+dir.offsetZ);
-		if (id == blockID)
+		Block b = world.getBlock(x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ);
+		Block idup = world.getBlock(x+dir.offsetX, y+dir.offsetY+1, z+dir.offsetZ);
+		Block iddown = world.getBlock(x+dir.offsetX, y+dir.offsetY-1, z+dir.offsetZ);
+		if (b == this)
 			return false;
-		if (idup == blockID)
+		if (idup == this)
 			return true;
 		return false;
 	}
@@ -695,17 +695,17 @@ public class BlockExpandedWire extends Block implements WireBlock {
 	}
 
 	@Override
-	public Icon getConnectedSideOverlay() {
+	public IIcon getConnectedSideOverlay() {
 		return icons[1];
 	}
 
 	@Override
-	public Icon getBaseTexture() {
+	public IIcon getBaseTexture() {
 		return icons[0];
 	}
 
 	@Override
-	public Icon getIcon(int side, int meta) {
+	public IIcon getIcon(int side, int meta) {
 		return this.getBaseTexture();
 	}
 

@@ -9,17 +9,19 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRedstoneLogic;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
-import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
-public class TileEntityToggle extends ExpandedRedstoneTileEntity {
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRedstoneDiode;
+import net.minecraft.init.Blocks;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
+public class TileEntityToggle extends TileRedstoneBase {
 
 	private boolean lastPower;
 	private boolean lastRepeat;
@@ -42,11 +44,10 @@ public class TileEntityToggle extends ExpandedRedstoneTileEntity {
 	private boolean wasLastPowered(World world, int x, int y, int z, ForgeDirection side) {
 		boolean sided = world.getIndirectPowerOutput(x+side.offsetX, y+side.offsetY, z+side.offsetZ, side.getOpposite().ordinal());
 		boolean repeat = false;
-		int id = world.getBlockId(x+side.offsetX, y+side.offsetY, z+side.offsetZ);
-		if (id != 0) {
-			Block b = Block.blocksList[id];
-			if (b instanceof BlockRedstoneLogic) {
-				repeat = ((BlockRedstoneLogic) b).func_83011_d(world, x, y, z, side.ordinal());
+		Block b = world.getBlock(x+side.offsetX, y+side.offsetY, z+side.offsetZ);
+		if (b != Blocks.air) {
+			if (b instanceof BlockRedstoneDiode) {
+				repeat = ((BlockRedstoneDiode) b).func_149912_i(world, x, y, z, side.ordinal());
 			}
 		}
 		return (sided || repeat) && world.isBlockIndirectlyGettingPowered(x, y, z);

@@ -9,23 +9,24 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
 import Reika.DragonAPI.Base.CoreContainer;
 import Reika.ExpandedRedstone.Base.AnalogWireless;
-import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Base.InventoriedRedstoneTileEntity;
 import Reika.ExpandedRedstone.GUI.ContainerPlacer;
 import Reika.ExpandedRedstone.GUI.GuiAnalog;
 import Reika.ExpandedRedstone.GUI.GuiPlacer;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 public class GuiLoader implements IGuiHandler {
 
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		ExpandedRedstoneTileEntity te = (ExpandedRedstoneTileEntity)world.getBlockTileEntity(x, y, z);
+		TileRedstoneBase te = (TileRedstoneBase)world.getTileEntity(x, y, z);
 		RedstoneTiles r = RedstoneTiles.getTEAt(world, x, y, z);
 		if (r.hasInventory()) {
 			return new ContainerPlacer(player, (InventoriedRedstoneTileEntity)te);
@@ -37,7 +38,7 @@ public class GuiLoader implements IGuiHandler {
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		ExpandedRedstoneTileEntity te = (ExpandedRedstoneTileEntity)world.getBlockTileEntity(x, y, z);
+		TileRedstoneBase te = (TileRedstoneBase)world.getTileEntity(x, y, z);
 		RedstoneTiles r = RedstoneTiles.getTEAt(world, x, y, z);
 		if (r.hasInventory()) {
 			return new GuiPlacer(player, (InventoriedRedstoneTileEntity)te);

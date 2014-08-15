@@ -9,17 +9,17 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.GUI;
 
+import Reika.DragonAPI.Base.CoreContainer;
+import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
+import Reika.ExpandedRedstone.ExpandedRedstone;
+import Reika.ExpandedRedstone.Base.AnalogWireless;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
-
-import Reika.DragonAPI.Base.CoreContainer;
-import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
-import Reika.ExpandedRedstone.ExpandedRedstone;
-import Reika.ExpandedRedstone.Base.AnalogWireless;
 
 public class GuiAnalog extends GuiContainer {
 
@@ -76,10 +76,10 @@ public class GuiAnalog extends GuiContainer {
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
 		String s = tile.getTEName();
-		fontRenderer.drawString(s, xSize / 2 - fontRenderer.getStringWidth(s) / 2, 6, 4210752);
+		fontRendererObj.drawString(s, xSize / 2 - fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
 
 		String c = String.format("Channel: %d", channel);
-		fontRenderer.drawString(c, xSize / 2 - fontRenderer.getStringWidth(c) / 2, 110, 0);
+		fontRendererObj.drawString(c, xSize / 2 - fontRendererObj.getStringWidth(c) / 2, 110, 0);
 	}
 
 	@Override

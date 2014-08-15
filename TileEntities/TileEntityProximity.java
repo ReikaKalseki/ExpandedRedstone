@@ -9,6 +9,11 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
+import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
+import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
+import Reika.ExpandedRedstone.Registry.RedstoneTiles;
+
 import java.util.List;
 
 import net.minecraft.entity.Entity;
@@ -19,12 +24,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
-import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
-import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
-import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
-public class TileEntityProximity extends ExpandedRedstoneTileEntity {
+public class TileEntityProximity extends TileRedstoneBase {
 
 	private int range = 16;
 
@@ -59,7 +60,7 @@ public class TileEntityProximity extends ExpandedRedstoneTileEntity {
 
 	private void findCreatures(World world, int x, int y, int z) {
 		Class c = entity.getEntityClass();
-		AxisAlignedBB box = AxisAlignedBB.getAABBPool().getAABB(x, y, z, x+1, y+1, z+1).expand(range, range, range);
+		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(x, y, z, x+1, y+1, z+1).expand(range, range, range);
 		List<Entity> li = world.getEntitiesWithinAABB(c, box);
 		for (int i = 0; i < li.size(); i++) {
 			Entity e = li.get(i);

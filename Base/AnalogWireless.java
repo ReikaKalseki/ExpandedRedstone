@@ -9,16 +9,16 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.Base;
 
-import java.util.ArrayList;
-
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import Reika.DragonAPI.Instantiable.SyncPacket;
 import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogReceiver;
 import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogTransmitter;
 import Reika.RotaryCraft.API.Transducerable;
 
-public abstract class AnalogWireless extends ExpandedRedstoneTileEntity implements Transducerable {
+import java.util.ArrayList;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+
+public abstract class AnalogWireless extends TileRedstoneBase implements Transducerable {
 
 	public static final int CHANNELS = 8192;
 

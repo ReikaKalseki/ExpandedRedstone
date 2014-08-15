@@ -9,15 +9,16 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import Reika.DragonAPI.Instantiable.SyncPacket;
-import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
-public class TileEntityBUD extends ExpandedRedstoneTileEntity {
+import net.minecraft.block.Block;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 
-	private int IDStored;
+public class TileEntityBUD extends TileRedstoneBase {
+
+	private Block IDStored;
 	private int metaStored;
 
 	@Override
@@ -32,9 +33,9 @@ public class TileEntityBUD extends ExpandedRedstoneTileEntity {
 		int x = this.getFacingX();
 		int y = this.getFacingY();
 		int z = this.getFacingZ();
-		int id = world.getBlockId(x, y, z);
+		Block b = world.getBlock(x, y, z);
 		int meta = world.getBlockMetadata(x, y, z);
-		IDStored = id;
+		IDStored = b;
 		metaStored = meta;
 	}
 
@@ -42,10 +43,10 @@ public class TileEntityBUD extends ExpandedRedstoneTileEntity {
 		int x = this.getFacingX();
 		int y = this.getFacingY();
 		int z = this.getFacingZ();
-		int id = world.getBlockId(x, y, z);
+		Block b = world.getBlock(x, y, z);
 		int meta = world.getBlockMetadata(x, y, z);
 		//ReikaJavaLibrary.pConsole(id+":"+meta+" - "+IDStored+":"+metaStored, Side.SERVER);
-		return id != IDStored || meta != metaStored;
+		return b != IDStored || meta != metaStored;
 	}
 
 	@Override
@@ -58,7 +59,7 @@ public class TileEntityBUD extends ExpandedRedstoneTileEntity {
 	{
 		super.readSyncTag(NBT);
 
-		IDStored = NBT.getInteger("ids");
+		IDStored = Block.getBlockFromName(NBT.getString("ids"));
 		metaStored = NBT.getInteger("metas");
 	}
 
@@ -67,7 +68,7 @@ public class TileEntityBUD extends ExpandedRedstoneTileEntity {
 	{
 		super.writeSyncTag(NBT);
 
-		NBT.setInteger("ids", IDStored);
+		NBT.setString("ids", Block.blockRegistry.getNameForObject(IDStored));
 		NBT.setInteger("metas", metaStored);
 	}
 

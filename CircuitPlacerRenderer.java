@@ -9,15 +9,15 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone;
 
+import Reika.DragonAPI.Libraries.IO.ReikaTextureHelper;
+import Reika.ExpandedRedstone.Registry.RedstoneTiles;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
-
-import Reika.DragonAPI.Libraries.IO.ReikaTextureHelper;
-import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class CircuitPlacerRenderer implements IItemRenderer {
 
@@ -35,7 +35,7 @@ public class CircuitPlacerRenderer implements IItemRenderer {
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
 		RenderBlocks rb = (RenderBlocks)data[0];
 		RedstoneTiles r = RedstoneTiles.TEList[item.getItemDamage()];
-		Block b = Block.blocksList[r.getBlockID()];
+		Block b = r.getBlock();
 		int meta = r.getBlockMetadata();
 		ReikaTextureHelper.bindTerrainTexture();
 		if (type == ItemRenderType.ENTITY)

@@ -9,23 +9,25 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
-import java.util.List;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockSkull;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntitySkull;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.World;
 import Reika.DragonAPI.Libraries.ReikaAABBHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
 import Reika.ExpandedRedstone.Base.InventoriedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
+
+import java.util.List;
+
+import net.minecraft.block.BlockSkull;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntitySkull;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
 
 public class TileEntityEffector extends InventoriedRedstoneTileEntity {
 
@@ -65,12 +67,12 @@ public class TileEntityEffector extends InventoriedRedstoneTileEntity {
 			flag = !it.itemInteractionForEntity(is, ep, e);
 		}
 		if (flag) {
-			if (is.itemID == Item.skull.itemID) {
+			if (is.getItem() == Items.skull) {
 				it.onItemUse(is, ep, world, dx, dy-1, dz, 1, 0F, 0F, 0F);
 				if (is.getItemDamage() == 1) {
-					TileEntitySkull te = (TileEntitySkull)world.getBlockTileEntity(dx, dy, dz);
+					TileEntitySkull te = (TileEntitySkull)world.getTileEntity(dx, dy, dz);
 					if (te != null)
-						((BlockSkull)Block.skull).makeWither(world, dx, dy, dz, te);
+						((BlockSkull)Blocks.skull).func_149965_a(world, dx, dy, dz, te);
 				}
 			}
 			else {

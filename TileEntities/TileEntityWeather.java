@@ -9,11 +9,12 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
-import net.minecraft.world.World;
-import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
-public class TileEntityWeather extends ExpandedRedstoneTileEntity {
+import net.minecraft.world.World;
+
+public class TileEntityWeather extends TileRedstoneBase {
 
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {

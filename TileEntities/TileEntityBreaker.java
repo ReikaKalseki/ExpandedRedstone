@@ -9,32 +9,34 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
-import java.util.ArrayList;
-
-import net.minecraft.block.Block;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
-import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
-public class TileEntityBreaker extends ExpandedRedstoneTileEntity {
+import java.util.ArrayList;
+
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+
+public class TileEntityBreaker extends TileRedstoneBase {
 
 	private boolean lastPower;
 
 	public static final int WOOD_USES = 128;
 	public static final int MAX_RANGE = 12;
 
-	public static final ItemStack BARRIER_BLOCK = new ItemStack(Block.blockLapis);
+	public static final ItemStack BARRIER_BLOCK = new ItemStack(Blocks.lapis_block);
 
 	private Materials harvest;
 	private int dura;
@@ -59,23 +61,22 @@ public class TileEntityBreaker extends ExpandedRedstoneTileEntity {
 			return this == WOOD;
 		}
 
-		public boolean canHarvest(int dura, int id, int meta) {
-			if (id == 0)
+		public boolean canHarvest(int dura, Block b, int meta, World world, int x, int y, int z) {
+			if (b == Blocks.air)
 				return false;
-			if (id == Block.bedrock.blockID)
+			if (b == Blocks.bedrock)
 				return false;
-			Block b = Block.blocksList[id];
-			if (b.blockHardness < 0)
+			if (b.getBlockHardness(world, x, y, z) < 0)
 				return false;
 			switch(this) {
 			case WOOD:
-				return dura > 0 && b.blockMaterial.isToolNotRequired();
+				return dura > 0 && b.getMaterial().isToolNotRequired();
 			case STONE:
-				return b.blockMaterial.isToolNotRequired();
+				return b.getMaterial().isToolNotRequired();
 			case IRON:
-				return Item.pickaxeIron.canHarvestBlock(b) || b.blockMaterial.isToolNotRequired();
+				return Items.iron_pickaxe.canHarvestBlock(b, new ItemStack(Items.iron_pickaxe)) || b.getMaterial().isToolNotRequired();
 			case DIAMOND:
-				return id != BARRIER_BLOCK.itemID || meta != BARRIER_BLOCK.getItemDamage();
+				return b != Block.getBlockFromItem(BARRIER_BLOCK.getItem()) || meta != BARRIER_BLOCK.getItemDamage();
 			default:
 				return false;
 			}
@@ -103,22 +104,21 @@ public class TileEntityBreaker extends ExpandedRedstoneTileEntity {
 			int dx = this.getFacingXScaled(k);
 			int dy = this.getFacingYScaled(k);
 			int dz = this.getFacingZScaled(k);
-			int id = world.getBlockId(dx, dy, dz);
+			Block b = world.getBlock(dx, dy, dz);
 			int meta = world.getBlockMetadata(dx, dy, dz);
-			if (harvest.canHarvest(dura, id, meta)) {
-				Block b = Block.blocksList[id];
-				ArrayList<ItemStack> items = b.getBlockDropped(world, dx, dy, dz, meta, 0);
+			if (harvest.canHarvest(dura, b, meta, world, dx, dy, dz)) {
+				ArrayList<ItemStack> items = b.getDrops(world, dx, dy, dz, meta, 0);
 				for (int i = 0; i < items.size(); i++) {
 					ItemStack is = items.get(i);
 					if (!this.chestCheck(world, this.getBackX(), this.getBackY(), this.getBackZ(), is))
 						ReikaItemHelper.dropItem(world, this.getBackX()+0.5, this.getBackY()+0.5, this.getBackZ()+0.5, is);
 				}
-				world.setBlock(dx, dy, dz, 0);
+				world.setBlockToAir(dx, dy, dz);
 				ReikaSoundHelper.playBreakSound(world, dx, dy, dz, b);
 				if (harvest.isDamageable())
 					dura--;
 			}
-			else if (id == BARRIER_BLOCK.itemID && meta == BARRIER_BLOCK.getItemDamage())
+			else if (b == Block.getBlockFromItem(BARRIER_BLOCK.getItem()) && meta == BARRIER_BLOCK.getItemDamage())
 				return;
 		}
 	}
@@ -131,7 +131,7 @@ public class TileEntityBreaker extends ExpandedRedstoneTileEntity {
 		int dx = this.getBackX();
 		int dy = this.getBackY();
 		int dz = this.getBackZ();
-		TileEntity te = world.getBlockTileEntity(dx, dy, dz);
+		TileEntity te = world.getTileEntity(dx, dy, dz);
 		IInventory ii;
 		if (te instanceof IInventory) {
 			ii = (IInventory)te;

@@ -9,11 +9,12 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
-import net.minecraft.world.World;
-import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
-public class TileEntityEmitter extends ExpandedRedstoneTileEntity {
+import net.minecraft.world.World;
+
+public class TileEntityEmitter extends TileRedstoneBase {
 
 	@Override
 	public int getTEIndex() {

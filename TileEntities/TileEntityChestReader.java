@@ -9,16 +9,17 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
+import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
+import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
+import Reika.ExpandedRedstone.Registry.RedstoneTiles;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
-import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
-import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
-import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
-public class TileEntityChestReader extends ExpandedRedstoneTileEntity {
+public class TileEntityChestReader extends TileRedstoneBase {
 
 	private boolean signalFull = true;
 
@@ -29,7 +30,7 @@ public class TileEntityChestReader extends ExpandedRedstoneTileEntity {
 	}
 
 	private void readChest(World world) {
-		TileEntity te = world.getBlockTileEntity(this.getFacingX(), this.getFacingY(), this.getFacingZ());
+		TileEntity te = world.getTileEntity(this.getFacingX(), this.getFacingY(), this.getFacingZ());
 		if (te instanceof IInventory) {
 			if (signalFull)
 				this.setEmitting(ReikaInventoryHelper.isFull((IInventory)te));

@@ -9,21 +9,24 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import Reika.DragonAPI.Instantiable.HybridTank;
 import Reika.DragonAPI.Instantiable.Data.BlockArray;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
+import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.ExpandedRedstone.Base.InventoriedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
+
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 public class TileEntityRedstonePump extends InventoriedRedstoneTileEntity {
 
@@ -39,15 +42,15 @@ public class TileEntityRedstonePump extends InventoriedRedstoneTileEntity {
 
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
-		int idbelow = world.getBlockId(x, y-1, z);
-		if (idbelow == 0)
+		Block idbelow = world.getBlock(x, y-1, z);
+		if (idbelow == Blocks.air)
 			return;
-		Block b = Block.blocksList[idbelow];
+		Block b = idbelow;
 		Fluid f2 = FluidRegistry.lookupFluidForBlock(b);
 		if (f2 == null)
 			return;
 		if (blocks.isEmpty()) {
-			blocks.setLiquid(world.getBlockMaterial(x, y-1, z));
+			blocks.setLiquid(ReikaWorldHelper.getMaterial(world, x, y-1, z));
 			blocks.recursiveAddLiquidWithBounds(world, x, y-1, z, x-16, 0, z-16, x+16, y-1, z+16);
 			blocks.reverseBlockOrder();
 		}
@@ -58,7 +61,7 @@ public class TileEntityRedstonePump extends InventoriedRedstoneTileEntity {
 			Fluid f = this.getLiquidHarvested(world, xyz[0], xyz[1], xyz[2]);
 			if (f != null && this.canAccept(f)) {
 				tank.addLiquid(1000, f);
-				world.setBlock(xyz[0], xyz[1], xyz[2], 0);
+				world.setBlockToAir(xyz[0], xyz[1], xyz[2]);
 				world.markBlockForUpdate(xyz[0], xyz[1], xyz[2]);
 				if (RedstoneOptions.NOISES.getState())
 					ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click");
@@ -82,8 +85,8 @@ public class TileEntityRedstonePump extends InventoriedRedstoneTileEntity {
 	}
 
 	private Fluid getLiquidHarvested(World world, int x, int y, int z) {
-		int id = world.getBlockId(x, y, z);
-		Block b = Block.blocksList[id];
+		Block b = world.getBlock(x, y, z);
+		;
 		Fluid f = FluidRegistry.lookupFluidForBlock(b);
 		return f;
 	}

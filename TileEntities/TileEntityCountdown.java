@@ -9,16 +9,17 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 import Reika.DragonAPI.Libraries.IO.ReikaChatHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaFormatHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
-import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
-public class TileEntityCountdown extends ExpandedRedstoneTileEntity {
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+
+public class TileEntityCountdown extends TileRedstoneBase {
 
 	private Delay time = Delay.FIVEMIN;
 	private int count = time.length;
@@ -61,11 +62,11 @@ public class TileEntityCountdown extends ExpandedRedstoneTileEntity {
 			if (RedstoneOptions.NOISES.getState()) {
 				if (count%20 == 0) {
 					ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.25F, 1F);
-					world.markBlockForRenderUpdate(x, y, z);
+					world.func_147479_m(x, y, z);
 				}
 				else if (count%5 == 0) {
 					ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.125F, 1.5F);
-					world.markBlockForRenderUpdate(x, y, z);
+					world.func_147479_m(x, y, z);
 				}
 			}
 		}

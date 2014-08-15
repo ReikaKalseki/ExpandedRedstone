@@ -9,13 +9,15 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
-import net.minecraft.block.Block;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
-public class TileEntityReceiver extends ExpandedRedstoneTileEntity {
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+
+public class TileEntityReceiver extends TileRedstoneBase {
 
 	private int[] target = {Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE};
 
@@ -41,7 +43,7 @@ public class TileEntityReceiver extends ExpandedRedstoneTileEntity {
 			this.setEmitting(false);
 			return;
 		}
-		TileEntityEmitter te = (TileEntityEmitter)world.getBlockTileEntity(x, y, z);
+		TileEntityEmitter te = (TileEntityEmitter)world.getTileEntity(x, y, z);
 		if (te != null && te.getFacing() == this.getFacing().getOpposite() && te.isBeaming())
 			this.setEmitting(true);
 		else
@@ -53,7 +55,7 @@ public class TileEntityReceiver extends ExpandedRedstoneTileEntity {
 			int dx = this.getFacingXScaled(i);
 			int dy = this.getFacingYScaled(i);
 			int dz = this.getFacingZScaled(i);
-			int id = world.getBlockId(dx, dy, dz);
+			Block b = world.getBlock(dx, dy, dz);
 			int meta = world.getBlockMetadata(dx, dy, dz);
 			if (RedstoneTiles.getTEAt(world, dx, dy, dz) == RedstoneTiles.EMITTER) {
 				target[0] = dx;
@@ -61,8 +63,7 @@ public class TileEntityReceiver extends ExpandedRedstoneTileEntity {
 				target[2] = dz;
 				return;
 			}
-			else if (id != 0) {
-				Block b = Block.blocksList[id];
+			else if (b != Blocks.air) {
 				if (b.getLightOpacity(world, dx, dy, dz) > 0) {
 					for (int k = 0; k < 3; k++)
 						target[k] = Integer.MIN_VALUE;

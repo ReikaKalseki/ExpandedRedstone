@@ -9,17 +9,19 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockFluid;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Icon;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
-import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
-import Reika.ExpandedRedstone.ItemBlocks.BlockRedTile;
+import Reika.ExpandedRedstone.Base.BlockRedstoneBase;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
-public class TileEntityCamo extends ExpandedRedstoneTileEntity {
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
+public class TileEntityCamo extends TileRedstoneBase {
 
 	@Override
 	public int getTEIndex() {
@@ -39,36 +41,36 @@ public class TileEntityCamo extends ExpandedRedstoneTileEntity {
 	}
 
 	@Override
-	public Icon getOverridingIcon(int side) {
-		int id = worldObj.getBlockId(xCoord, yCoord-1, zCoord);
+	public IIcon getOverridingIcon(int side) {
+		Block id = worldObj.getBlock(xCoord, yCoord-1, zCoord);
 		int meta = worldObj.getBlockMetadata(xCoord, yCoord-1, zCoord);
-		if (id == 0)
-			return BlockRedTile.trans;
+		if (id == Blocks.air)
+			return BlockRedstoneBase.trans;
 		if (id == this.getTileEntityBlockID() && meta == this.getTEIndex()) {
-			TileEntityCamo te = (TileEntityCamo)worldObj.getBlockTileEntity(xCoord, yCoord-1, zCoord);
+			TileEntityCamo te = (TileEntityCamo)worldObj.getTileEntity(xCoord, yCoord-1, zCoord);
 			if (te.isOverridingIcon(side)) {
-				Icon ico = te.getOverridingIcon(side);
-				if (ico == Block.grass.getIcon(side, meta) && !this.canRenderAsGrass())
-					ico = Block.dirt.getIcon(side, meta);
-				else if (te.getImitatedBlockID() == Block.grass.blockID && ico == Block.dirt.getIcon(side, meta) && this.canRenderAsGrass())
-					ico = Block.grass.getIcon(side, meta);
+				IIcon ico = te.getOverridingIcon(side);
+				if (ico == Blocks.grass.getIcon(side, meta) && !this.canRenderAsGrass())
+					ico = Blocks.dirt.getIcon(side, meta);
+				else if (te.getImitatedBlockID() == Blocks.grass && ico == Blocks.dirt.getIcon(side, meta) && this.canRenderAsGrass())
+					ico = Blocks.grass.getIcon(side, meta);
 				return ico;
 			}
 		}
-		Icon ico = Block.blocksList[id].getIcon(side, meta);
-		if (ico == Block.grass.getIcon(side, meta) && !this.canRenderAsGrass())
-			ico = Block.dirt.getIcon(side, meta);
+		IIcon ico = id.getIcon(side, meta);
+		if (ico == Blocks.grass.getIcon(side, meta) && !this.canRenderAsGrass())
+			ico = Blocks.dirt.getIcon(side, meta);
 		return ico;
 	}
 
-	public int getImitatedBlockID() {
+	public Block getImitatedBlockID() {
 		if (!this.isOverridingIcon(0))
-			return -1;
+			return null;
 		else {
-			int id = worldObj.getBlockId(xCoord, yCoord-1, zCoord);
+			Block id = worldObj.getBlock(xCoord, yCoord-1, zCoord);
 			int meta = worldObj.getBlockMetadata(xCoord, yCoord-1, zCoord);
 			if (id == this.getTileEntityBlockID() && meta == this.getTEIndex()) {
-				TileEntityCamo co = (TileEntityCamo)worldObj.getBlockTileEntity(xCoord, yCoord-1, zCoord);
+				TileEntityCamo co = (TileEntityCamo)worldObj.getTileEntity(xCoord, yCoord-1, zCoord);
 				return co.getImitatedBlockID();
 			}
 			else
@@ -78,45 +80,44 @@ public class TileEntityCamo extends ExpandedRedstoneTileEntity {
 
 	public AxisAlignedBB getBoundingBox() {
 		if (!this.isOverridingIcon(0))
-			return AxisAlignedBB.getAABBPool().getAABB(0, 0, 0, 1, 1, 1);
-		int id = worldObj.getBlockId(xCoord, yCoord-1, zCoord);
+			return AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, 1);
+		Block b = worldObj.getBlock(xCoord, yCoord-1, zCoord);
 		int meta = worldObj.getBlockMetadata(xCoord, yCoord-1, zCoord);
-		if (id == 0)
+		if (b == Blocks.air)
 			return null;
-		if (id == this.getTileEntityBlockID() && meta == this.getTEIndex()) {
-			TileEntityCamo te = (TileEntityCamo)worldObj.getBlockTileEntity(xCoord, yCoord-1, zCoord);
+		if (b == this.getTileEntityBlockID() && meta == this.getTEIndex()) {
+			TileEntityCamo te = (TileEntityCamo)worldObj.getTileEntity(xCoord, yCoord-1, zCoord);
 			if (te.isOverridingIcon(0))
 				return te.getBoundingBox();
 		}
-		Block b = Block.blocksList[id];
 		double minx = b.getBlockBoundsMinX();
 		double miny = b.getBlockBoundsMinY();
 		double minz = b.getBlockBoundsMinZ();
 		double maxx = b.getBlockBoundsMaxX();
 		double maxy = b.getBlockBoundsMaxY();
 		double maxz = b.getBlockBoundsMaxZ();
-		if (b instanceof BlockFluid) {
-			maxy = 1-BlockFluid.getFluidHeightPercent(meta);
+		if (b instanceof BlockLiquid) {
+			maxy = 1-BlockLiquid.getLiquidHeightPercent(meta);
 		}
-		AxisAlignedBB box = AxisAlignedBB.getAABBPool().getAABB(minx, miny, minz, maxx, maxy, maxz);
-		//return Block.blocksList[id].getCollisionBoundingBoxFromPool(worldObj, xCoord, yCoord-1, zCoord);
+		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(minx, miny, minz, maxx, maxy, maxz);
+		//return Blocks.blocksList[id].getCollisionBoundingBoxFromPool(worldObj, xCoord, yCoord-1, zCoord);
 		return box;
 	}
 
 	//ReikaJavaLibrary.pConsoleIf(this.canRenderAsGrass(), yCoord == 64);
 	public boolean canRenderAsGrass() {
-		int id = worldObj.getBlockId(xCoord, yCoord+1, zCoord);
+		Block id = worldObj.getBlock(xCoord, yCoord+1, zCoord);
 		int meta = worldObj.getBlockMetadata(xCoord, yCoord+1, zCoord);
-		if (id == 0)
+		if (id == Blocks.air)
 			return true;
 		if (id == this.getTileEntityBlockID()) {
 			if (meta == this.getTEIndex()) {
-				TileEntityCamo co = (TileEntityCamo)worldObj.getBlockTileEntity(xCoord, yCoord+1, zCoord);
+				TileEntityCamo co = (TileEntityCamo)worldObj.getTileEntity(xCoord, yCoord+1, zCoord);
 				if (co.isOverridingIcon(0)) {
-					int im = co.getImitatedBlockID();
-					if (im == -1)
+					Block im = co.getImitatedBlockID();
+					if (im == Blocks.air || im == null)
 						return true;
-					return Block.canBlockGrass[im];
+					return im.getCanBlockGrass();
 				}
 				else
 					return true;
@@ -124,7 +125,7 @@ public class TileEntityCamo extends ExpandedRedstoneTileEntity {
 			else
 				return true;
 		}
-		return Block.canBlockGrass[id];
+		return id.getCanBlockGrass();
 	}
 
 	@Override

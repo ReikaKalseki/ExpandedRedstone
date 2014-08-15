@@ -9,62 +9,59 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.Registry;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.ItemBlock;
-import Reika.DragonAPI.Interfaces.RegistryEnum;
+import Reika.DragonAPI.Instantiable.Data.PluralMap;
+import Reika.DragonAPI.Interfaces.BlockEnum;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.ExpandedRedstone.ExpandedRedstone;
+import Reika.ExpandedRedstone.Base.BlockRedstoneBase;
 import Reika.ExpandedRedstone.ItemBlocks.BlockExpandedWire;
-import Reika.ExpandedRedstone.ItemBlocks.BlockRedTile;
+import Reika.ExpandedRedstone.ItemBlocks.BlockRedstoneCamo;
+import Reika.ExpandedRedstone.ItemBlocks.BlockRedstoneMachine;
+import Reika.ExpandedRedstone.ItemBlocks.BlockRedstoneTile;
 
-public enum RedstoneBlocks implements RegistryEnum {
+import java.util.HashMap;
 
-	TILEENTITY(BlockRedTile.class),
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+
+public enum RedstoneBlocks implements BlockEnum {
+
+	THINTILE(BlockRedstoneTile.class),
 	WIRE(BlockExpandedWire.class),
-	TILEENTITY2(BlockRedTile.class);
+	FULLBLOCK(BlockRedstoneMachine.class),
+	CAMO(BlockRedstoneCamo.class);
 
-	private Class blockClass;
+	private final Class blockClass;
+	private final int offset;
 
 	public static final RedstoneBlocks[] blockList = RedstoneBlocks.values();
 
+	private static final HashMap<Block, RedstoneBlocks> IDMap = new HashMap();
+	private static final PluralMap<RedstoneBlocks> classMap = new PluralMap(2);
+
 	private RedstoneBlocks(Class<? extends Block> cl) {
+		this(cl, 0);
+	}
+
+	private RedstoneBlocks(Class<? extends Block> cl, int o) {
 		blockClass = cl;
+		offset = o;
 	}
 
-	@Override
-	public String getConfigName() {
-		return this.getBasicName();
-	}
-
-	@Override
-	public int getDefaultID() {
-		return 3000+this.ordinal();
-	}
-
-	@Override
-	public boolean isBlock() {
-		return true;
-	}
-
-	@Override
-	public boolean isItem() {
-		return false;
-	}
-
-	@Override
-	public String getCategory() {
-		return "Block IDs";
+	static RedstoneBlocks getBlockFromClassAndOffset(Class<? extends Block> c, int i) {
+		return classMap.get(c, i);
 	}
 
 	@Override
 	public Class[] getConstructorParamTypes() {
-		return new Class[]{int.class, Material.class};
+		return new Class[]{Material.class};
 	}
 
 	@Override
 	public Object[] getConstructorParams() {
-		return new Object[]{this.getBlockID(), this.getBlockMaterial()};
+		return new Object[]{this.getBlockMaterial()};
 	}
 
 	public Material getBlockMaterial() {
@@ -76,8 +73,8 @@ public enum RedstoneBlocks implements RegistryEnum {
 		}
 	}
 
-	public int getBlockID() {
-		return ExpandedRedstone.config.getBlockID(this.ordinal());
+	public Block getBlockInstance() {
+		return ExpandedRedstone.blocks[this.ordinal()];
 	}
 
 	@Override
@@ -107,12 +104,16 @@ public enum RedstoneBlocks implements RegistryEnum {
 
 	@Override
 	public boolean hasMultiValuedName() {
-		return this == TILEENTITY;
+		return this.isTileEntity();
+	}
+
+	private boolean isTileEntity() {
+		return BlockRedstoneBase.class.isAssignableFrom(blockClass);
 	}
 
 	@Override
 	public int getNumberMetadatas() {
-		return RedstoneTiles.TEList.length;
+		return this.isTileEntity() ? 16 : 1;
 	}
 
 	@Override
@@ -129,13 +130,16 @@ public enum RedstoneBlocks implements RegistryEnum {
 		return blockClass == null;
 	}
 
-	public int getID() {
-		return this.getBlockID();
+	public Item getItem() {
+		return Item.getItemFromBlock(this.getBlockInstance());
 	}
 
-	@Override
-	public boolean overwritingItem() {
-		return false;
+	public static void loadMappings() {
+		for (int i = 0; i < blockList.length; i++) {
+			RedstoneBlocks block = blockList[i];
+			IDMap.put(block.getBlockInstance(), block);
+			classMap.put(block, block.blockClass, block.offset);
+		}
 	}
 
 }

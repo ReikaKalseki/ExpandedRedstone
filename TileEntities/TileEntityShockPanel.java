@@ -9,24 +9,26 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
-import java.util.List;
-
-import net.minecraft.block.Block;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
-import Reika.DragonAPI.Instantiable.SyncPacket;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaParticleHelper;
 import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
-import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
+import Reika.ExpandedRedstone.Registry.RedstoneSounds;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
-public class TileEntityShockPanel extends ExpandedRedstoneTileEntity {
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
+public class TileEntityShockPanel extends TileRedstoneBase {
 
 	public enum Lens {
 		GLASS(1, 1),
@@ -83,7 +85,8 @@ public class TileEntityShockPanel extends ExpandedRedstoneTileEntity {
 			ReikaParticleHelper.CRITICAL.spawnAt(world, rx, ry, rz, vx, 0.2, vz);
 		}
 
-		ReikaSoundHelper.playSoundAtBlock(world, x, y, z, "expandedredstone:shock");
+		//ReikaSoundHelper.playSoundAtBlock(world, x, y, z, "expandedredstone:shock");
+		ReikaSoundHelper.playSound(RedstoneSounds.SHOCK, x+0.5, y+0.5, z+0.5, 1, 1);
 	}
 
 	private boolean canFire(World world, int x, int y, int z) {
@@ -93,7 +96,7 @@ public class TileEntityShockPanel extends ExpandedRedstoneTileEntity {
 			int dz = this.getFacingZScaled(i);
 			RedstoneTiles r = RedstoneTiles.getTEAt(world, dx, dy, dz);
 			if (r == RedstoneTiles.SHOCK) {
-				TileEntityShockPanel te = (TileEntityShockPanel)world.getBlockTileEntity(dx, dy, dz);
+				TileEntityShockPanel te = (TileEntityShockPanel)world.getTileEntity(dx, dy, dz);
 				if (te.getFacing() != this.getFacing().getOpposite()) {
 					return false;
 				}
@@ -119,10 +122,9 @@ public class TileEntityShockPanel extends ExpandedRedstoneTileEntity {
 			int dx = x+dir.offsetX*i;
 			int dy = y+dir.offsetY*i;
 			int dz = z+dir.offsetZ*i;
-			int id = world.getBlockId(dx, dy, dz);
-			if (id != 0) {
-				Block b = Block.blocksList[id];
-				if (b.isOpaqueCube() || Block.opaqueCubeLookup[id] || b.blockMaterial.isSolid()) {
+			Block b = world.getBlock(dx, dy, dz);
+			if (b != Blocks.air) {
+				if (b.isOpaqueCube() || b.getMaterial().isSolid()) {
 					d = i;
 					break;
 				}
@@ -150,7 +152,7 @@ public class TileEntityShockPanel extends ExpandedRedstoneTileEntity {
 		else
 			dz = 0;
 
-		AxisAlignedBB box = AxisAlignedBB.getAABBPool().getAABB(x-dx, y-dy, z-dz, x+1+dx2, y+1+dy2, z+1+dz2);
+		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(x-dx, y-dy, z-dz, x+1+dx2, y+1+dy2, z+1+dz2);
 		//ReikaJavaLibrary.pConsole(box, Side.SERVER);
 		return box;
 	}

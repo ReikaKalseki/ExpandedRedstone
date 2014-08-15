@@ -9,31 +9,34 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone;
 
+import Reika.DragonAPI.Libraries.World.ReikaBiomeHelper;
+import Reika.ExpandedRedstone.Base.BlockRedstoneBase;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
+import Reika.ExpandedRedstone.Registry.RedstoneTiles;
+import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
+
 import java.awt.Color;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGrass;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.Icon;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
-import Reika.DragonAPI.Libraries.World.ReikaBiomeHelper;
-import Reika.ExpandedRedstone.Base.ExpandedRedstoneTileEntity;
-import Reika.ExpandedRedstone.ItemBlocks.BlockRedTile;
-import Reika.ExpandedRedstone.Registry.RedstoneTiles;
-import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class CircuitBlockRenderer implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public void renderInventoryBlock(Block b, int meta, int modelID, RenderBlocks rb) {
-		RedstoneTiles r = RedstoneTiles.TEList[RedstoneTiles.getIndexFromIDandMetadata(b.blockID, meta)];
+		RedstoneTiles r = RedstoneTiles.TEList[RedstoneTiles.getIndexFromIDandMetadata(b, meta)];
+
 		Tessellator tessellator = Tessellator.instance;
 
 		rb.renderMaxY = 1;
@@ -56,47 +59,45 @@ public class CircuitBlockRenderer implements ISimpleBlockRenderingHandler {
 			rb.renderMaxY = 1;
 		}
 
-		int o = r.ordinal() >= 16 ? 10 : 0;
-
 		GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, -1.0F, 0.0F);
-		rb.renderFaceYNeg(b, 0.0D, 0.0D, 0.0D, rb.getBlockIconFromSideAndMetadata(b, 0+o, meta));
+		rb.renderFaceYNeg(b, 0.0D, 0.0D, 0.0D, rb.getBlockIconFromSideAndMetadata(b, 0, r.ordinal()));
 		tessellator.draw();
 
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, 1.0F, 0.0F);
-		rb.renderFaceYPos(b, 0.0D, 0.0D, 0.0D, rb.getBlockIconFromSideAndMetadata(b, 1+o, meta));
+		rb.renderFaceYPos(b, 0.0D, 0.0D, 0.0D, rb.getBlockIconFromSideAndMetadata(b, 1, r.ordinal()));
 		tessellator.draw();
 
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, 0.0F, -1.0F);
-		rb.renderFaceZNeg(b, 0.0D, 0.0D, 0.0D, rb.getBlockIconFromSideAndMetadata(b, 2+o, meta));
+		rb.renderFaceZNeg(b, 0.0D, 0.0D, 0.0D, rb.getBlockIconFromSideAndMetadata(b, 2, r.ordinal()));
 		tessellator.draw();
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, 0.0F, 1.0F);
-		rb.renderFaceZPos(b, 0.0D, 0.0D, 0.0D, rb.getBlockIconFromSideAndMetadata(b, 3+o, meta));
+		rb.renderFaceZPos(b, 0.0D, 0.0D, 0.0D, rb.getBlockIconFromSideAndMetadata(b, 3, r.ordinal()));
 		tessellator.draw();
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-		rb.renderFaceXNeg(b, 0.0D, 0.0D, 0.0D, rb.getBlockIconFromSideAndMetadata(b, 4+o, meta));
+		rb.renderFaceXNeg(b, 0.0D, 0.0D, 0.0D, rb.getBlockIconFromSideAndMetadata(b, 4, r.ordinal()));
 		tessellator.draw();
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(1.0F, 0.0F, 0.0F);
-		rb.renderFaceXPos(b, 0.0D, 0.0D, 0.0D, rb.getBlockIconFromSideAndMetadata(b, 5+o, meta));
+		rb.renderFaceXPos(b, 0.0D, 0.0D, 0.0D, rb.getBlockIconFromSideAndMetadata(b, 5, r.ordinal()));
 		tessellator.draw();
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 	}
 
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block b, int modelId, RenderBlocks rb) {
-		ExpandedRedstoneTileEntity te = (ExpandedRedstoneTileEntity)world.getBlockTileEntity(x, y, z);
+		TileRedstoneBase te = (TileRedstoneBase)world.getTileEntity(x, y, z);
 		int meta = world.getBlockMetadata(x, y, z);
 		RedstoneTiles r = RedstoneTiles.getTEAt(world, x, y, z);
-		Icon[] ico = new Icon[6];
-		Icon[] overlay = new Icon[6];
-		Icon front = ((BlockRedTile)b).getFrontTexture(world, x, y, z);
+		IIcon[] ico = new IIcon[6];
+		IIcon[] overlay = new IIcon[6];
+		IIcon front = ((BlockRedstoneBase)b).getFrontTexture(world, x, y, z);
 		for (int i = 0; i < 6; i++)
 			ico[i] = rb.getBlockIcon(b, world, x, y, z, i);
 		Tessellator v5 = Tessellator.instance;
@@ -152,17 +153,17 @@ public class CircuitBlockRenderer implements ISimpleBlockRenderingHandler {
 		if (r == RedstoneTiles.CAMOFLAGE) {
 			TileEntityCamo cam = (TileEntityCamo)te;
 			int metaread = te.worldObj.getBlockMetadata(te.xCoord, te.yCoord-1, te.zCoord);
-			if (ico[1] == Block.grass.getBlockTextureFromSide(1)) {
-				color = ReikaBiomeHelper.biomeToRGB(world, x, z, "Grass");
+			if (ico[1] == Blocks.grass.getBlockTextureFromSide(1)) {
+				color = ReikaBiomeHelper.biomeToRGB(world, x, y, z, "Grass");
 				v5.setColorOpaque(color[0], color[1], color[2]);
 				if (rb.fancyGrass)
 					for (int i = 2; i < 6; i++) {
 						overlay[i] = BlockGrass.getIconSideOverlay();
 					}
 			}
-			if (ico[1] == Block.leaves.getIcon(1, metaread)) {
+			if (ico[1] == Blocks.leaves.getIcon(1, metaread)) {
 				metaread = metaread & 3;
-				color = ReikaBiomeHelper.biomeToRGB(world, x, z, "Leaves");
+				color = ReikaBiomeHelper.biomeToRGB(world, x, y, z, "Leaves");
 				if (metaread == 0 || metaread == 3) {
 					for (int i = 0; i < 3; i++) {
 						mult[i] = color[i]/255F;
@@ -275,7 +276,7 @@ public class CircuitBlockRenderer implements ISimpleBlockRenderingHandler {
 	}
 
 	@Override
-	public boolean shouldRender3DInInventory() {
+	public boolean shouldRender3DInInventory(int model) {
 		return true;
 	}
 
