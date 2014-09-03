@@ -9,16 +9,15 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntityHopper;
+import net.minecraft.world.World;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
-
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntityHopper;
-import net.minecraft.world.World;
 
 public class TileEntityHopperTicker extends TileRedstoneBase {
 

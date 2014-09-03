@@ -9,13 +9,12 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.ItemBlocks;
 
-import Reika.DragonAPI.Libraries.ReikaAABBHelper;
-import Reika.ExpandedRedstone.Base.BlockRedstoneBase;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import Reika.DragonAPI.Libraries.ReikaAABBHelper;
+import Reika.ExpandedRedstone.Base.BlockRedstoneBase;
 
 public class BlockRedstoneMachine extends BlockRedstoneBase {
 

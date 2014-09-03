@@ -9,23 +9,6 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.Base;
 
-import Reika.DragonAPI.ModList;
-import Reika.DragonAPI.Base.TileEntityBase;
-import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
-import Reika.ExpandedRedstone.ExpandedRedstone;
-import Reika.ExpandedRedstone.Registry.RedstoneTiles;
-import Reika.ExpandedRedstone.TileEntities.TileEntity555;
-import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogTransmitter;
-import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker;
-import Reika.ExpandedRedstone.TileEntities.TileEntityChestReader;
-import Reika.ExpandedRedstone.TileEntities.TileEntityCountdown;
-import Reika.ExpandedRedstone.TileEntities.TileEntityDriver;
-import Reika.ExpandedRedstone.TileEntities.TileEntityEqualizer;
-import Reika.ExpandedRedstone.TileEntities.TileEntityProximity;
-import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
-import Reika.ExpandedRedstone.TileEntities.TileEntitySignalScaler;
-import Reika.RotaryCraft.API.ItemFetcher;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +30,22 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.DragonAPI.ModList;
+import Reika.DragonAPI.Base.TileEntityBase;
+import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
+import Reika.ExpandedRedstone.ExpandedRedstone;
+import Reika.ExpandedRedstone.Registry.RedstoneTiles;
+import Reika.ExpandedRedstone.TileEntities.TileEntity555;
+import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogTransmitter;
+import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker;
+import Reika.ExpandedRedstone.TileEntities.TileEntityChestReader;
+import Reika.ExpandedRedstone.TileEntities.TileEntityCountdown;
+import Reika.ExpandedRedstone.TileEntities.TileEntityDriver;
+import Reika.ExpandedRedstone.TileEntities.TileEntityEqualizer;
+import Reika.ExpandedRedstone.TileEntities.TileEntityProximity;
+import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
+import Reika.ExpandedRedstone.TileEntities.TileEntitySignalScaler;
+import Reika.RotaryCraft.API.ItemFetcher;
 import buildcraft.api.tools.IToolWrench;
 
 public abstract class BlockRedstoneBase extends Block implements IWailaBlock {

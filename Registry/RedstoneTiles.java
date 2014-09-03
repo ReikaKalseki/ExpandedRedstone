@@ -9,6 +9,14 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.Registry;
 
+import net.minecraft.block.Block;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
 import Reika.DragonAPI.Exception.RegistrationException;
 import Reika.DragonAPI.Instantiable.Data.BlockMap;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
@@ -40,15 +48,6 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
 import Reika.ExpandedRedstone.TileEntities.TileEntitySignalScaler;
 import Reika.ExpandedRedstone.TileEntities.TileEntityToggle;
 import Reika.ExpandedRedstone.TileEntities.TileEntityWeather;
-
-import net.minecraft.block.Block;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum RedstoneTiles {

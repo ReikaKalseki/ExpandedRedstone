@@ -9,11 +9,6 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
-import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
-import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
-import Reika.ExpandedRedstone.Base.TileRedstoneBase;
-import Reika.ExpandedRedstone.Registry.RedstoneTiles;
-
 import java.util.List;
 
 import net.minecraft.entity.Entity;
@@ -24,6 +19,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
+import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
+import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityProximity extends TileRedstoneBase {
 

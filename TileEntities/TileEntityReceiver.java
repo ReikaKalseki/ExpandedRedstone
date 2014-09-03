@@ -9,13 +9,12 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
-import Reika.ExpandedRedstone.Base.TileRedstoneBase;
-import Reika.ExpandedRedstone.Registry.RedstoneTiles;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
+import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityReceiver extends TileRedstoneBase {
 

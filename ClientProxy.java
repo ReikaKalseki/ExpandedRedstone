@@ -9,13 +9,12 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone;
 
+import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
 import Reika.DragonAPI.Instantiable.IO.SoundLoader;
 import Reika.DragonAPI.Instantiable.Rendering.CustomWireRenderer;
 import Reika.ExpandedRedstone.Registry.RedstoneItems;
 import Reika.ExpandedRedstone.Registry.RedstoneSounds;
-
-import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -32,7 +31,7 @@ public class ClientProxy extends CommonProxy {
 
 		//CustomSoundHandler.instance.addSound("ExpandedRedstone", "shock", SoundCategory.BLOCKS);
 
-		new SoundLoader(ExpandedRedstone.class, RedstoneSounds.soundList).register();
+		new SoundLoader(RedstoneSounds.soundList).register();
 	}
 
 	@Override

@@ -9,16 +9,15 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.Registry;
 
-import Reika.DragonAPI.Instantiable.WorldLocation;
-import Reika.DragonAPI.Interfaces.SoundEnum;
-import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
-import Reika.ExpandedRedstone.ExpandedRedstone;
-
 import java.net.URL;
 
 import net.minecraft.client.audio.SoundCategory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import Reika.DragonAPI.Instantiable.WorldLocation;
+import Reika.DragonAPI.Interfaces.SoundEnum;
+import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
+import Reika.ExpandedRedstone.ExpandedRedstone;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
@@ -48,7 +47,7 @@ public enum RedstoneSounds implements SoundEnum {
 			n = n.substring(1);
 		}
 		name = n;
-		path = SOUND_FOLDER+name+SOUND_EXT;
+		path = PREFIX+SOUND_FOLDER+name+SOUND_EXT;
 		category = cat;
 	}
 

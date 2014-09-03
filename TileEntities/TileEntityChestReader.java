@@ -9,15 +9,14 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
-import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
-import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
-import Reika.ExpandedRedstone.Base.TileRedstoneBase;
-import Reika.ExpandedRedstone.Registry.RedstoneTiles;
-
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
+import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
+import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityChestReader extends TileRedstoneBase {
 

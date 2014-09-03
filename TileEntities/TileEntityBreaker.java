@@ -9,15 +9,6 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
-import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
-import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
-import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
-import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
-import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
-import Reika.ExpandedRedstone.Base.TileRedstoneBase;
-import Reika.ExpandedRedstone.Registry.RedstoneOptions;
-import Reika.ExpandedRedstone.Registry.RedstoneTiles;
-
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
@@ -28,6 +19,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
+import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
+import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
+import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
+import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
+import Reika.ExpandedRedstone.Registry.RedstoneOptions;
+import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityBreaker extends TileRedstoneBase {
 

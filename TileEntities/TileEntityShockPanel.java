@@ -9,14 +9,6 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
-import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
-import Reika.DragonAPI.Libraries.Registry.ReikaParticleHelper;
-import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
-import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
-import Reika.ExpandedRedstone.Base.TileRedstoneBase;
-import Reika.ExpandedRedstone.Registry.RedstoneSounds;
-import Reika.ExpandedRedstone.Registry.RedstoneTiles;
-
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -27,6 +19,13 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
+import Reika.DragonAPI.Libraries.Registry.ReikaParticleHelper;
+import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
+import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
+import Reika.ExpandedRedstone.Registry.RedstoneSounds;
+import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityShockPanel extends TileRedstoneBase {
 

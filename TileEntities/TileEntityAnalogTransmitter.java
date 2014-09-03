@@ -9,13 +9,12 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
-import Reika.ExpandedRedstone.Base.AnalogWireless;
-import Reika.ExpandedRedstone.Registry.RedstoneTiles;
-
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
 import net.minecraft.world.World;
+import Reika.ExpandedRedstone.Base.AnalogWireless;
+import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityAnalogTransmitter extends AnalogWireless {
 

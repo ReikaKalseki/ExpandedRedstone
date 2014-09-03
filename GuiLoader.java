@@ -9,17 +9,16 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 import Reika.DragonAPI.Base.CoreContainer;
 import Reika.ExpandedRedstone.Base.AnalogWireless;
-import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Base.InventoriedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.GUI.ContainerPlacer;
 import Reika.ExpandedRedstone.GUI.GuiAnalog;
 import Reika.ExpandedRedstone.GUI.GuiPlacer;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 public class GuiLoader implements IGuiHandler {

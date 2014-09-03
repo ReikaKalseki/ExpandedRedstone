@@ -9,17 +9,16 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.Base;
 
-import Reika.DragonAPI.Base.TileEntityBase;
-import Reika.DragonAPI.Instantiable.StepTimer;
-import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
-import Reika.ExpandedRedstone.Registry.RedstoneTiles;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.DragonAPI.Base.TileEntityBase;
+import Reika.DragonAPI.Instantiable.StepTimer;
+import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
+import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public abstract class TileRedstoneBase extends TileEntityBase {
 

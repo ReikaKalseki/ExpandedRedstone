@@ -9,11 +9,6 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.ItemBlocks;
 
-import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
-import Reika.ExpandedRedstone.Base.BlockRedstoneBase;
-import Reika.ExpandedRedstone.Registry.RedstoneTiles;
-import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +23,10 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
+import Reika.ExpandedRedstone.Base.BlockRedstoneBase;
+import Reika.ExpandedRedstone.Registry.RedstoneTiles;
+import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

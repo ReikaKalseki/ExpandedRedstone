@@ -9,8 +9,6 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.GUI;
 
-import Reika.ExpandedRedstone.Base.InventoriedRedstoneTileEntity;
-
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -18,6 +16,7 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
+import Reika.ExpandedRedstone.Base.InventoriedRedstoneTileEntity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

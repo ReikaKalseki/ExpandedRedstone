@@ -9,10 +9,9 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
+import net.minecraft.world.World;
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
-
-import net.minecraft.world.World;
 
 public class TileEntityWeather extends TileRedstoneBase {
 

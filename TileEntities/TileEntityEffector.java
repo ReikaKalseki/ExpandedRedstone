@@ -9,13 +9,6 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
-import Reika.DragonAPI.Libraries.ReikaAABBHelper;
-import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
-import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
-import Reika.ExpandedRedstone.Base.InventoriedRedstoneTileEntity;
-import Reika.ExpandedRedstone.Registry.RedstoneOptions;
-import Reika.ExpandedRedstone.Registry.RedstoneTiles;
-
 import java.util.List;
 
 import net.minecraft.block.BlockSkull;
@@ -28,6 +21,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import Reika.DragonAPI.Libraries.ReikaAABBHelper;
+import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
+import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
+import Reika.ExpandedRedstone.Base.InventoriedRedstoneTileEntity;
+import Reika.ExpandedRedstone.Registry.RedstoneOptions;
+import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityEffector extends InventoriedRedstoneTileEntity {
 

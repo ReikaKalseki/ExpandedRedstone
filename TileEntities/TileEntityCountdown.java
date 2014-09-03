@@ -9,15 +9,14 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import Reika.DragonAPI.Libraries.IO.ReikaChatHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaFormatHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
-
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
 public class TileEntityCountdown extends TileRedstoneBase {
 

@@ -9,11 +9,6 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.ItemBlocks;
 
-import Reika.DragonAPI.Interfaces.WireBlock;
-import Reika.ExpandedRedstone.ExpandedRedstone;
-import Reika.ExpandedRedstone.Registry.RedstoneBlocks;
-import Reika.ExpandedRedstone.Registry.RedstoneItems;
-
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,6 +31,10 @@ import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.DragonAPI.Interfaces.WireBlock;
+import Reika.ExpandedRedstone.ExpandedRedstone;
+import Reika.ExpandedRedstone.Registry.RedstoneBlocks;
+import Reika.ExpandedRedstone.Registry.RedstoneItems;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

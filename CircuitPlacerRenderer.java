@@ -9,15 +9,15 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone;
 
-import Reika.DragonAPI.Libraries.IO.ReikaTextureHelper;
-import Reika.ExpandedRedstone.Registry.RedstoneTiles;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
+
+import Reika.DragonAPI.Libraries.IO.ReikaTextureHelper;
+import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class CircuitPlacerRenderer implements IItemRenderer {
 

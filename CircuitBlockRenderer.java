@@ -9,12 +9,6 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone;
 
-import Reika.DragonAPI.Libraries.World.ReikaBiomeHelper;
-import Reika.ExpandedRedstone.Base.BlockRedstoneBase;
-import Reika.ExpandedRedstone.Base.TileRedstoneBase;
-import Reika.ExpandedRedstone.Registry.RedstoneTiles;
-import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
-
 import java.awt.Color;
 
 import net.minecraft.block.Block;
@@ -29,6 +23,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import Reika.DragonAPI.Libraries.World.ReikaBiomeHelper;
+import Reika.ExpandedRedstone.Base.BlockRedstoneBase;
+import Reika.ExpandedRedstone.Base.TileRedstoneBase;
+import Reika.ExpandedRedstone.Registry.RedstoneTiles;
+import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class CircuitBlockRenderer implements ISimpleBlockRenderingHandler {

@@ -9,6 +9,12 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.Registry;
 
+import java.util.HashMap;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import Reika.DragonAPI.Instantiable.Data.PluralMap;
 import Reika.DragonAPI.Interfaces.BlockEnum;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
@@ -18,13 +24,6 @@ import Reika.ExpandedRedstone.ItemBlocks.BlockExpandedWire;
 import Reika.ExpandedRedstone.ItemBlocks.BlockRedstoneCamo;
 import Reika.ExpandedRedstone.ItemBlocks.BlockRedstoneMachine;
 import Reika.ExpandedRedstone.ItemBlocks.BlockRedstoneTile;
-
-import java.util.HashMap;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 
 public enum RedstoneBlocks implements BlockEnum {
 
