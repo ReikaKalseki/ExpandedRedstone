@@ -23,7 +23,7 @@ import cpw.mods.fml.relauncher.Side;
 
 public enum RedstoneSounds implements SoundEnum {
 
-	SHOCK("shock", SoundCategory.BLOCKS);
+	SHOCK("shock");
 
 	public static final RedstoneSounds[] soundList = values();
 
@@ -37,18 +37,16 @@ public enum RedstoneSounds implements SoundEnum {
 
 	private final String path;
 	private final String name;
-	private final SoundCategory category;
 
 	private boolean isVolumed = false;
 
-	private RedstoneSounds(String n, SoundCategory cat) {
+	private RedstoneSounds(String n) {
 		if (n.startsWith("#")) {
 			isVolumed = true;
 			n = n.substring(1);
 		}
 		name = n;
 		path = PREFIX+SOUND_FOLDER+name+SOUND_EXT;
-		category = cat;
 	}
 
 	public void playSound(World world, double x, double y, double z, float vol, float pitch) {
@@ -96,6 +94,6 @@ public enum RedstoneSounds implements SoundEnum {
 
 	@Override
 	public SoundCategory getCategory() {
-		return category;
+		return SoundCategory.BLOCKS;
 	}
 }
