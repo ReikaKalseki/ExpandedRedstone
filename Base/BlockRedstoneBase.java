@@ -12,9 +12,9 @@ package Reika.ExpandedRedstone.Base;
 import java.util.ArrayList;
 import java.util.List;
 
-import mcp.mobius.waila.api.IWailaBlock;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.api.IWailaDataProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -48,7 +48,7 @@ import Reika.ExpandedRedstone.TileEntities.TileEntitySignalScaler;
 import Reika.RotaryCraft.API.ItemFetcher;
 import buildcraft.api.tools.IToolWrench;
 
-public abstract class BlockRedstoneBase extends Block implements IWailaBlock {
+public abstract class BlockRedstoneBase extends Block implements IWailaDataProvider {
 
 	public static IIcon trans;
 	private static IIcon[][][] icons;
