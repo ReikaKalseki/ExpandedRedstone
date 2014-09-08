@@ -58,7 +58,7 @@ public class TileEntityBUD extends TileRedstoneBase {
 	{
 		super.readSyncTag(NBT);
 
-		IDStored = Block.getBlockFromName(NBT.getString("ids"));
+		IDStored = Block.getBlockById(NBT.getInteger("ids"));
 		metaStored = NBT.getInteger("metas");
 	}
 
@@ -67,7 +67,7 @@ public class TileEntityBUD extends TileRedstoneBase {
 	{
 		super.writeSyncTag(NBT);
 
-		NBT.setString("ids", Block.blockRegistry.getNameForObject(IDStored));
+		NBT.setInteger("ids", Block.getIdFromBlock(IDStored));
 		NBT.setInteger("metas", metaStored);
 	}
 
