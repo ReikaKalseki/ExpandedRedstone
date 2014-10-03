@@ -71,6 +71,7 @@ public class ExpandedRedstone extends DragonAPIMod {
 	@Override
 	@EventHandler
 	public void preload(FMLPreInitializationEvent evt) {
+		this.verifyVersions();
 		config.loadSubfolderedConfigFile(evt);
 		config.initProps(evt);
 		logger = new ModLogger(instance, false);
