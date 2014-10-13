@@ -70,8 +70,7 @@ public class TileEntityShockPanel extends TileRedstoneBase {
 		AxisAlignedBB box = this.getBox(world, x, y, z);
 		//ReikaJavaLibrary.pConsole(box);
 		List<EntityLivingBase> li = world.getEntitiesWithinAABB(EntityLivingBase.class, box);
-		for (int i = 0; i < li.size(); i++) {
-			EntityLivingBase e = li.get(i);
+		for (EntityLivingBase e : li) {
 			e.attackEntityFrom(DamageSource.cactus, this.getLensType().attackDamage);
 		}
 		for (int i = 0; i < 32; i++) {

@@ -72,13 +72,15 @@ public class TileEntityEqualizer extends TileRedstoneBase {
 
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
-		if (this.getTicksExisted() < 2)
-			this.register();
-
 		if (redstone > 0) {
 			redstone--;
 			ReikaWorldHelper.causeAdjacentUpdates(worldObj, xCoord, yCoord, zCoord);
 		}
+	}
+
+	@Override
+	protected void onFirstTick(World world, int x, int y, int z) {
+		this.register();
 	}
 
 	@Override

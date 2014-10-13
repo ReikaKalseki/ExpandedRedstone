@@ -61,8 +61,7 @@ public class TileEntityProximity extends TileRedstoneBase {
 		Class c = entity.getEntityClass();
 		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(x, y, z, x+1, y+1, z+1).expand(range, range, range);
 		List<Entity> li = world.getEntitiesWithinAABB(c, box);
-		for (int i = 0; i < li.size(); i++) {
-			Entity e = li.get(i);
+		for (Entity e : li) {
 			double dd = ReikaMathLibrary.py3d(e.posX-x-0.5, e.posY-y-0.5, e.posZ-z-0.5);
 			if (dd <= range) {
 				this.setEmitting(true);
