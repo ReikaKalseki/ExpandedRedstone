@@ -19,6 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import Reika.DragonAPI.Instantiable.StepTimer;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;
@@ -27,14 +28,15 @@ import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 public class TileEntityProximity extends TileRedstoneBase {
 
 	private int range = 16;
-
+	private final StepTimer checkTimer = new StepTimer(5);
 	private EntityType entity = EntityType.PLAYER;
 
 	enum EntityType {
 		PLAYER(EntityPlayer.class),
 		MOB(EntityMob.class),
 		ANIMAL(EntityAnimal.class),
-		ALL(EntityLivingBase.class);
+		ALL(EntityLivingBase.class),
+		OWNER(null);
 
 		private Class<? extends Entity> cl;
 
@@ -53,19 +55,31 @@ public class TileEntityProximity extends TileRedstoneBase {
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z);
 
-		if ((world.getTotalWorldTime()&3) == 0)
+		checkTimer.update();
+		if (checkTimer.checkCap())
 			this.findCreatures(world, x, y, z);
 	}
 
 	private void findCreatures(World world, int x, int y, int z) {
-		Class c = entity.getEntityClass();
-		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(x, y, z, x+1, y+1, z+1).expand(range, range, range);
-		List<Entity> li = world.getEntitiesWithinAABB(c, box);
-		for (Entity e : li) {
-			double dd = ReikaMathLibrary.py3d(e.posX-x-0.5, e.posY-y-0.5, e.posZ-z-0.5);
-			if (dd <= range) {
-				this.setEmitting(true);
-				return;
+		if (entity == EntityType.OWNER) {
+			EntityPlayer ep = this.getPlacer();
+			if (ep != null) {
+				double dd = ReikaMathLibrary.py3d(ep.posX-x-0.5, ep.posY-y-0.5, ep.posZ-z-0.5);
+				if (dd <= range) {
+					this.setEmitting(true);
+				}
+			}
+		}
+		else {
+			Class c = entity.getEntityClass();
+			AxisAlignedBB box = AxisAlignedBB.getBoundingBox(x, y, z, x+1, y+1, z+1).expand(range, range, range);
+			List<Entity> li = world.getEntitiesWithinAABB(c, box);
+			for (Entity e : li) {
+				double dd = ReikaMathLibrary.py3d(e.posX-x-0.5, e.posY-y-0.5, e.posZ-z-0.5);
+				if (dd <= range) {
+					this.setEmitting(true);
+					return;
+				}
 			}
 		}
 		this.setEmitting(false);

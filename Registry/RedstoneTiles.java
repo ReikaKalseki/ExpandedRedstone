@@ -206,7 +206,7 @@ public enum RedstoneTiles {
 		case TOGGLE:
 			return 4;
 		case PROXIMITY:
-			return 8;
+			return 10;
 		case CLOCK:
 			return TileEntity555.Settings.list.length;
 		case DRIVER:
