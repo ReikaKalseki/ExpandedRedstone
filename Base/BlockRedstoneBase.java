@@ -55,6 +55,7 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 	private static IIcon[][] front;
 	private static final String BLANK_TEX = "ExpandedRedstone:basic";
 	private static final String BLANK_TEX_2 = "ExpandedRedstone:basic_side";
+	private static final String BLANK_TEX_3 = "ExpandedRedstone:block";
 
 	public BlockRedstoneBase(Material mat) {
 		super(mat);
@@ -311,7 +312,7 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 							icons[i][j][k] = ico.registerIcon(BLANK_TEX_2);
 					}
 					else {
-						icons[i][j][k] = ico.registerIcon("furnace_top");
+						icons[i][j][k] = ico.registerIcon(BLANK_TEX_3);
 					}
 				}
 			}
@@ -319,7 +320,7 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 
 		for (int i = 0; i < front.length; i++) {
 			for (int j = 0; j < front[i].length; j++) {
-				front[i][j] = ico.registerIcon("furnace_top");
+				front[i][j] = ico.registerIcon(BLANK_TEX_3);
 			}
 		}
 	}
