@@ -79,7 +79,7 @@ public class TileEntity555 extends TileRedstoneBase {
 	public void loadSettings() {
 		this.setLoTime(setting.low);
 		this.setHiTime(setting.hi);
-		ReikaChatHelper.clearChat();
+		//ReikaChatHelper.clearChat();
 		ReikaChatHelper.write("Clock set to "+setting.low+" ticks ("+ReikaFormatHelper.getTickAsHMS(setting.low)+") off, "+setting.hi+" ticks ("+ReikaFormatHelper.getTickAsHMS(setting.hi)+") on.");
 	}
 

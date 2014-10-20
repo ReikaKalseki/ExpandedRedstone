@@ -98,7 +98,7 @@ public class TileEntityEqualizer extends TileRedstoneBase {
 			pitch++;
 		else
 			pitch = 0;
-		ReikaChatHelper.clearChat();
+		//ReikaChatHelper.clearChat();
 		ReikaChatHelper.write("Set to note "+pitch);
 		this.update();
 		ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.5F, 0.8F);
@@ -107,7 +107,7 @@ public class TileEntityEqualizer extends TileRedstoneBase {
 	public void decrementValue() {
 		if (pitch > 0)
 			pitch--;
-		ReikaChatHelper.clearChat();
+		//ReikaChatHelper.clearChat();
 		ReikaChatHelper.write("Set to note "+pitch);
 		this.update();
 		ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.5F, 0.8F);

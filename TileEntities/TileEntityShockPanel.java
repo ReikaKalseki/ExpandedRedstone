@@ -84,7 +84,8 @@ public class TileEntityShockPanel extends TileRedstoneBase {
 		}
 
 		//ReikaSoundHelper.playSoundAtBlock(world, x, y, z, "expandedredstone:shock");
-		ReikaSoundHelper.playSound(RedstoneSounds.SHOCK, x+0.5, y+0.5, z+0.5, 1, 1);
+		if (world.isRemote)
+			ReikaSoundHelper.playSound(RedstoneSounds.SHOCK, x+0.5, y+0.5, z+0.5, 1, 1);
 	}
 
 	private boolean canFire(World world, int x, int y, int z) {

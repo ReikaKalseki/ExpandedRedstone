@@ -104,7 +104,7 @@ public class TileEntityCountdown extends TileRedstoneBase {
 		}
 		time = Delay.list[ord];
 		count = time.length;
-		ReikaChatHelper.clearChat();
+		//ReikaChatHelper.clearChat();
 		ReikaChatHelper.write("Countdown set to "+time.name+" ("+time.length+" ticks)");
 	}
 

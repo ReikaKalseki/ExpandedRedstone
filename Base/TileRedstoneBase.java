@@ -231,8 +231,8 @@ public abstract class TileRedstoneBase extends TileEntityBase {
 	}
 
 	protected void update() {
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		ReikaWorldHelper.causeAdjacentUpdates(worldObj, xCoord, yCoord, zCoord);
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 
 	@Override

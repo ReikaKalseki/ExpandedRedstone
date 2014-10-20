@@ -85,7 +85,7 @@ public class TileEntitySignalScaler extends TileRedstoneBase {
 		minScale++;
 		if (minScale > 15)
 			minScale = 0;
-		ReikaChatHelper.clearChat();
+		//ReikaChatHelper.clearChat();
 		ReikaChatHelper.write("Minimum value set to "+minScale+".");
 		this.update();
 		ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.5F, 0.8F);

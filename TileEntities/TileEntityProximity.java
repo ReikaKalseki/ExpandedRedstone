@@ -20,6 +20,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import Reika.DragonAPI.Instantiable.StepTimer;
+import Reika.DragonAPI.Libraries.IO.ReikaChatHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;
@@ -31,19 +32,21 @@ public class TileEntityProximity extends TileRedstoneBase {
 	private final StepTimer checkTimer = new StepTimer(5);
 	private EntityType entity = EntityType.PLAYER;
 
-	enum EntityType {
-		PLAYER(EntityPlayer.class),
-		MOB(EntityMob.class),
-		ANIMAL(EntityAnimal.class),
-		ALL(EntityLivingBase.class),
-		OWNER(null);
+	private static enum EntityType {
+		PLAYER("Players", EntityPlayer.class),
+		MOB("Hostiles", EntityMob.class),
+		ANIMAL("Animals", EntityAnimal.class),
+		ALL("All", EntityLivingBase.class),
+		OWNER("Owner", null);
 
 		private Class<? extends Entity> cl;
+		public final String label;
 
 		public static final EntityType[] list = values();
 
-		private EntityType(Class c) {
+		private EntityType(String s, Class c) {
 			cl = c;
+			label = s;
 		}
 
 		public Class getEntityClass() {
@@ -67,6 +70,7 @@ public class TileEntityProximity extends TileRedstoneBase {
 				double dd = ReikaMathLibrary.py3d(ep.posX-x-0.5, ep.posY-y-0.5, ep.posZ-z-0.5);
 				if (dd <= range) {
 					this.setEmitting(true);
+					return;
 				}
 			}
 		}
@@ -98,13 +102,16 @@ public class TileEntityProximity extends TileRedstoneBase {
 		entity = EntityType.list[c];
 		this.update();
 		ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.5F, 0.5F);
+		ReikaChatHelper.write("Detector now senses "+entity.label+".");
 	}
 
 	public void stepRange() {
 		range++;
 		if (range > 24)
 			range = 1;
+		this.update();
 		ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.5F, 0.5F);
+		ReikaChatHelper.write("Detector range set to "+range+"m.");
 	}
 
 	@Override

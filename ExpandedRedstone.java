@@ -136,7 +136,7 @@ public class ExpandedRedstone extends DragonAPIMod {
 		RedstoneTiles.CHESTREADER.addRecipe(" c ", "rer", " s ", 's', ReikaItemHelper.stoneSlab, 'r', Items.redstone, 'e', Items.quartz, 'c', Blocks.trapped_chest);
 		RedstoneTiles.DRIVER.addRecipe(" s ", "rer", " s ", 's', ReikaItemHelper.stoneSlab, 'r', Items.redstone, 'e', Items.quartz);
 		RedstoneTiles.EFFECTOR.addRecipe("CCC", "NDE", "CRC", 'C', Blocks.cobblestone, 'R', Items.redstone, 'D', Blocks.dispenser, 'N', Items.quartz, 'E', Items.ender_pearl);
-		RedstoneTiles.PROXIMITY.addRecipe("rdr", "nen", "sss", 's', ReikaItemHelper.stoneSlab, 'r', Items.redstone, 'e', Items.ender_pearl, 'd', Items.diamond, 'n', Items.quartz);
+		RedstoneTiles.PROXIMITY.addRecipe("rdr", "nen", "sss", 's', ReikaItemHelper.stoneSlab, 'r', Items.redstone, 'e', Items.ender_pearl, 'd', Items.gold_ingot, 'n', Items.quartz);
 		RedstoneTiles.TOGGLE.addRecipe("tRt", "rer", "sRs", 't', Blocks.redstone_torch, 'R', Items.repeater, 's', ReikaItemHelper.stoneSlab, 'r', Items.redstone, 'e', Items.quartz);
 		RedstoneTiles.WEATHER.addRecipe("nSn", "rnr", "sss", 's', ReikaItemHelper.stoneSlab, 'r', Items.redstone, 'n', Items.quartz, 'S', Blocks.daylight_detector);
 		RedstoneTiles.PUMP.addRecipe("crc", "cCc", "cbc", 'c', Blocks.cobblestone, 'r', Items.redstone, 'C', Blocks.chest, 'b', Items.bucket);
