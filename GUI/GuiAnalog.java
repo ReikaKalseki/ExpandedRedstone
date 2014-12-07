@@ -58,7 +58,7 @@ public class GuiAnalog extends GuiContainer {
 	}
 
 	@Override
-	public void actionPerformed(GuiButton b) {
+	protected void actionPerformed(GuiButton b) {
 		super.actionPerformed(b);
 
 		channel += b.id;
