@@ -96,4 +96,9 @@ public enum RedstoneSounds implements SoundEnum {
 	public SoundCategory getCategory() {
 		return SoundCategory.BLOCKS;
 	}
+
+	@Override
+	public boolean canOverlap() {
+		return false;
+	}
 }
