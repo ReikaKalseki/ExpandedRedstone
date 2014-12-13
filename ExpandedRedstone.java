@@ -19,7 +19,7 @@ import net.minecraft.item.Item;
 import net.minecraftforge.event.world.WorldEvent;
 import Reika.DragonAPI.DragonAPICore;
 import Reika.DragonAPI.ModList;
-import Reika.DragonAPI.Auxiliary.NEI_AnonymousHideConfig;
+import Reika.DragonAPI.Auxiliary.NEI_DragonAPI_Config;
 import Reika.DragonAPI.Auxiliary.Trackers.CommandableUpdateChecker;
 import Reika.DragonAPI.Base.DragonAPIMod;
 import Reika.DragonAPI.Instantiable.IO.ControlledConfig;
@@ -93,7 +93,7 @@ public class ExpandedRedstone extends DragonAPIMod {
 		this.addRecipes();
 
 		if (ModList.NEI.isLoaded())
-			NEI_AnonymousHideConfig.addBlocks(blocks);
+			NEI_DragonAPI_Config.hideBlocks(blocks);
 	}
 
 	@Override
