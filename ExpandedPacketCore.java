@@ -26,8 +26,6 @@ import Reika.ExpandedRedstone.Base.AnalogWireless;
 
 public class ExpandedPacketCore implements IPacketHandler {
 
-	private AnalogWireless ana;
-
 	public void handleData(PacketObj packet, World world, EntityPlayer ep) {
 		DataInputStream inputStream = packet.getDataIn();
 		int control = Integer.MIN_VALUE;
@@ -121,8 +119,7 @@ public class ExpandedPacketCore implements IPacketHandler {
 		try {
 			switch (control) {
 			case 0:
-				ana = (AnalogWireless)te;
-				ana.setChannel(data[0]);
+				((AnalogWireless)te).setChannel(data[0]);
 				break;
 			}
 		}
