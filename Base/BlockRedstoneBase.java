@@ -35,6 +35,7 @@ import Reika.DragonAPI.ASM.APIStripper.Strippable;
 import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
 import Reika.DragonAPI.Base.TileEntityBase;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
+import Reika.DragonAPI.ModRegistry.InterfaceCache;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 import Reika.ExpandedRedstone.TileEntities.TileEntity555;
@@ -48,7 +49,6 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityProximity;
 import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
 import Reika.ExpandedRedstone.TileEntities.TileEntitySignalScaler;
 import Reika.RotaryCraft.API.ItemFetcher;
-import buildcraft.api.tools.IToolWrench;
 
 @Strippable(value = {"mcp.mobius.waila.api.IWailaDataProvider"})
 public abstract class BlockRedstoneBase extends Block implements IWailaDataProvider {
@@ -198,7 +198,7 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 		if (te == null)
 			return false;
 		te.syncAllData(true);
-		if (is != null && is.getItem() instanceof IToolWrench) {
+		if (is != null && InterfaceCache.IWRENCH.instanceOf(is.getItem())) {
 			te.rotate();
 			return true;
 		}
