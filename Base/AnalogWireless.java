@@ -15,7 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogReceiver;
 import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogTransmitter;
-import Reika.RotaryCraft.API.Transducerable;
+import Reika.RotaryCraft.API.Interfaces.Transducerable;
 
 public abstract class AnalogWireless extends TileRedstoneBase implements Transducerable {
 

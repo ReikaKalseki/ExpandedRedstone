@@ -19,6 +19,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -469,6 +470,12 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 		String s2 = EnumChatFormatting.BLUE.toString();
 		currenttip.add(s2+s1+"Expanded Redstone");
 		return currenttip;
+	}
+
+	@Override
+	@ModDependent(ModList.WAILA)
+	public final NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x, int y, int z) {
+		return tag;
 	}
 
 }
