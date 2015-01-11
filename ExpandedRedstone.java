@@ -22,6 +22,7 @@ import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.Auxiliary.NEI_DragonAPI_Config;
 import Reika.DragonAPI.Auxiliary.Trackers.CommandableUpdateChecker;
 import Reika.DragonAPI.Base.DragonAPIMod;
+import Reika.DragonAPI.Base.DragonAPIMod.LoadProfiler.LoadPhase;
 import Reika.DragonAPI.Instantiable.IO.ControlledConfig;
 import Reika.DragonAPI.Instantiable.IO.ModLogger;
 import Reika.DragonAPI.Libraries.ReikaRegistryHelper;
@@ -71,6 +72,7 @@ public class ExpandedRedstone extends DragonAPIMod {
 	@Override
 	@EventHandler
 	public void preload(FMLPreInitializationEvent evt) {
+		this.startTiming(LoadPhase.PRELOAD);
 		this.verifyVersions();
 		config.loadSubfolderedConfigFile(evt);
 		config.initProps(evt);
@@ -83,22 +85,27 @@ public class ExpandedRedstone extends DragonAPIMod {
 		this.addItems();
 
 		this.basicSetup(evt);
+		this.finishTiming();
 	}
 
 	@Override
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
+		this.startTiming(LoadPhase.LOAD);
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiLoader());
 		proxy.registerRenderers();
 		this.addRecipes();
 
 		if (ModList.NEI.isLoaded())
 			NEI_DragonAPI_Config.hideBlocks(blocks);
+		this.finishTiming();
 	}
 
 	@Override
 	@EventHandler
 	public void postload(FMLPostInitializationEvent evt) {
+		this.startTiming(LoadPhase.POSTLOAD);
+
 		if (ModList.ROTARYCRAFT.isLoaded()) {
 			for (int i = 0; i < RedstoneBlocks.blockList.length; i++) {
 				RedstoneBlocks r = RedstoneBlocks.blockList[i];
@@ -106,6 +113,8 @@ public class ExpandedRedstone extends DragonAPIMod {
 					BlockColorInterface.addGPRBlockColor(r.getBlockInstance(), k, ReikaColorAPI.RGBtoHex(140, 140, 140));
 			}
 		}
+
+		this.finishTiming();
 	}
 
 	@SubscribeEvent
