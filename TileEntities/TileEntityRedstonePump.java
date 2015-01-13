@@ -19,7 +19,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import Reika.DragonAPI.Instantiable.HybridTank;
-import Reika.DragonAPI.Instantiable.Data.BlockArray;
+import Reika.DragonAPI.Instantiable.Data.BlockStruct.BlockArray;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;

@@ -18,7 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import Reika.DragonAPI.Exception.RegistrationException;
-import Reika.DragonAPI.Instantiable.Data.BlockMap;
+import Reika.DragonAPI.Instantiable.Data.Maps.BlockMap;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 import Reika.ExpandedRedstone.Base.BlockRedstoneBase;
