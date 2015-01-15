@@ -29,6 +29,7 @@ import Reika.ExpandedRedstone.ItemBlocks.BlockRedstoneTile;
 import Reika.ExpandedRedstone.TileEntities.TileEntity555;
 import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogReceiver;
 import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogTransmitter;
+import Reika.ExpandedRedstone.TileEntities.TileEntityArithmetic;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBUD;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker;
 import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
@@ -44,6 +45,7 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityPlacer;
 import Reika.ExpandedRedstone.TileEntities.TileEntityProximity;
 import Reika.ExpandedRedstone.TileEntities.TileEntityReceiver;
 import Reika.ExpandedRedstone.TileEntities.TileEntityRedstonePump;
+import Reika.ExpandedRedstone.TileEntities.TileEntityRedstoneRelay;
 import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
 import Reika.ExpandedRedstone.TileEntities.TileEntitySignalScaler;
 import Reika.ExpandedRedstone.TileEntities.TileEntityToggle;
@@ -73,7 +75,9 @@ public enum RedstoneTiles {
 	ANALOGTRANSMITTER("Analog Wireless Transmitter", 	TileEntityAnalogTransmitter.class, 	BlockRedstoneTile.class, 		8),
 	ANALOGRECEIVER("Analog Wireless Receiver", 			TileEntityAnalogReceiver.class, 	BlockRedstoneTile.class, 		9),
 	EQUALIZER("Equalizer", 								TileEntityEqualizer.class, 			BlockRedstoneTile.class, 		10),
-	COUNTDOWN("Countdown Timer", 						TileEntityCountdown.class, 			BlockRedstoneTile.class, 		11);
+	COUNTDOWN("Countdown Timer", 						TileEntityCountdown.class, 			BlockRedstoneTile.class, 		11),
+	ARITHMETIC("Arithmetic Operator",					TileEntityArithmetic.class,			BlockRedstoneTile.class,		12),
+	RELAY("Analog Relay",								TileEntityRedstoneRelay.class,		BlockRedstoneTile.class,		13);
 
 	private final Class te;
 	private final String name;
@@ -172,6 +176,8 @@ public enum RedstoneTiles {
 		case ANALOGRECEIVER:
 		case EQUALIZER:
 		case COUNTDOWN:
+		case ARITHMETIC:
+		case RELAY:
 			return true;
 		default:
 			return false;
@@ -186,6 +192,8 @@ public enum RedstoneTiles {
 		case TOGGLE:
 		case PROXIMITY:
 		case COUNTDOWN:
+		case ARITHMETIC:
+		case RELAY:
 			return true;
 		default:
 			return false;
@@ -215,6 +223,10 @@ public enum RedstoneTiles {
 			return 2;
 		case COUNTDOWN:
 			return 11;
+		case ARITHMETIC:
+			return TileEntityArithmetic.Operators.list.length;
+		case RELAY:
+			return 2;
 		default:
 			return 1;
 		}

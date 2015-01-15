@@ -28,8 +28,6 @@ public class TileEntityToggle extends TileRedstoneBase {
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z);
-		if (this.getFacing() == null)
-			return;
 		ForgeDirection side = this.getFacing().getOpposite();
 		if (ReikaRedstoneHelper.isPositiveEdgeOnSide(world, x, y, z, lastPower, lastRepeat, side)) {
 			this.toggleEmitting();

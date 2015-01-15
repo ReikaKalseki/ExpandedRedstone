@@ -35,18 +35,21 @@ import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.ASM.APIStripper.Strippable;
 import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
 import Reika.DragonAPI.Base.TileEntityBase;
+import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.DragonAPI.ModRegistry.InterfaceCache;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 import Reika.ExpandedRedstone.TileEntities.TileEntity555;
 import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogTransmitter;
+import Reika.ExpandedRedstone.TileEntities.TileEntityArithmetic;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker;
 import Reika.ExpandedRedstone.TileEntities.TileEntityChestReader;
 import Reika.ExpandedRedstone.TileEntities.TileEntityCountdown;
 import Reika.ExpandedRedstone.TileEntities.TileEntityDriver;
 import Reika.ExpandedRedstone.TileEntities.TileEntityEqualizer;
 import Reika.ExpandedRedstone.TileEntities.TileEntityProximity;
+import Reika.ExpandedRedstone.TileEntities.TileEntityRedstoneRelay;
 import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
 import Reika.ExpandedRedstone.TileEntities.TileEntitySignalScaler;
 import Reika.RotaryCraft.API.ItemFetcher;
@@ -220,6 +223,12 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 			else
 				((TileEntityDriver)te).increment();
 			te.syncAllData(true);
+			return true;
+		case ARITHMETIC:
+			((TileEntityArithmetic)te).stepMode();
+			return true;
+		case RELAY:
+			((TileEntityRedstoneRelay)te).toggle();
 			return true;
 		case EFFECTOR:
 		case PLACER:
@@ -460,6 +469,11 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 		if (te instanceof TileEntityCountdown) {
 			TileEntityCountdown cd = (TileEntityCountdown)te;
 			tip.add("Time Remaining: "+cd.getCountdownDisplay());
+		}
+		if (te instanceof TileEntityArithmetic) {
+			TileEntityArithmetic ar = (TileEntityArithmetic)te;
+			tip.add("Mode: "+ReikaStringParser.capFirstChar(ar.getMode().name()));
+			tip.add(ar.getFunction());
 		}
 		return tip;
 	}

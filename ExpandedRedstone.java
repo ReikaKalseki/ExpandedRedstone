@@ -175,6 +175,8 @@ public class ExpandedRedstone extends DragonAPIMod {
 		RedstoneTiles.COLUMN.addRecipe("CCC", "RRR", "CRC", 'R', Items.redstone, 'C', Blocks.cobblestone);
 
 		RedstoneTiles.COUNTDOWN.addRecipe("RQR", "QCQ", "RQR", 'R', Items.redstone, 'Q', Items.quartz, 'C', RedstoneTiles.CLOCK.getItem());
+		RedstoneTiles.ARITHMETIC.addRecipe("gRg", "RQR", "sss", 's', ReikaItemHelper.stoneSlab, 'R', Items.redstone, 'Q', Items.quartz, 'g', Items.glowstone_dust);
+		RedstoneTiles.RELAY.addRecipe("srs", "rqs", "srs", 's', ReikaItemHelper.stoneSlab, 'r', Items.redstone, 'q', Items.quartz);
 	}
 
 	@Override

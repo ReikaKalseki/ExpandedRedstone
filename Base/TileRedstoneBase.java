@@ -191,6 +191,13 @@ public abstract class TileRedstoneBase extends TileEntityBase {
 		return 0;
 	}
 
+	public final int getRedstoneLevelTo(ForgeDirection dir) {
+		Block id = worldObj.getBlock(xCoord+dir.offsetX, yCoord+dir.offsetY, zCoord+dir.offsetZ);
+		int meta = worldObj.getBlockMetadata(xCoord+dir.offsetX, yCoord+dir.offsetY, zCoord+dir.offsetZ);
+		int lvl = worldObj.getIndirectPowerLevelTo(xCoord, yCoord, zCoord, dir.ordinal());
+		return lvl >= 15 ? lvl : Math.max(lvl, id == Blocks.redstone_wire ? meta : 0);
+	}
+
 	public void rotate() {
 		RedstoneTiles r = RedstoneTiles.TEList[this.getTEIndex()];
 		if (r.canBeVertical()) {
