@@ -97,6 +97,13 @@ public class ExpandedPacketCore implements IPacketHandler {
 				for (int i = 0; i < len; i++)
 					data[i] = inputStream.readInt();
 				break;
+			case PREFIXED:
+				control = inputStream.readInt();
+				len = inputStream.readInt();
+				data = new int[len];
+				for (int i = 0; i < len; i++)
+					data[i] = inputStream.readInt();
+				break;
 			case NBT:
 				break;
 			case STRINGINT:
