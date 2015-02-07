@@ -27,7 +27,7 @@ public class TileEntity555 extends TileRedstoneBase {
 	private Settings setting = Settings.L20;
 
 	public static enum Settings {
-		L1(1, 1), //0.05s
+		L1(2, 2), //0.1s (0.05 is 1/2 a redstone tick)
 		L5(5, 5), //0.25s
 		L20(20, 20), //1s
 		//L50(50, 50), //2.5s
