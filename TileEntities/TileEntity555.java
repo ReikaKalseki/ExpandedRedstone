@@ -27,10 +27,10 @@ public class TileEntity555 extends TileRedstoneBase {
 	private Settings setting = Settings.L20;
 
 	public static enum Settings {
+		L1(1, 1), //0.05s
 		L5(5, 5), //0.25s
-		//L10(10, 10),
 		L20(20, 20), //1s
-		L50(50, 50), //2.5s
+		//L50(50, 50), //2.5s
 		L100(100, 100), //5s
 		L300(300, 300), //15s
 		L1200(1200, 1200), //1m
