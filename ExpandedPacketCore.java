@@ -37,6 +37,9 @@ public class ExpandedPacketCore implements IPacketHandler {
 		int x = 0;
 		int y = 0;
 		int z = 0;
+		double dx = 0;
+		double dy = 0;
+		double dz = 0;
 		boolean readinglong = false;
 		String stringdata = null;
 		UUID id = null;
@@ -54,16 +57,20 @@ public class ExpandedPacketCore implements IPacketHandler {
 				break;
 			case DATA:
 				control = inputStream.readInt();
-				//pack = ReactorPackets.getEnum(control);
-				len = 1;//pack.getNumberDataInts();
+				len = 1;
 				data = new int[len];
-				readinglong = false;//pack.isLongPacket();
-				//if (!readinglong) {
 				for (int i = 0; i < len; i++)
 					data[i] = inputStream.readInt();
-				//}
-				//else
-				//	longdata = inputStream.readLong();
+				break;
+			case POS:
+				control = inputStream.readInt();
+				dx = inputStream.readDouble();
+				dy = inputStream.readDouble();
+				dz = inputStream.readDouble();
+				len = 1;
+				data = new int[len];
+				for (int i = 0; i < len; i++)
+					data[i] = inputStream.readInt();
 				break;
 			case UPDATE:
 				control = inputStream.readInt();
