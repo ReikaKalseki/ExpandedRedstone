@@ -45,7 +45,7 @@ public class TileEntityCamo extends TileRedstoneBase {
 		int meta = worldObj.getBlockMetadata(xCoord, yCoord-1, zCoord);
 		if (id == Blocks.air)
 			return BlockRedstoneBase.trans;
-		if (id == this.getTileEntityBlockID() && meta == this.getTEIndex()) {
+		if (id == this.getTileEntityBlockID() && meta == RedstoneTiles.CAMOFLAGE.getBlockMetadata()) {
 			TileEntityCamo te = (TileEntityCamo)worldObj.getTileEntity(xCoord, yCoord-1, zCoord);
 			if (te.isOverridingIcon(side)) {
 				IIcon ico = te.getOverridingIcon(side);
@@ -68,7 +68,7 @@ public class TileEntityCamo extends TileRedstoneBase {
 		else {
 			Block id = worldObj.getBlock(xCoord, yCoord-1, zCoord);
 			int meta = worldObj.getBlockMetadata(xCoord, yCoord-1, zCoord);
-			if (id == this.getTileEntityBlockID() && meta == this.getTEIndex()) {
+			if (id == this.getTileEntityBlockID() && meta == RedstoneTiles.CAMOFLAGE.getBlockMetadata()) {
 				TileEntityCamo co = (TileEntityCamo)worldObj.getTileEntity(xCoord, yCoord-1, zCoord);
 				return co.getImitatedBlockID();
 			}
@@ -84,7 +84,7 @@ public class TileEntityCamo extends TileRedstoneBase {
 		int meta = worldObj.getBlockMetadata(xCoord, yCoord-1, zCoord);
 		if (b == Blocks.air)
 			return null;
-		if (b == this.getTileEntityBlockID() && meta == this.getTEIndex()) {
+		if (b == this.getTileEntityBlockID() && meta == RedstoneTiles.CAMOFLAGE.getBlockMetadata()) {
 			TileEntityCamo te = (TileEntityCamo)worldObj.getTileEntity(xCoord, yCoord-1, zCoord);
 			if (te.isOverridingIcon(0))
 				return te.getBoundingBox();
@@ -110,7 +110,7 @@ public class TileEntityCamo extends TileRedstoneBase {
 		if (id == Blocks.air)
 			return true;
 		if (id == this.getTileEntityBlockID()) {
-			if (meta == this.getTEIndex()) {
+			if (meta == RedstoneTiles.CAMOFLAGE.getBlockMetadata()) {
 				TileEntityCamo co = (TileEntityCamo)worldObj.getTileEntity(xCoord, yCoord+1, zCoord);
 				if (co.isOverridingIcon(0)) {
 					Block im = co.getImitatedBlockID();
