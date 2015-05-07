@@ -17,6 +17,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.world.WorldEvent;
+import Reika.ChromatiCraft.API.AcceleratorBlacklist;
+import Reika.ChromatiCraft.API.AcceleratorBlacklist.BlacklistReason;
 import Reika.DragonAPI.DragonAPICore;
 import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.Auxiliary.NEI_DragonAPI_Config;
@@ -34,6 +36,7 @@ import Reika.ExpandedRedstone.Registry.RedstoneBlocks;
 import Reika.ExpandedRedstone.Registry.RedstoneItems;
 import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
+import Reika.ExpandedRedstone.TileEntities.TileEntity555;
 import Reika.RotaryCraft.API.BlockColorInterface;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -112,6 +115,10 @@ public class ExpandedRedstone extends DragonAPIMod {
 				for (int k = 0; k < r.getNumberMetadatas(); k++)
 					BlockColorInterface.addGPRBlockColor(r.getBlockInstance(), k, ReikaColorAPI.RGBtoHex(140, 140, 140));
 			}
+		}
+
+		if (ModList.CHROMATICRAFT.isLoaded()) {
+			AcceleratorBlacklist.addBlacklist(TileEntity555.class, BlacklistReason.BUGS);
 		}
 
 		this.finishTiming();
