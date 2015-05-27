@@ -20,6 +20,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import Reika.DragonAPI.Instantiable.HybridTank;
 import Reika.DragonAPI.Instantiable.Data.BlockStruct.BlockArray;
+import Reika.DragonAPI.Instantiable.Data.Immutable.Coordinate;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
@@ -56,12 +57,12 @@ public class TileEntityRedstonePump extends InventoriedRedstoneTileEntity {
 
 		if (ReikaRedstoneHelper.isPositiveEdge(world, x, y, z, lastPower)) {
 			int level = world.getBlockPowerInput(x, y, z);
-			int[] xyz = blocks.getNextAndMoveOn();
-			Fluid f = this.getLiquidHarvested(world, xyz[0], xyz[1], xyz[2]);
+			Coordinate c = blocks.getNextAndMoveOn();
+			Fluid f = this.getLiquidHarvested(world, c.xCoord, c.yCoord, c.zCoord);
 			if (f != null && this.canAccept(f)) {
 				tank.addLiquid(1000, f);
-				world.setBlockToAir(xyz[0], xyz[1], xyz[2]);
-				world.markBlockForUpdate(xyz[0], xyz[1], xyz[2]);
+				c.setBlock(world, Blocks.air);
+				world.markBlockForUpdate(c.xCoord, c.yCoord, c.zCoord);
 				if (RedstoneOptions.NOISES.getState())
 					ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click");
 			}
