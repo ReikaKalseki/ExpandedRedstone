@@ -20,6 +20,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -35,6 +36,7 @@ import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.ASM.APIStripper.Strippable;
 import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
 import Reika.DragonAPI.Base.TileEntityBase;
+import Reika.DragonAPI.Instantiable.Data.BlockKey;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.DragonAPI.ModRegistry.InterfaceCache;
@@ -44,6 +46,7 @@ import Reika.ExpandedRedstone.TileEntities.TileEntity555;
 import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogTransmitter;
 import Reika.ExpandedRedstone.TileEntities.TileEntityArithmetic;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker;
+import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
 import Reika.ExpandedRedstone.TileEntities.TileEntityChestReader;
 import Reika.ExpandedRedstone.TileEntities.TileEntityCountdown;
 import Reika.ExpandedRedstone.TileEntities.TileEntityDriver;
@@ -53,6 +56,9 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityRedstoneRelay;
 import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
 import Reika.ExpandedRedstone.TileEntities.TileEntitySignalScaler;
 import Reika.RotaryCraft.API.ItemFetcher;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 
 @Strippable(value = {"mcp.mobius.waila.api.IWailaDataProvider"})
 public abstract class BlockRedstoneBase extends Block implements IWailaDataProvider {
@@ -433,14 +439,23 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 			int y = mov.blockY;
 			int z = mov.blockZ;
 			RedstoneTiles r = RedstoneTiles.getTEAt(world, x, y, z);
-			return r.getItem();
+			if (r == RedstoneTiles.CAMOFLAGE) {
+				TileEntityCamo te = (TileEntityCamo)acc.getTileEntity();
+				BlockKey id = te.getImitatedBlockID();
+				if (id != null) {
+					if (id.blockID == Blocks.grass && !te.canRenderAsGrass())
+						id = new BlockKey(Blocks.dirt);
+					return new ItemStack(id.blockID, 1, id.metadata);
+				}
+			}
 		}
 		return null;
 	}
 
 	@Override
 	@ModDependent(ModList.WAILA)
-	public List<String> getWailaHead(ItemStack is, List<String> tip, IWailaDataAccessor acc, IWailaConfigHandler config) {
+	public final List<String> getWailaHead(ItemStack is, List<String> tip, IWailaDataAccessor acc, IWailaConfigHandler config) {
+		/*
 		World world = acc.getWorld();
 		MovingObjectPosition mov = acc.getPosition();
 		if (mov != null) {
@@ -449,13 +464,13 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 			int z = mov.blockZ;
 			RedstoneTiles r = RedstoneTiles.getTEAt(world, x, y, z);
 			tip.add(EnumChatFormatting.WHITE+this.getPickBlock(mov, world, x, y, z).getDisplayName());
-		}
+		}*/
 		return tip;
 	}
 
 	@Override
 	@ModDependent(ModList.WAILA)
-	public List<String> getWailaBody(ItemStack is, List<String> tip, IWailaDataAccessor acc, IWailaConfigHandler config) {
+	public final List<String> getWailaBody(ItemStack is, List<String> tip, IWailaDataAccessor acc, IWailaConfigHandler config) {
 		TileEntity te = acc.getTileEntity();
 		((TileEntityBase)te).syncAllData(false);
 		if (te instanceof TileEntitySignalScaler) {
@@ -482,7 +497,22 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 	public final List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor acc, IWailaConfigHandler config) {
 		String s1 = EnumChatFormatting.ITALIC.toString();
 		String s2 = EnumChatFormatting.BLUE.toString();
-		currenttip.add(s2+s1+"Expanded Redstone");
+		String mod = "Expanded Redstone";
+		if (acc.getTileEntity() instanceof TileEntityCamo) {
+			TileEntityCamo te = (TileEntityCamo)acc.getTileEntity();
+			BlockKey id = te.getImitatedBlockID();
+			if (id != null) {
+				if (ReikaItemHelper.isVanillaBlock(id.blockID))
+					mod = "Minecraft";
+				else {
+					UniqueIdentifier uid = GameRegistry.findUniqueIdentifierFor(id.blockID);
+					if (uid != null) {
+						mod = Loader.instance().getIndexedModList().get(uid.modId).getName();
+					}
+				}
+			}
+		}
+		//currenttip.add(s2+s1+mod);
 		return currenttip;
 	}
 

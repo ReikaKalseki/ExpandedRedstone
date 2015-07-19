@@ -16,6 +16,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.DragonAPI.Instantiable.Data.BlockKey;
 import Reika.ExpandedRedstone.Base.BlockRedstoneBase;
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
@@ -51,7 +52,7 @@ public class TileEntityCamo extends TileRedstoneBase {
 				IIcon ico = te.getOverridingIcon(side);
 				if (ico == Blocks.grass.getIcon(side, meta) && !this.canRenderAsGrass())
 					ico = Blocks.dirt.getIcon(side, meta);
-				else if (te.getImitatedBlockID() == Blocks.grass && ico == Blocks.dirt.getIcon(side, meta) && this.canRenderAsGrass())
+				else if (te.getImitatedBlockID().blockID == Blocks.grass && ico == Blocks.dirt.getIcon(side, meta) && this.canRenderAsGrass())
 					ico = Blocks.grass.getIcon(side, meta);
 				return ico;
 			}
@@ -62,7 +63,7 @@ public class TileEntityCamo extends TileRedstoneBase {
 		return ico;
 	}
 
-	public Block getImitatedBlockID() {
+	public BlockKey getImitatedBlockID() {
 		if (!this.isOverridingIcon(0))
 			return null;
 		else {
@@ -73,7 +74,7 @@ public class TileEntityCamo extends TileRedstoneBase {
 				return co.getImitatedBlockID();
 			}
 			else
-				return id;
+				return new BlockKey(id, meta);
 		}
 	}
 
@@ -103,7 +104,6 @@ public class TileEntityCamo extends TileRedstoneBase {
 		return box;
 	}
 
-	//ReikaJavaLibrary.pConsoleIf(this.canRenderAsGrass(), yCoord == 64);
 	public boolean canRenderAsGrass() {
 		Block id = worldObj.getBlock(xCoord, yCoord+1, zCoord);
 		int meta = worldObj.getBlockMetadata(xCoord, yCoord+1, zCoord);
@@ -113,10 +113,10 @@ public class TileEntityCamo extends TileRedstoneBase {
 			if (meta == RedstoneTiles.CAMOFLAGE.getBlockMetadata()) {
 				TileEntityCamo co = (TileEntityCamo)worldObj.getTileEntity(xCoord, yCoord+1, zCoord);
 				if (co.isOverridingIcon(0)) {
-					Block im = co.getImitatedBlockID();
-					if (im == Blocks.air || im == null)
+					BlockKey im = co.getImitatedBlockID();
+					if (im.blockID == Blocks.air || im == null)
 						return true;
-					return im.getCanBlockGrass();
+					return im.blockID.getCanBlockGrass();
 				}
 				else
 					return true;

@@ -9,21 +9,13 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.ItemBlocks;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
+import Reika.DragonAPI.Instantiable.Data.BlockKey;
 import Reika.ExpandedRedstone.Base.BlockRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
@@ -96,16 +88,14 @@ public class BlockRedstoneCamo extends BlockRedstoneBase {
 	public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
 		TileEntityCamo te = (TileEntityCamo)world.getTileEntity(x, y, z);
 		if (te.isOverridingIcon(0)) {
-			Block b = te.getImitatedBlockID();
-			if (b != Blocks.air) {
-				if (b != null) {
-					return b.colorMultiplier(world, x, y-1, z);
-				}
+			BlockKey b = te.getImitatedBlockID();
+			if (b != null && b.blockID != Blocks.air) {
+				return b.blockID.colorMultiplier(world, x, y-1, z);
 			}
 		}
 		return super.colorMultiplier(world, x, y, z);
 	}
-
+	/*
 	@Override
 	public ItemStack getWailaStack(IWailaDataAccessor acc, IWailaConfigHandler config) {
 		World world = acc.getWorld();
@@ -157,6 +147,6 @@ public class BlockRedstoneCamo extends BlockRedstoneBase {
 	@Override
 	public List<String> getWailaBody(ItemStack is, List<String> tip, IWailaDataAccessor acc, IWailaConfigHandler config) {
 		return tip;
-	}
+	}*/
 
 }
