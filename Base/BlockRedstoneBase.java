@@ -445,7 +445,7 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 				if (id != null) {
 					if (id.blockID == Blocks.grass && !te.canRenderAsGrass())
 						id = new BlockKey(Blocks.dirt);
-					return new ItemStack(id.blockID, 1, id.metadata);
+					return id.asItemStack();
 				}
 			}
 		}
