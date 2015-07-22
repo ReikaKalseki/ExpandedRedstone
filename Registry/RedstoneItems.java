@@ -14,7 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import Reika.DragonAPI.Exception.RegistrationException;
-import Reika.DragonAPI.Interfaces.ItemEnum;
+import Reika.DragonAPI.Interfaces.Registry.ItemEnum;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 import Reika.ExpandedRedstone.ItemBlocks.ItemCircuitPlacer;
