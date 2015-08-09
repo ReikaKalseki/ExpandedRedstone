@@ -20,6 +20,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import Reika.ChromatiCraft.API.AcceleratorBlacklist;
 import Reika.ChromatiCraft.API.AcceleratorBlacklist.BlacklistReason;
 import Reika.DragonAPI.DragonAPICore;
+import Reika.DragonAPI.DragonOptions;
 import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.Auxiliary.NEI_DragonAPI_Config;
 import Reika.DragonAPI.Auxiliary.Trackers.CommandableUpdateChecker;
@@ -80,6 +81,8 @@ public class ExpandedRedstone extends DragonAPIMod {
 		config.loadSubfolderedConfigFile(evt);
 		config.initProps(evt);
 		logger = new ModLogger(instance, false);
+		if (DragonOptions.FILELOG.getState())
+			logger.setOutput("**_Loading_Log.log");
 		proxy.registerSounds();
 
 		ReikaPacketHelper.registerPacketHandler(instance, packetChannel, new ExpandedPacketCore());

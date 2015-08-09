@@ -17,7 +17,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import Reika.DragonAPI.Instantiable.Data.Immutable.WorldLocation;
 import Reika.DragonAPI.Interfaces.Registry.SoundEnum;
-import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -97,7 +96,7 @@ public enum RedstoneSounds implements SoundEnum {
 			if (soundList[i].name().equals(name))
 				return soundList[i];
 		}
-		ReikaJavaLibrary.pConsole("\""+name+"\" does not correspond to a registered sound!");
+		ExpandedRedstone.logger.logError("\""+name+"\" does not correspond to a registered sound!");
 		return null;
 	}
 

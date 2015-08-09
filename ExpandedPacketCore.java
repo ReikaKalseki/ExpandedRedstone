@@ -21,7 +21,6 @@ import Reika.DragonAPI.Interfaces.PacketHandler;
 import Reika.DragonAPI.Libraries.IO.ReikaChatHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper.PacketObj;
-import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.ExpandedRedstone.Base.AnalogWireless;
 
 
@@ -48,86 +47,86 @@ public class ExpandedPacketCore implements PacketHandler {
 			//ReikaJavaLibrary.pConsole(inputStream.readInt()+":"+inputStream.readInt()+":"+inputStream.readInt()+":"+inputStream.readInt()+":"+inputStream.readInt()+":"+inputStream.readInt()+":"+inputStream.readInt());
 			PacketTypes packetType = packet.getType();
 			switch(packetType) {
-			case FULLSOUND:
-				break;
-			case SOUND:
-				return;
-			case STRING:
-				stringdata = packet.readString();
-				control = inputStream.readInt();
-				//pack = ReactorPackets.getEnum(control);
-				break;
-			case DATA:
-				control = inputStream.readInt();
-				len = 1;
-				data = new int[len];
-				for (int i = 0; i < len; i++)
-					data[i] = inputStream.readInt();
-				break;
-			case POS:
-				control = inputStream.readInt();
-				dx = inputStream.readDouble();
-				dy = inputStream.readDouble();
-				dz = inputStream.readDouble();
-				len = 1;
-				data = new int[len];
-				for (int i = 0; i < len; i++)
-					data[i] = inputStream.readInt();
-				break;
-			case UPDATE:
-				control = inputStream.readInt();
-				//pack = ReactorPackets.getEnum(control);
-				break;
-			case FLOAT:
-				control = inputStream.readInt();
-				//pack = ReactorPackets.getEnum(control);
-				floatdata = inputStream.readFloat();
-				break;
-			case SYNC:
-				String name = packet.readString();
-				x = inputStream.readInt();
-				y = inputStream.readInt();
-				z = inputStream.readInt();
-				int value = inputStream.readInt();
-				ReikaPacketHelper.updateTileEntityData(world, x, y, z, name, value);
-				return;
-			case TANK:
-				String tank = packet.readString();
-				x = inputStream.readInt();
-				y = inputStream.readInt();
-				z = inputStream.readInt();
-				int level = inputStream.readInt();
-				ReikaPacketHelper.updateTileEntityTankData(world, x, y, z, tank, level);
-				return;
-			case RAW:
-				control = inputStream.readInt();
-				len = 1;
-				data = new int[len];
-				for (int i = 0; i < len; i++)
-					data[i] = inputStream.readInt();
-				break;
-			case PREFIXED:
-				control = inputStream.readInt();
-				len = inputStream.readInt();
-				data = new int[len];
-				for (int i = 0; i < len; i++)
-					data[i] = inputStream.readInt();
-				break;
-			case NBT:
-				break;
-			case STRINGINT:
-				stringdata = packet.readString();
-				control = inputStream.readInt();
-				data = new int[1];
-				for (int i = 0; i < data.length; i++)
-					data[i] = inputStream.readInt();
-				break;
-			case UUID:
-				control = inputStream.readInt();
-				long l1 = inputStream.readLong(); //most
-				long l2 = inputStream.readLong(); //least
-				id = new UUID(l1, l2);
-				break;
+				case FULLSOUND:
+					break;
+				case SOUND:
+					return;
+				case STRING:
+					stringdata = packet.readString();
+					control = inputStream.readInt();
+					//pack = ReactorPackets.getEnum(control);
+					break;
+				case DATA:
+					control = inputStream.readInt();
+					len = 1;
+					data = new int[len];
+					for (int i = 0; i < len; i++)
+						data[i] = inputStream.readInt();
+					break;
+				case POS:
+					control = inputStream.readInt();
+					dx = inputStream.readDouble();
+					dy = inputStream.readDouble();
+					dz = inputStream.readDouble();
+					len = 1;
+					data = new int[len];
+					for (int i = 0; i < len; i++)
+						data[i] = inputStream.readInt();
+					break;
+				case UPDATE:
+					control = inputStream.readInt();
+					//pack = ReactorPackets.getEnum(control);
+					break;
+				case FLOAT:
+					control = inputStream.readInt();
+					//pack = ReactorPackets.getEnum(control);
+					floatdata = inputStream.readFloat();
+					break;
+				case SYNC:
+					String name = packet.readString();
+					x = inputStream.readInt();
+					y = inputStream.readInt();
+					z = inputStream.readInt();
+					int value = inputStream.readInt();
+					ReikaPacketHelper.updateTileEntityData(world, x, y, z, name, value);
+					return;
+				case TANK:
+					String tank = packet.readString();
+					x = inputStream.readInt();
+					y = inputStream.readInt();
+					z = inputStream.readInt();
+					int level = inputStream.readInt();
+					ReikaPacketHelper.updateTileEntityTankData(world, x, y, z, tank, level);
+					return;
+				case RAW:
+					control = inputStream.readInt();
+					len = 1;
+					data = new int[len];
+					for (int i = 0; i < len; i++)
+						data[i] = inputStream.readInt();
+					break;
+				case PREFIXED:
+					control = inputStream.readInt();
+					len = inputStream.readInt();
+					data = new int[len];
+					for (int i = 0; i < len; i++)
+						data[i] = inputStream.readInt();
+					break;
+				case NBT:
+					break;
+				case STRINGINT:
+					stringdata = packet.readString();
+					control = inputStream.readInt();
+					data = new int[1];
+					for (int i = 0; i < data.length; i++)
+						data[i] = inputStream.readInt();
+					break;
+				case UUID:
+					control = inputStream.readInt();
+					long l1 = inputStream.readLong(); //most
+					long l2 = inputStream.readLong(); //least
+					id = new UUID(l1, l2);
+					break;
 			}
 			if (packetType.hasCoordinates()) {
 				x = inputStream.readInt();
@@ -142,13 +141,13 @@ public class ExpandedPacketCore implements PacketHandler {
 		TileEntity te = world.getTileEntity(x, y, z);
 		try {
 			switch (control) {
-			case 0:
-				((AnalogWireless)te).setChannel(data[0]);
-				break;
+				case 0:
+					((AnalogWireless)te).setChannel(data[0]);
+					break;
 			}
 		}
 		catch (Exception e) {
-			ReikaJavaLibrary.pConsole("Machine/item was deleted before its packet could be received!");
+			ExpandedRedstone.logger.logError("Machine/item was deleted before its packet could be received!");
 			ReikaChatHelper.writeString("Machine/item was deleted before its packet could be received!");
 			e.printStackTrace();
 		}
