@@ -109,4 +109,9 @@ public enum RedstoneSounds implements SoundEnum {
 	public boolean canOverlap() {
 		return false;
 	}
+
+	@Override
+	public boolean attenuate() {
+		return true;
+	}
 }

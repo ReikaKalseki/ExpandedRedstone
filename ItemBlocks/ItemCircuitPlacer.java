@@ -22,7 +22,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import Reika.DragonAPI.Libraries.ReikaPlayerAPI;
+import Reika.DragonAPI.Libraries.ReikaEntityHelper;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;
@@ -80,11 +80,11 @@ public class ItemCircuitPlacer extends Item {
 		TileRedstoneBase te = (TileRedstoneBase)world.getTileEntity(x, y, z);
 		if (tile.isDirectionable()) {
 			if (tile.isReversedPlacement()) {
-				ForgeDirection dir = ReikaPlayerAPI.getDirectionFromPlayerLook(ep, tile.canBeVertical());
+				ForgeDirection dir = ReikaEntityHelper.getDirectionFromEntityLook(ep, tile.canBeVertical());
 				te.setFacing(dir.getOpposite());
 			}
 			else {
-				te.setFacing(ReikaPlayerAPI.getDirectionFromPlayerLook(ep, tile.canBeVertical()));
+				te.setFacing(ReikaEntityHelper.getDirectionFromEntityLook(ep, tile.canBeVertical()));
 			}
 		}
 		else

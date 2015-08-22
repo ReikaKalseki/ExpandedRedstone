@@ -58,6 +58,11 @@ public class TileEntityEffector extends InventoriedRedstoneTileEntity {
 		int dz = this.getFacingZ();
 		EntityPlayer ep = this.getPlacer();
 		Item it = is.getItem();
+		int s = this.getFacing().getOpposite().ordinal();
+		if (it == Items.flint_and_steel) {
+			s = 1;
+			dy--;
+		}
 		AxisAlignedBB box = ReikaAABBHelper.getBlockAABB(dx, dy, dz);
 		List<EntityLivingBase> li = world.getEntitiesWithinAABB(EntityLivingBase.class, box);
 		boolean flag = true;
@@ -75,7 +80,7 @@ public class TileEntityEffector extends InventoriedRedstoneTileEntity {
 				}
 			}
 			else {
-				it.onItemUse(is, ep, world, dx, dy, dz, this.getFacing().getOpposite().ordinal(), 0F, 0F, 0F);
+				it.onItemUse(is, ep, world, dx, dy, dz, s, 0F, 0F, 0F);
 			}
 		}
 		inv[slot] = is;
