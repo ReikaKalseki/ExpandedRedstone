@@ -31,7 +31,7 @@ public class TileEntityAnalogReceiver extends AnalogWireless {
 
 	@Override
 	public int getEmission() {
-		return channels[channel];
+		return placerUUID != null ? this.getChannels()[channel] : 0;
 	}
 
 }

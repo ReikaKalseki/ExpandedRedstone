@@ -32,7 +32,7 @@ public class GuiAnalog extends GuiContainer {
 		super(new CoreContainer(player, te));
 		tile = te;
 		channel = te.getChannel();
-		ySize = 128;
+		ySize = 144;
 	}
 
 	@Override
@@ -80,6 +80,9 @@ public class GuiAnalog extends GuiContainer {
 
 		String c = String.format("Channel: %d", channel);
 		fontRendererObj.drawString(c, xSize / 2 - fontRendererObj.getStringWidth(c) / 2, 110, 0);
+
+		String o = String.format("Owner: '%s'", tile.getPlacerName());
+		fontRendererObj.drawString(o, xSize / 2 - fontRendererObj.getStringWidth(o) / 2, 124, 0);
 	}
 
 	@Override

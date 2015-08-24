@@ -42,10 +42,13 @@ public class TileEntityAnalogTransmitter extends AnalogWireless {
 	}
 
 	private void recalculate() {
-		int prev = channels[channel];
-		this.recalculateChannel(channel);
-		if (channels[channel] != prev) {
-			this.updateReceivers();
+		if (placerUUID != null) {
+			int[] ch = this.getChannels();
+			int prev = ch[channel];
+			this.recalculateChannel(channel);
+			if (ch[channel] != prev) {
+				this.updateReceivers();
+			}
 		}
 	}
 
@@ -75,10 +78,10 @@ public class TileEntityAnalogTransmitter extends AnalogWireless {
 		}
 	}
 
-	private static void recalculateChannel(int channel) {
+	private void recalculateChannel(int channel) {
 		ArrayList<TileEntityAnalogTransmitter> li = transmitters[channel];
 		if (li == null || li.isEmpty()) {
-			channels[channel] = 0;
+			this.getChannels()[channel] = 0;
 			return;
 		}
 		int max = 0;
@@ -88,7 +91,7 @@ public class TileEntityAnalogTransmitter extends AnalogWireless {
 			if (lvl > max)
 				max = lvl;
 		}
-		channels[channel] = max;
+		this.getChannels()[channel] = max;
 	}
 
 }

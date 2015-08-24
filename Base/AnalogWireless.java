@@ -10,6 +10,8 @@
 package Reika.ExpandedRedstone.Base;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -19,17 +21,30 @@ import Reika.RotaryCraft.API.Interfaces.Transducerable;
 
 public abstract class AnalogWireless extends TileRedstoneBase implements Transducerable {
 
-	public static final int CHANNELS = 8192;
+	public static final int CHANNELS = 8192; //8192 channels
 
-	protected static final int[] channels = new int[CHANNELS]; //8192 channels
+	private static final HashMap<UUID, int[]> channels = new HashMap();
 	protected static final ArrayList<TileEntityAnalogTransmitter>[] transmitters = new ArrayList[CHANNELS];
 	protected static final ArrayList<TileEntityAnalogReceiver>[] receivers = new ArrayList[CHANNELS];
 
 	protected int channel;
 
+	private void registerUUID() {
+		if (placerUUID != null) {
+			if (!channels.containsKey(placerUUID)) {
+				channels.put(placerUUID, new int[CHANNELS]);
+			}
+		}
+	}
+
+	protected int[] getChannels() {
+		this.registerUUID();
+		return channels.get(placerUUID);
+	}
+
 	public static void resetChannelData() {
-		for (int i = 0; i < channels.length; i++) {
-			channels[i] = 0;
+		channels.clear();
+		for (int i = 0; i < CHANNELS; i++) {
 			transmitters[i] = null;
 			receivers[i] = null;
 		}
@@ -43,6 +58,11 @@ public abstract class AnalogWireless extends TileRedstoneBase implements Transdu
 		if (arr[channel] == null || !arr[channel].contains(this))
 			if (!world.isRemote)
 				this.add();
+	}
+
+	@Override
+	protected void onFirstTick(World world, int x, int y, int z) {
+		this.registerUUID();
 	}
 
 	public final int getChannel() {
@@ -80,7 +100,7 @@ public abstract class AnalogWireless extends TileRedstoneBase implements Transdu
 	@Override
 	public final ArrayList<String> getMessages(World world, int x, int y, int z, int side) {
 		ArrayList<String> li = new ArrayList();
-		String s = String.format("Channel %d: Level %d from:", channel, channels[channel]);
+		String s = String.format("Channel %d: Level %d from:", channel, this.getChannels()[channel]);
 		li.add(s);
 		if (transmitters[channel] != null) {
 			for (int i = 0; i < transmitters[channel].size(); i++) {
