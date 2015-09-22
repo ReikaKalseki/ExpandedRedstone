@@ -17,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraft.util.AxisAlignedBB;
@@ -44,7 +45,7 @@ public class TileEntityEffector extends InventoriedRedstoneTileEntity {
 	private void useItem() {
 		for (int i = 0; i < inv.length; i++) {
 			ItemStack is = inv[i];
-			if (is != null) {
+			if (is != null && !(is.getItem() instanceof ItemBlock)) {
 				this.fakeClick(i, is);
 				return;
 			}
@@ -83,7 +84,7 @@ public class TileEntityEffector extends InventoriedRedstoneTileEntity {
 				it.onItemUse(is, ep, world, dx, dy, dz, s, 0F, 0F, 0F);
 			}
 		}
-		inv[slot] = is;
+		inv[slot] = is.stackSize > 0 ? is : null;
 		if (RedstoneOptions.NOISES.getState())
 			ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click");
 	}

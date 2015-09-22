@@ -27,7 +27,10 @@ public class TileEntityArithmetic extends TileRedstoneBase {
 		MULTIPLY("*"),
 		DIVIDE("/"),
 		MODULUS("%"),
-		POWER("^");
+		POWER("^"),
+		MIN("min"),
+		MAX("max"),
+		THRESH("?");
 
 		public final String character;
 
@@ -39,18 +42,24 @@ public class TileEntityArithmetic extends TileRedstoneBase {
 
 		private int calculate(int n1, int n2) {
 			switch(this) {
-			case ADD:
-				return n1+n2;
-			case DIVIDE:
-				return n2 > 0 ? n1/n2 : 15;
-			case MODULUS:
-				return n2 > 0 ? n1%n2 : 0;
-			case MULTIPLY:
-				return n1*n2;
-			case POWER:
-				return ReikaMathLibrary.intpow2(n1, n2);
-			case SUBTRACT:
-				return n1-n2;
+				case ADD:
+					return n1+n2;
+				case DIVIDE:
+					return n2 > 0 ? n1/n2 : 15;
+				case MODULUS:
+					return n2 > 0 ? n1%n2 : 0;
+				case MULTIPLY:
+					return n1*n2;
+				case POWER:
+					return ReikaMathLibrary.intpow2(n1, n2);
+				case SUBTRACT:
+					return n1-n2;
+				case MIN:
+					return Math.min(n1, n2);
+				case MAX:
+					return Math.max(n1, n2);
+				case THRESH:
+					return n1 >= n2 ? 15 : 0;
 			}
 			return 0;
 		}
