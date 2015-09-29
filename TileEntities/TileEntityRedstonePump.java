@@ -12,12 +12,14 @@ package Reika.ExpandedRedstone.TileEntities;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidHandler;
 import Reika.DragonAPI.Instantiable.HybridTank;
 import Reika.DragonAPI.Instantiable.Data.BlockStruct.BlockArray;
 import Reika.DragonAPI.Instantiable.Data.Immutable.Coordinate;
@@ -58,9 +60,9 @@ public class TileEntityRedstonePump extends InventoriedRedstoneTileEntity {
 		if (ReikaRedstoneHelper.isPositiveEdge(world, x, y, z, lastPower)) {
 			int level = world.getBlockPowerInput(x, y, z);
 			Coordinate c = blocks.getNextAndMoveOn();
-			Fluid f = this.getLiquidHarvested(world, c.xCoord, c.yCoord, c.zCoord);
-			if (f != null && this.canAccept(f)) {
-				tank.addLiquid(1000, f);
+			FluidStack f = ReikaWorldHelper.getDrainableFluid(world, c.xCoord, c.yCoord, c.zCoord);
+			if (f != null && tank.canTakeIn(f)) {
+				tank.addLiquid(f.amount, f.getFluid());
 				c.setBlock(world, Blocks.air);
 				world.markBlockForUpdate(c.xCoord, c.yCoord, c.zCoord);
 				if (RedstoneOptions.NOISES.getState())
@@ -69,26 +71,37 @@ public class TileEntityRedstonePump extends InventoriedRedstoneTileEntity {
 		}
 		lastPower = world.isBlockIndirectlyGettingPowered(x, y, z);
 
+		if (!tank.isEmpty())
+			this.tryDistributeFluid(world, x, y, z);
+
+		//ReikaJavaLibrary.pConsole(inv[0]);
+	}
+
+	private void tryDistributeFluid(World world, int x, int y, int z) {
 		if (tank.getLevel() >= 1000 && inv[0] != null) {
 			ItemStack full = FluidContainerRegistry.fillFluidContainer(new FluidStack(tank.getActualFluid(), 1000), inv[0]);
 			if (full != null) {
 				inv[0] = full;
 				tank.removeLiquid(1000);
+				return;
 			}
 		}
 
-		//ReikaJavaLibrary.pConsole(inv[0]);
+		this.tryEjectFluid(world, x, y, z);
 	}
 
-	private boolean canAccept(Fluid f) {
-		return tank.canTakeIn(1000) && (tank.isEmpty() || tank.getActualFluid().equals(f));
-	}
-
-	private Fluid getLiquidHarvested(World world, int x, int y, int z) {
-		Block b = world.getBlock(x, y, z);
-		;
-		Fluid f = FluidRegistry.lookupFluidForBlock(b);
-		return f;
+	private void tryEjectFluid(World world, int x, int y, int z) {
+		for (int i = 1; i < 6; i++) {
+			ForgeDirection dir = dirs[i];
+			TileEntity te = this.getAdjacentTileEntity(dir);
+			if (te instanceof IFluidHandler) {
+				IFluidHandler ifl = (IFluidHandler)te;
+				if (ifl.canFill(dir.getOpposite(), tank.getActualFluid())) {
+					int rem = ifl.fill(dir.getOpposite(), tank.getFluid(), true);
+					tank.removeLiquid(rem);
+				}
+			}
+		}
 	}
 
 	@Override
