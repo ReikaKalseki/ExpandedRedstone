@@ -60,7 +60,7 @@ public class ExpandedRedstone extends DragonAPIMod {
 
 	public static final String packetChannel = "ExpandedData";
 
-	public static final ControlledConfig config = new ControlledConfig(instance, RedstoneOptions.optionList, null, 1);
+	public static final ControlledConfig config = new ControlledConfig(instance, RedstoneOptions.optionList, null);
 
 	public static Block[] blocks = new Block[RedstoneBlocks.blockList.length];
 
