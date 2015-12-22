@@ -114,4 +114,9 @@ public enum RedstoneSounds implements SoundEnum {
 	public boolean attenuate() {
 		return true;
 	}
+
+	@Override
+	public float getModulatedVolume() {
+		return 1;
+	}
 }

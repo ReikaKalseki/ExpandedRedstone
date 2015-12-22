@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
 import net.minecraft.world.World;
+import Reika.DragonAPI.Instantiable.Data.Immutable.WorldLocation;
+import Reika.ExpandedRedstone.ExpandedRedstone;
 import Reika.ExpandedRedstone.Base.AnalogWireless;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
@@ -46,6 +48,10 @@ public class TileEntityAnalogTransmitter extends AnalogWireless {
 			int[] ch = this.getChannels();
 			int prev = ch[channel];
 			this.recalculateChannel(channel);
+			ch = this.getChannels();
+			if (ExpandedRedstone.logger.shouldDebug()) {
+				ExpandedRedstone.logger.log("Recalculated wireless redstone channel "+channel+" for "+placerUUID+": "+prev+">"+ch[channel]);
+			}
 			if (ch[channel] != prev) {
 				this.updateReceivers();
 			}
@@ -64,11 +70,11 @@ public class TileEntityAnalogTransmitter extends AnalogWireless {
 
 	private void updateReceivers() {
 		try {
-			ArrayList<TileEntityAnalogReceiver> li = receivers[channel];
+			ArrayList<WorldLocation> li = receivers[channel];
 			if (receivers[channel] == null || receivers[channel].isEmpty())
 				return;
-			for (int i = 0; i < li.size(); i++) {
-				TileEntityAnalogReceiver te = li.get(i);
+			for (WorldLocation loc : li) {
+				TileEntityAnalogReceiver te = (TileEntityAnalogReceiver)loc.getTileEntity();
 				te.update();
 				//ReikaJavaLibrary.pConsole(this+" >> "+te, Side.SERVER);
 			}
@@ -79,14 +85,14 @@ public class TileEntityAnalogTransmitter extends AnalogWireless {
 	}
 
 	private void recalculateChannel(int channel) {
-		ArrayList<TileEntityAnalogTransmitter> li = transmitters[channel];
+		ArrayList<WorldLocation> li = transmitters[channel];
 		if (li == null || li.isEmpty()) {
 			this.getChannels()[channel] = 0;
 			return;
 		}
 		int max = 0;
-		for (int i = 0; i < li.size(); i++) {
-			TileEntityAnalogTransmitter te = li.get(i);
+		for (WorldLocation loc : li) {
+			TileEntityAnalogTransmitter te = (TileEntityAnalogTransmitter)loc.getTileEntity();
 			int lvl = te.worldObj.getBlockPowerInput(te.xCoord, te.yCoord, te.zCoord);
 			if (lvl > max)
 				max = lvl;

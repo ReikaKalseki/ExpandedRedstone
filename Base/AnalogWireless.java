@@ -15,7 +15,7 @@ import java.util.UUID;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogReceiver;
+import Reika.DragonAPI.Instantiable.Data.Immutable.WorldLocation;
 import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogTransmitter;
 import Reika.RotaryCraft.API.Interfaces.Transducerable;
 
@@ -24,8 +24,8 @@ public abstract class AnalogWireless extends TileRedstoneBase implements Transdu
 	public static final int CHANNELS = 8192; //8192 channels
 
 	private static final HashMap<UUID, int[]> channels = new HashMap();
-	protected static final ArrayList<TileEntityAnalogTransmitter>[] transmitters = new ArrayList[CHANNELS];
-	protected static final ArrayList<TileEntityAnalogReceiver>[] receivers = new ArrayList[CHANNELS];
+	protected static final ArrayList<WorldLocation>[] transmitters = new ArrayList[CHANNELS];
+	protected static final ArrayList<WorldLocation>[] receivers = new ArrayList[CHANNELS];
 
 	protected int channel;
 
@@ -77,19 +77,21 @@ public abstract class AnalogWireless extends TileRedstoneBase implements Transdu
 	}
 
 	public void remove() {
-		ArrayList[] arr = this.getArray();
+		WorldLocation loc = new WorldLocation(this);
+		ArrayList<WorldLocation>[] arr = this.getArray();
 		if (arr[channel] != null)
-			arr[channel].remove(this);
+			arr[channel].remove(loc);
 	}
 
 	public void add() {
-		ArrayList[] arr = this.getArray();
+		ArrayList<WorldLocation>[] arr = this.getArray();
+		WorldLocation loc = new WorldLocation(this);
 		if (arr[channel] == null) {
 			arr[channel] = new ArrayList();
-			arr[channel].add(this);
+			arr[channel].add(loc);
 		}
-		else if (!arr[channel].contains(this)) {
-			arr[channel].add(this);
+		else if (!arr[channel].contains(loc)) {
+			arr[channel].add(loc);
 		}
 	}
 

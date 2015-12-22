@@ -34,7 +34,7 @@ public class TileEntityRedstonePump extends InventoriedRedstoneTileEntity {
 
 	private boolean lastPower;
 
-	private HybridTank tank = new HybridTank("rspump", 4000);
+	private final HybridTank tank = new HybridTank("rspump", 4000);
 	private BlockArray blocks = new BlockArray();
 
 	@Override
