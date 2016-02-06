@@ -61,7 +61,7 @@ public class TileEntityRedstonePump extends InventoriedRedstoneTileEntity {
 			int level = world.getBlockPowerInput(x, y, z);
 			Coordinate c = blocks.getNextAndMoveOn();
 			FluidStack f = ReikaWorldHelper.getDrainableFluid(world, c.xCoord, c.yCoord, c.zCoord);
-			if (f != null && tank.canTakeIn(f)) {
+			if (f != null && tank.canTakeIn(f) && f.amount > 0) {
 				tank.addLiquid(f.amount, f.getFluid());
 				c.setBlock(world, Blocks.air);
 				world.markBlockForUpdate(c.xCoord, c.yCoord, c.zCoord);
@@ -98,7 +98,8 @@ public class TileEntityRedstonePump extends InventoriedRedstoneTileEntity {
 				IFluidHandler ifl = (IFluidHandler)te;
 				if (ifl.canFill(dir.getOpposite(), tank.getActualFluid())) {
 					int rem = ifl.fill(dir.getOpposite(), tank.getFluid(), true);
-					tank.removeLiquid(rem);
+					if (rem > 0)
+						tank.removeLiquid(rem);
 				}
 			}
 		}

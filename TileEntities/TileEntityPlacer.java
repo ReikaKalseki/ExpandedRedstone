@@ -29,7 +29,7 @@ public class TileEntityPlacer extends InventoriedRedstoneTileEntity {
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z);
-		if (ReikaRedstoneHelper.isPositiveEdge(world, x, y, z, lastPower) && this.canPlace(world)) {
+		if (!world.isRemote && ReikaRedstoneHelper.isPositiveEdge(world, x, y, z, lastPower) && this.canPlace(world)) {
 			this.placeBlock(world);
 		}
 		lastPower = world.isBlockIndirectlyGettingPowered(x, y, z);
@@ -39,7 +39,7 @@ public class TileEntityPlacer extends InventoriedRedstoneTileEntity {
 		int dx = this.getFacingX();
 		int dy = this.getFacingY();
 		int dz = this.getFacingZ();
-		return (ReikaWorldHelper.softBlocks(world, dx, dy, dz));
+		return ReikaWorldHelper.softBlocks(world, dx, dy, dz);
 	}
 
 	private void placeBlock(World world) {

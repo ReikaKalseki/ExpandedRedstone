@@ -15,7 +15,9 @@ import java.util.UUID;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import Reika.DragonAPI.Auxiliary.ModularLogger;
 import Reika.DragonAPI.Instantiable.Data.Immutable.WorldLocation;
+import Reika.ExpandedRedstone.ExpandedRedstone;
 import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogTransmitter;
 import Reika.RotaryCraft.API.Interfaces.Transducerable;
 
@@ -23,11 +25,17 @@ public abstract class AnalogWireless extends TileRedstoneBase implements Transdu
 
 	public static final int CHANNELS = 8192; //8192 channels
 
+	protected static final String LOGGER_ID = "ExRWireless";
+
 	private static final HashMap<UUID, int[]> channels = new HashMap();
 	protected static final ArrayList<WorldLocation>[] transmitters = new ArrayList[CHANNELS];
 	protected static final ArrayList<WorldLocation>[] receivers = new ArrayList[CHANNELS];
 
 	protected int channel;
+
+	static {
+		ModularLogger.instance.addLogger(ExpandedRedstone.instance, LOGGER_ID);
+	}
 
 	private void registerUUID() {
 		if (placerUUID != null) {

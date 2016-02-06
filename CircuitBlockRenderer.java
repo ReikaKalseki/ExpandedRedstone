@@ -191,33 +191,39 @@ public class CircuitBlockRenderer implements ISimpleBlockRenderingHandler {
 				v5.setColorOpaque(color[0], color[1], color[2]);
 			}
 		}
-		switch(dir) {
-		case WEST:
-			v5.addVertexWithUV(0, maxy, 0, ico[1].getMinU(), ico[1].getMaxV());
-			v5.addVertexWithUV(0, maxy, 1, ico[1].getMaxU(), ico[1].getMaxV());
-			v5.addVertexWithUV(1, maxy, 1, ico[1].getMaxU(), ico[1].getMinV());
-			v5.addVertexWithUV(1, maxy, 0, ico[1].getMinU(), ico[1].getMinV());
-			break;
-		case NORTH:
-			v5.addVertexWithUV(1, maxy, 0, ico[1].getMinU(), ico[1].getMaxV());
-			v5.addVertexWithUV(0, maxy, 0, ico[1].getMaxU(), ico[1].getMaxV());
-			v5.addVertexWithUV(0, maxy, 1, ico[1].getMaxU(), ico[1].getMinV());
-			v5.addVertexWithUV(1, maxy, 1, ico[1].getMinU(), ico[1].getMinV());
-			break;
-		case SOUTH:
-			v5.addVertexWithUV(0, maxy, 1, ico[1].getMinU(), ico[1].getMaxV());
-			v5.addVertexWithUV(1, maxy, 1, ico[1].getMaxU(), ico[1].getMaxV());
-			v5.addVertexWithUV(1, maxy, 0, ico[1].getMaxU(), ico[1].getMinV());
-			v5.addVertexWithUV(0, maxy, 0, ico[1].getMinU(), ico[1].getMinV());
-			break;
-		case EAST:
-			v5.addVertexWithUV(1, maxy, 1, ico[1].getMinU(), ico[1].getMaxV());
-			v5.addVertexWithUV(1, maxy, 0, ico[1].getMaxU(), ico[1].getMaxV());
-			v5.addVertexWithUV(0, maxy, 0, ico[1].getMaxU(), ico[1].getMinV());
-			v5.addVertexWithUV(0, maxy, 1, ico[1].getMinU(), ico[1].getMinV());
-			break;
-		default:
-			break;
+
+		int[] top = te.getTopTextures();
+		for (int i = 0; i < top.length; i++) {
+			IIcon topico = BlockRedstoneBase.getIcon(1, te.getTEIndex(), top[i]);
+			double d = i*0.00125;
+			switch(dir) {
+				case WEST:
+					v5.addVertexWithUV(0, maxy+d, 0, topico.getMinU(), topico.getMaxV());
+					v5.addVertexWithUV(0, maxy+d, 1, topico.getMaxU(), topico.getMaxV());
+					v5.addVertexWithUV(1, maxy+d, 1, topico.getMaxU(), topico.getMinV());
+					v5.addVertexWithUV(1, maxy+d, 0, topico.getMinU(), topico.getMinV());
+					break;
+				case NORTH:
+					v5.addVertexWithUV(1, maxy+d, 0, topico.getMinU(), topico.getMaxV());
+					v5.addVertexWithUV(0, maxy+d, 0, topico.getMaxU(), topico.getMaxV());
+					v5.addVertexWithUV(0, maxy+d, 1, topico.getMaxU(), topico.getMinV());
+					v5.addVertexWithUV(1, maxy+d, 1, topico.getMinU(), topico.getMinV());
+					break;
+				case SOUTH:
+					v5.addVertexWithUV(0, maxy+d, 1, topico.getMinU(), topico.getMaxV());
+					v5.addVertexWithUV(1, maxy+d, 1, topico.getMaxU(), topico.getMaxV());
+					v5.addVertexWithUV(1, maxy+d, 0, topico.getMaxU(), topico.getMinV());
+					v5.addVertexWithUV(0, maxy+d, 0, topico.getMinU(), topico.getMinV());
+					break;
+				case EAST:
+					v5.addVertexWithUV(1, maxy+d, 1, topico.getMinU(), topico.getMaxV());
+					v5.addVertexWithUV(1, maxy+d, 0, topico.getMaxU(), topico.getMaxV());
+					v5.addVertexWithUV(0, maxy+d, 0, topico.getMaxU(), topico.getMinV());
+					v5.addVertexWithUV(0, maxy+d, 1, topico.getMinU(), topico.getMinV());
+					break;
+				default:
+					break;
+			}
 		}
 		v5.addTranslation(-x, -y, -z);
 

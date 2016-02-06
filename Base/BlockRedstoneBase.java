@@ -146,15 +146,15 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 	public final void onNeighborBlockChange(World world, int x, int y, int z, Block neighborID) {
 		RedstoneTiles r = RedstoneTiles.getTEAt(world, x, y, z);
 		switch (r) {
-		case COLUMN:
-			world.notifyBlocksOfNeighborChange(x, y+1, z, this, 0);
-			break;
-		case ANALOGTRANSMITTER:
-			TileEntityAnalogTransmitter te = (TileEntityAnalogTransmitter)world.getTileEntity(x, y, z);
-			te.markRecalculationIn(2);
-			break;
-		default:
-			break;
+			case COLUMN:
+				world.notifyBlocksOfNeighborChange(x, y+1, z, this, 0);
+				break;
+			case ANALOGTRANSMITTER:
+				TileEntityAnalogTransmitter te = (TileEntityAnalogTransmitter)world.getTileEntity(x, y, z);
+				te.markRecalculationIn(2);
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -215,63 +215,63 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 		if (ModList.ROTARYCRAFT.isLoaded() && ItemFetcher.isPlayerHoldingAngularTransducer(ep))
 			return false;
 		switch (r) {
-		case CHESTREADER:
-			((TileEntityChestReader)te).alternate();
-			te.syncAllData(true);
-			return true;
-		case CLOCK:
-			((TileEntity555)te).incrementSetting();
-			te.syncAllData(true);
-			return true;
-		case DRIVER:
-			if (ep.isSneaking())
-				((TileEntityDriver)te).decrement();
-			else
-				((TileEntityDriver)te).increment();
-			te.syncAllData(true);
-			return true;
-		case ARITHMETIC:
-			((TileEntityArithmetic)te).stepMode();
-			return true;
-		case RELAY:
-			((TileEntityRedstoneRelay)te).toggle();
-			return true;
-		case EFFECTOR:
-		case PLACER:
-		case ANALOGTRANSMITTER:
-		case ANALOGRECEIVER:
-			ep.openGui(ExpandedRedstone.instance, 0, world, x, y, z);
-			return true;
-		case PROXIMITY:
-			if (ep.isSneaking())
-				((TileEntityProximity)te).stepRange();
-			else
-				((TileEntityProximity)te).stepCreature();
-			te.syncAllData(true);
-			return true;
-		case SCALER:
-			if (ep.isSneaking())
-				((TileEntitySignalScaler)te).incrementMinValue();
-			else
-				((TileEntitySignalScaler)te).incrementMaxValue();
-			te.syncAllData(true);
-			return true;
-		case EQUALIZER:
-			int n = ep.isSneaking() ? 10 : 1;
-			for (int i = 0; i < n; i++)
-				((TileEntityEqualizer)te).incrementValue();
-			te.syncAllData(true);
-			return true;
-		case COUNTDOWN:
-			if (ep.isSneaking()) {
-				((TileEntityCountdown)te).resetTimer();
-			}
-			else {
-				((TileEntityCountdown)te).incrementDelay();
-			}
-			return true;
-		default:
-			return false;
+			case CHESTREADER:
+				((TileEntityChestReader)te).alternate();
+				te.syncAllData(true);
+				return true;
+			case CLOCK:
+				((TileEntity555)te).incrementSetting(ep.isSneaking());
+				te.syncAllData(true);
+				return true;
+			case DRIVER:
+				if (ep.isSneaking())
+					((TileEntityDriver)te).decrement();
+				else
+					((TileEntityDriver)te).increment();
+				te.syncAllData(true);
+				return true;
+			case ARITHMETIC:
+				((TileEntityArithmetic)te).stepMode();
+				return true;
+			case RELAY:
+				((TileEntityRedstoneRelay)te).toggle();
+				return true;
+			case EFFECTOR:
+			case PLACER:
+			case ANALOGTRANSMITTER:
+			case ANALOGRECEIVER:
+				ep.openGui(ExpandedRedstone.instance, 0, world, x, y, z);
+				return true;
+			case PROXIMITY:
+				if (ep.isSneaking())
+					((TileEntityProximity)te).stepRange();
+				else
+					((TileEntityProximity)te).stepCreature();
+				te.syncAllData(true);
+				return true;
+			case SCALER:
+				if (ep.isSneaking())
+					((TileEntitySignalScaler)te).incrementMinValue();
+				else
+					((TileEntitySignalScaler)te).incrementMaxValue();
+				te.syncAllData(true);
+				return true;
+			case EQUALIZER:
+				int n = ep.isSneaking() ? 10 : 1;
+				for (int i = 0; i < n; i++)
+					((TileEntityEqualizer)te).incrementValue();
+				te.syncAllData(true);
+				return true;
+			case COUNTDOWN:
+				if (ep.isSneaking()) {
+					((TileEntityCountdown)te).resetTimer();
+				}
+				else {
+					((TileEntityCountdown)te).incrementDelay();
+				}
+				return true;
+			default:
+				return false;
 		}
 	}
 
@@ -347,23 +347,34 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 	@Override
 	public final void registerBlockIcons(IIconRegister ico)
 	{
-		icons = new IIcon[6][RedstoneTiles.TEList.length][16];
-		front = new IIcon[RedstoneTiles.TEList.length][16];
+		int max = 0;
+		for (int i = 0; i < RedstoneTiles.TEList.length; i++) {
+			RedstoneTiles r = RedstoneTiles.TEList[i];
+
+			max = Math.max(max, r.getTextureStates());
+		}
+
+		icons = new IIcon[6][RedstoneTiles.TEList.length][max];
+		front = new IIcon[RedstoneTiles.TEList.length][max];
 		this.registerBlankTextures(ico);
 		trans = ico.registerIcon("ExpandedRedstone:trans");
 
 		for (int i = 0; i < RedstoneTiles.TEList.length; i++) {
 			RedstoneTiles r = RedstoneTiles.TEList[i];
+
 			int num = r.getTextureStates();
+			String pfx = "ExpandedRedstone:"+r.name().toLowerCase();
+			String pre = num > 1 ? pfx+"/" : pfx+"_";
+
 			if (r.isThinTile()) {
 				if (r.hasVariableTopTexture()) {
 					for (int j = 0; j < num; j++) {
-						icons[1][i][j] = ico.registerIcon("ExpandedRedstone:"+r.name().toLowerCase()+"_top"+"_"+j);
+						icons[1][i][j] = ico.registerIcon(pre+"top"+"_"+j);
 						ExpandedRedstone.logger.debug("Creating variable tile icon "+icons[1][i][j].getIconName()+" for "+r+"[1]["+i+"]["+j+"]");
 					}
 				}
 				else {
-					icons[1][i][0] = ico.registerIcon("ExpandedRedstone:"+r.name().toLowerCase()+"_top");
+					icons[1][i][0] = ico.registerIcon(pre+"top");
 					ExpandedRedstone.logger.debug("Creating static tile icon "+icons[1][i][0].getIconName()+" for "+r);
 				}
 			}
@@ -371,7 +382,7 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 				for (int j = 0; j < 6; j++) {
 					ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[j];
 					if (r.hasHardcodedDirectionTexture(dir)) {
-						icons[j][i][0] = ico.registerIcon("ExpandedRedstone:"+r.name().toLowerCase()+"_"+dir.name().toLowerCase());
+						icons[j][i][0] = ico.registerIcon(pre+"_"+dir.name().toLowerCase());
 						ExpandedRedstone.logger.log("Creating directionable block icon "+icons[j][i][0].getIconName()+" for "+r+"["+j+"]["+i+"][0]");
 					}
 				}
@@ -379,12 +390,12 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 			else if (!r.isOmniTexture()) {
 				if (r.isVariableTexture()) {
 					for (int j = 0; j < num; j++) {
-						front[i][j] = ico.registerIcon("ExpandedRedstone:"+r.name().toLowerCase()+"_front_"+j);
+						front[i][j] = ico.registerIcon(pre+"front_"+j);
 						ExpandedRedstone.logger.debug("Creating variable block icon "+front[i][j].getIconName()+" for "+r+"["+i+"]["+j+"]");
 					}
 				}
 				else {
-					front[i][0] = ico.registerIcon("ExpandedRedstone:"+r.name().toLowerCase()+"_front");
+					front[i][0] = ico.registerIcon(pre+"front");
 					ExpandedRedstone.logger.debug("Creating static block icon "+front[i][0].getIconName()+" for "+r);
 				}
 			}
@@ -490,6 +501,10 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 			tip.add("Mode: "+ReikaStringParser.capFirstChar(ar.getMode().name()));
 			tip.add(ar.getFunction());
 		}
+		if (te instanceof TileEntity555) {
+			TileEntity555 t5 = (TileEntity555)te;
+			tip.add("Timing: "+t5.settingsToString());
+		}
 		return tip;
 	}
 
@@ -520,6 +535,10 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 	@ModDependent(ModList.WAILA)
 	public final NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x, int y, int z) {
 		return tag;
+	}
+
+	public static IIcon getIcon(int s, int tile, int idx) {
+		return icons[s][tile][idx];
 	}
 
 }

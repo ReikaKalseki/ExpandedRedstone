@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import Reika.DragonAPI.Base.TileEntityBase;
 import Reika.DragonAPI.Instantiable.StepTimer;
+import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
@@ -37,6 +38,11 @@ public abstract class TileRedstoneBase extends TileEntityBase {
 			if (pulsar.checkCap())
 				this.setEmitting(false);
 		}
+	}
+
+	@Override
+	protected void onFirstTick(World world, int x, int y, int z) {
+		this.update();
 	}
 
 	@Override
@@ -191,6 +197,10 @@ public abstract class TileRedstoneBase extends TileEntityBase {
 		return 0;
 	}
 
+	public int[] getTopTextures() {
+		return new int[]{this.getTopTexture()};
+	}
+
 	public final int getRedstoneLevelTo(ForgeDirection dir) {
 		Block id = worldObj.getBlock(xCoord+dir.offsetX, yCoord+dir.offsetY, zCoord+dir.offsetZ);
 		int meta = worldObj.getBlockMetadata(xCoord+dir.offsetX, yCoord+dir.offsetY, zCoord+dir.offsetZ);
@@ -214,6 +224,8 @@ public abstract class TileRedstoneBase extends TileEntityBase {
 				o = 2;
 			this.setFacing(dirs[o]);
 		}
+		this.update();
+		ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.5F, 2F);
 	}
 
 	public boolean canProvideStrongPower() {

@@ -19,6 +19,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import Reika.DragonAPI.Exception.RegistrationException;
 import Reika.DragonAPI.Instantiable.Data.Maps.BlockMap;
+import Reika.DragonAPI.Interfaces.Registry.TileEnum;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 import Reika.ExpandedRedstone.Base.BlockRedstoneBase;
@@ -48,11 +49,12 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityRedstonePump;
 import Reika.ExpandedRedstone.TileEntities.TileEntityRedstoneRelay;
 import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
 import Reika.ExpandedRedstone.TileEntities.TileEntitySignalScaler;
+import Reika.ExpandedRedstone.TileEntities.TileEntityThermalMeter;
 import Reika.ExpandedRedstone.TileEntities.TileEntityToggle;
 import Reika.ExpandedRedstone.TileEntities.TileEntityWeather;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public enum RedstoneTiles {
+public enum RedstoneTiles implements TileEnum {
 
 	BUD("Block Update Detector", 						TileEntityBUD.class, 				BlockRedstoneMachine.class, 	0),
 	BREAKER("Block Breaker", 							TileEntityBreaker.class, 			BlockRedstoneMachine.class, 	1),
@@ -77,7 +79,8 @@ public enum RedstoneTiles {
 	EQUALIZER("Equalizer", 								TileEntityEqualizer.class, 			BlockRedstoneTile.class, 		10),
 	COUNTDOWN("Countdown Timer", 						TileEntityCountdown.class, 			BlockRedstoneTile.class, 		11),
 	ARITHMETIC("Arithmetic Operator",					TileEntityArithmetic.class,			BlockRedstoneTile.class,		12),
-	RELAY("Analog Relay",								TileEntityRedstoneRelay.class,		BlockRedstoneTile.class,		13);
+	RELAY("Analog Relay",								TileEntityRedstoneRelay.class,		BlockRedstoneTile.class,		13),
+	THERMAL("Thermal Monitor",							TileEntityThermalMeter.class,		BlockRedstoneTile.class,		14);
 
 	private final Class te;
 	private final String name;
@@ -147,14 +150,15 @@ public enum RedstoneTiles {
 
 	public boolean hasSneakActions() {
 		switch(this) {
-		case DRIVER:
-		case PROXIMITY:
-		case SCALER:
-		case EQUALIZER:
-		case COUNTDOWN:
-			return true;
-		default:
-			return false;
+			case DRIVER:
+			case PROXIMITY:
+			case SCALER:
+			case EQUALIZER:
+			case COUNTDOWN:
+			case CLOCK:
+				return true;
+			default:
+				return false;
 		}
 	}
 
@@ -164,120 +168,124 @@ public enum RedstoneTiles {
 
 	public boolean isThinTile() {
 		switch(this) {
-		case TOGGLE:
-		case CHESTREADER:
-		case WEATHER:
-		case CLOCK:
-		case DRIVER:
-		case PROXIMITY:
-		case HOPPER:
-		case SCALER:
-		case ANALOGTRANSMITTER:
-		case ANALOGRECEIVER:
-		case EQUALIZER:
-		case COUNTDOWN:
-		case ARITHMETIC:
-		case RELAY:
-			return true;
-		default:
-			return false;
+			case TOGGLE:
+			case CHESTREADER:
+			case WEATHER:
+			case CLOCK:
+			case DRIVER:
+			case PROXIMITY:
+			case HOPPER:
+			case SCALER:
+			case ANALOGTRANSMITTER:
+			case ANALOGRECEIVER:
+			case EQUALIZER:
+			case COUNTDOWN:
+			case ARITHMETIC:
+			case RELAY:
+			case THERMAL:
+				return true;
+			default:
+				return false;
 		}
 	}
 
 	public boolean hasVariableTopTexture() {
 		switch(this) {
-		case CHESTREADER:
-		case CLOCK:
-		case DRIVER:
-		case TOGGLE:
-		case PROXIMITY:
-		case COUNTDOWN:
-		case ARITHMETIC:
-		case RELAY:
-			return true;
-		default:
-			return false;
+			case CHESTREADER:
+			case CLOCK:
+			case DRIVER:
+			case TOGGLE:
+			case PROXIMITY:
+			case COUNTDOWN:
+			case ARITHMETIC:
+			case RELAY:
+			case THERMAL:
+				return true;
+			default:
+				return false;
 		}
 	}
 
 	public int getTextureStates() {
 		switch(this) {
-		case BREAKER:
-			return 8;
-		case PLACER:
-		case EFFECTOR:
-		case RECEIVER:
-		case EMITTER:
-			return 2;
-		case CHESTREADER:
-			return 2;
-		case TOGGLE:
-			return 4;
-		case PROXIMITY:
-			return 10;
-		case CLOCK:
-			return TileEntity555.Settings.list.length;
-		case DRIVER:
-			return 16;
-		case SHOCK:
-			return 2;
-		case COUNTDOWN:
-			return 11;
-		case ARITHMETIC:
-			return TileEntityArithmetic.Operators.list.length;
-		case RELAY:
-			return 2;
-		default:
-			return 1;
+			case BREAKER:
+				return 8;
+			case PLACER:
+			case EFFECTOR:
+			case RECEIVER:
+			case EMITTER:
+				return 2;
+			case CHESTREADER:
+				return 2;
+			case TOGGLE:
+				return 4;
+			case PROXIMITY:
+				return 10;
+			case CLOCK:
+				return 21+TileEntity555.Settings.list.length;
+			case DRIVER:
+				return 16;
+			case SHOCK:
+				return 2;
+			case COUNTDOWN:
+				return 11;
+			case ARITHMETIC:
+				return TileEntityArithmetic.Operators.list.length;
+			case RELAY:
+				return 2;
+			case THERMAL:
+				return 16;
+			default:
+				return 1;
 		}
 	}
 
 	public boolean canBeVertical() {
 		switch(this) {
-		case PLACER:
-		case BREAKER:
-		case EFFECTOR:
-		case BUD:
-		case EMITTER:
-		case RECEIVER:
-		case SHOCK:
-			return true;
-		default:
-			return false;
+			case PLACER:
+			case BREAKER:
+			case EFFECTOR:
+			case BUD:
+			case EMITTER:
+			case RECEIVER:
+			case SHOCK:
+				return true;
+			default:
+				return false;
 		}
 	}
 
 	public boolean isVariableTexture() {
 		switch(this) {
-		case BREAKER:
-		case PLACER:
-		case EFFECTOR:
-		case RECEIVER:
-		case EMITTER:
-		case SHOCK:
-			return true;
-		default:
-			return false;
+			case BREAKER:
+			case PLACER:
+			case EFFECTOR:
+			case RECEIVER:
+			case EMITTER:
+			case SHOCK:
+				return true;
+			default:
+				return false;
 		}
 	}
 
 	public boolean isReversedTopTexture() {
 		switch(this) {
-		case TOGGLE:
-		case CLOCK:
-		case DRIVER:
-			return true;
-		default:
-			return false;
+			case TOGGLE:
+			case CLOCK:
+			case DRIVER:
+				return true;
+			default:
+				return false;
 		}
 	}
 
 	public boolean isOmniTexture() {
 		switch(this) {
-		case CAMOFLAGE:
-			return true;
-		default:
-			return false;
+			case CAMOFLAGE:
+				return true;
+			default:
+				return false;
 		}
 	}
 
@@ -312,38 +320,38 @@ public enum RedstoneTiles {
 
 	public boolean isReversedPlacement() {
 		switch(this) {
-		case BREAKER:
-		case BUD:
-		case EFFECTOR:
-		case PLACER:
-		case EMITTER:
-		case RECEIVER:
-		case PROXIMITY:
-		case WEATHER:
-		case CHESTREADER:
-		case DRIVER:
-		case SHOCK:
-			return true;
-		default:
-			return false;
+			case BREAKER:
+			case BUD:
+			case EFFECTOR:
+			case PLACER:
+			case EMITTER:
+			case RECEIVER:
+			case PROXIMITY:
+			case WEATHER:
+			case CHESTREADER:
+			case DRIVER:
+			case SHOCK:
+				return true;
+			default:
+				return false;
 		}
 	}
 
 	public boolean isDirectionable() {
 		switch(this) {
-		case PUMP:
-			return false;
-		default:
-			return true;
+			case PUMP:
+				return false;
+			default:
+				return true;
 		}
 	}
 
 	public boolean hasHardcodedDirectionTexture(ForgeDirection dir) {
 		switch(this) {
-		case PUMP:
-			return dir == ForgeDirection.DOWN;
-		default:
-			return false;
+			case PUMP:
+				return dir == ForgeDirection.DOWN;
+			default:
+				return false;
 		}
 	}
 
@@ -363,6 +371,11 @@ public enum RedstoneTiles {
 			int meta = r.getBlockMetadata();
 			tileMappings.put(id, meta, r);
 		}
+	}
+
+	@Override
+	public ItemStack getCraftedProduct() {
+		return RedstoneItems.PLACER.getStackOfMetadata(this.ordinal());
 	}
 
 }

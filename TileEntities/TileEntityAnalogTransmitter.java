@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
 import net.minecraft.world.World;
+import Reika.DragonAPI.Auxiliary.ModularLogger;
 import Reika.DragonAPI.Instantiable.Data.Immutable.WorldLocation;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 import Reika.ExpandedRedstone.Base.AnalogWireless;
@@ -43,6 +44,12 @@ public class TileEntityAnalogTransmitter extends AnalogWireless {
 			this.recalculate();
 	}
 
+	@Override
+	public void update() {
+		super.update();
+		this.recalculate();
+	}
+
 	private void recalculate() {
 		if (placerUUID != null) {
 			int[] ch = this.getChannels();
@@ -55,6 +62,7 @@ public class TileEntityAnalogTransmitter extends AnalogWireless {
 			if (ch[channel] != prev) {
 				this.updateReceivers();
 			}
+			ModularLogger.instance.log(LOGGER_ID, "Wireless user "+placerUUID+" channel "+channel+" recalculated");
 		}
 	}
 
@@ -76,6 +84,7 @@ public class TileEntityAnalogTransmitter extends AnalogWireless {
 			for (WorldLocation loc : li) {
 				TileEntityAnalogReceiver te = (TileEntityAnalogReceiver)loc.getTileEntity();
 				te.update();
+				ModularLogger.instance.log(LOGGER_ID, "Wireless receiver "+te+" on channel "+channel+" updated");
 				//ReikaJavaLibrary.pConsole(this+" >> "+te, Side.SERVER);
 			}
 		}
@@ -93,11 +102,12 @@ public class TileEntityAnalogTransmitter extends AnalogWireless {
 		int max = 0;
 		for (WorldLocation loc : li) {
 			TileEntityAnalogTransmitter te = (TileEntityAnalogTransmitter)loc.getTileEntity();
-			int lvl = te.worldObj.getBlockPowerInput(te.xCoord, te.yCoord, te.zCoord);
+			int lvl = this.getRedstoneLevelTo(this.getFacing().getOpposite());
 			if (lvl > max)
 				max = lvl;
 		}
 		this.getChannels()[channel] = max;
+		ModularLogger.instance.log(LOGGER_ID, "Wireless channel "+channel+" on "+placerUUID+" recalculated to "+max);
 	}
 
 }

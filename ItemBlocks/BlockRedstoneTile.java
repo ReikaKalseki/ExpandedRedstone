@@ -44,7 +44,7 @@ public class BlockRedstoneTile extends BlockRedstoneBase {
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
 	{
-		return AxisAlignedBB.getBoundingBox(x, y, z, x+1, y+0.1875, z);
+		return AxisAlignedBB.getBoundingBox(x, y, z, x+1, y+0.1875, z+1);
 	}
 
 	@Override
