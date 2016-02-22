@@ -64,6 +64,11 @@ public class TileEntityDriver extends TileRedstoneBase {
 		ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.5F, 0.8F);
 	}
 
+	public void setOutput(int level) {
+		this.level = level;
+		this.update();
+	}
+
 	public void decrement() {
 		level--;
 		if (level < 0)

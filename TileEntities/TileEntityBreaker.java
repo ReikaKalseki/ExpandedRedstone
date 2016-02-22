@@ -12,6 +12,7 @@ package Reika.ExpandedRedstone.TileEntities;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -19,6 +20,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
@@ -68,16 +71,16 @@ public class TileEntityBreaker extends TileRedstoneBase {
 			if (b.getBlockHardness(world, x, y, z) < 0)
 				return false;
 			switch(this) {
-			case WOOD:
-				return dura > 0 && b.getMaterial().isToolNotRequired();
-			case STONE:
-				return b.getMaterial().isToolNotRequired();
-			case IRON:
-				return Items.iron_pickaxe.canHarvestBlock(b, new ItemStack(Items.iron_pickaxe)) || b.getMaterial().isToolNotRequired();
-			case DIAMOND:
-				return b != Block.getBlockFromItem(BARRIER_BLOCK.getItem()) || meta != BARRIER_BLOCK.getItemDamage();
-			default:
-				return false;
+				case WOOD:
+					return dura > 0 && b.getMaterial().isToolNotRequired();
+				case STONE:
+					return b.getMaterial().isToolNotRequired();
+				case IRON:
+					return Items.iron_pickaxe.canHarvestBlock(b, new ItemStack(Items.iron_pickaxe)) || b.getMaterial().isToolNotRequired();
+				case DIAMOND:
+					return b != Block.getBlockFromItem(BARRIER_BLOCK.getItem()) || meta != BARRIER_BLOCK.getItemDamage();
+				default:
+					return false;
 			}
 		}
 	}
@@ -105,8 +108,10 @@ public class TileEntityBreaker extends TileRedstoneBase {
 			int dz = this.getFacingZScaled(k);
 			Block b = world.getBlock(dx, dy, dz);
 			int meta = world.getBlockMetadata(dx, dy, dz);
+			EntityPlayer ep = this.getPlacer();
 			if (harvest.canHarvest(dura, b, meta, world, dx, dy, dz)) {
 				ArrayList<ItemStack> items = b.getDrops(world, dx, dy, dz, meta, 0);
+				MinecraftForge.EVENT_BUS.post(new HarvestDropsEvent(dx, dy, dz, world, b, meta, 0, 1, items, ep, false));
 				for (int i = 0; i < items.size(); i++) {
 					ItemStack is = items.get(i);
 					if (!this.chestCheck(world, this.getBackX(), this.getBackY(), this.getBackZ(), is))

@@ -113,18 +113,19 @@ public class TileEntity555 extends TileRedstoneBase {
 			settingOn = Settings.list[o];
 		else
 			settingOff = Settings.list[o];
-		this.loadSetting(Settings.list[o], on);
+		this.loadSetting(Settings.list[o], on, true);
 		this.update();
 		ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.5F, 0.8F);
 	}
 
-	private void loadSetting(Settings s, boolean on) {
+	public void loadSetting(Settings s, boolean on, boolean chat) {
 		if (on)
 			this.setHiTime(s.duration);
 		else
 			this.setLoTime(s.duration);
 		//ReikaChatHelper.clearChat();
-		ReikaChatHelper.write("Clock set to "+s.toString());
+		if (chat)
+			ReikaChatHelper.write("Clock set to "+s.toString());
 	}
 
 	public void setLoTime(int time) {

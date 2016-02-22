@@ -31,8 +31,10 @@ import Reika.DragonAPI.Instantiable.IO.ModLogger;
 import Reika.DragonAPI.Libraries.ReikaRegistryHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaColorAPI;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
+import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ExpandedRedstone.Base.AnalogWireless;
+import Reika.ExpandedRedstone.ModInterface.Lua.RedstoneLuaMethods;
 import Reika.ExpandedRedstone.Registry.RedstoneBlocks;
 import Reika.ExpandedRedstone.Registry.RedstoneItems;
 import Reika.ExpandedRedstone.Registry.RedstoneOptions;
@@ -111,6 +113,8 @@ public class ExpandedRedstone extends DragonAPIMod {
 	@EventHandler
 	public void postload(FMLPostInitializationEvent evt) {
 		this.startTiming(LoadPhase.POSTLOAD);
+
+		ReikaJavaLibrary.initClass(RedstoneLuaMethods.class);
 
 		if (ModList.ROTARYCRAFT.isLoaded()) {
 			for (int i = 0; i < RedstoneBlocks.blockList.length; i++) {
