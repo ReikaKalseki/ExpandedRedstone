@@ -190,7 +190,7 @@ public abstract class TileRedstoneBase extends TileEntityBase {
 	}
 
 	public int getTopTexture() {
-		return 0;
+		return this.getFacing() == ForgeDirection.UP ? this.getFrontTexture() : 0;
 	}
 
 	public int getFrontTexture() {

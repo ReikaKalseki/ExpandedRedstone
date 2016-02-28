@@ -170,7 +170,7 @@ public class CircuitBlockRenderer implements ISimpleBlockRenderingHandler {
 				}
 				else if (metaread == 1) {
 					int hex = ColorizerFoliage.getFoliageColorPine();
-					Color c = Color.decode(String.valueOf(hex));
+					Color c = new Color(hex);
 					color[0] = c.getRed();
 					color[1] = c.getGreen();
 					color[2] = c.getBlue();
@@ -180,7 +180,7 @@ public class CircuitBlockRenderer implements ISimpleBlockRenderingHandler {
 				}
 				else if (metaread == 2) {
 					int hex = ColorizerFoliage.getFoliageColorBirch();
-					Color c = Color.decode(String.valueOf(hex));
+					Color c = new Color(hex);
 					color[0] = c.getRed();
 					color[1] = c.getGreen();
 					color[2] = c.getBlue();
@@ -194,7 +194,7 @@ public class CircuitBlockRenderer implements ISimpleBlockRenderingHandler {
 
 		int[] top = te.getTopTextures();
 		for (int i = 0; i < top.length; i++) {
-			IIcon topico = BlockRedstoneBase.getIcon(1, te.getTEIndex(), top[i]);
+			IIcon topico = te.getFacing() == ForgeDirection.UP ? rb.getBlockIcon(b, world, x, y, z, 1) : BlockRedstoneBase.getIcon(1, te.getTEIndex(), top[i]);
 			double d = i*0.00125;
 			switch(dir) {
 				case WEST:
