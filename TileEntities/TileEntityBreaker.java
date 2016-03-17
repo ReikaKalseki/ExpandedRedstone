@@ -22,6 +22,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
+import Reika.DragonAPI.Instantiable.Data.Immutable.BlockKey;
+import Reika.DragonAPI.Interfaces.Block.SemiUnbreakable;
 import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
@@ -38,7 +40,7 @@ public class TileEntityBreaker extends TileRedstoneBase {
 	public static final int WOOD_USES = 128;
 	public static final int MAX_RANGE = 12;
 
-	public static final ItemStack BARRIER_BLOCK = new ItemStack(Blocks.lapis_block);
+	public static final BlockKey BARRIER_BLOCK = new BlockKey(Blocks.lapis_block);
 
 	private Materials harvest;
 	private int dura;
@@ -70,6 +72,10 @@ public class TileEntityBreaker extends TileRedstoneBase {
 				return false;
 			if (b.getBlockHardness(world, x, y, z) < 0)
 				return false;
+			if (b instanceof SemiUnbreakable) {
+				if (((SemiUnbreakable)b).isUnbreakable(world, x, y, z, meta))
+					return false;
+			}
 			switch(this) {
 				case WOOD:
 					return dura > 0 && b.getMaterial().isToolNotRequired();
@@ -78,7 +84,7 @@ public class TileEntityBreaker extends TileRedstoneBase {
 				case IRON:
 					return Items.iron_pickaxe.canHarvestBlock(b, new ItemStack(Items.iron_pickaxe)) || b.getMaterial().isToolNotRequired();
 				case DIAMOND:
-					return b != Block.getBlockFromItem(BARRIER_BLOCK.getItem()) || meta != BARRIER_BLOCK.getItemDamage();
+					return !BARRIER_BLOCK.match(b, meta);
 				default:
 					return false;
 			}
@@ -122,7 +128,7 @@ public class TileEntityBreaker extends TileRedstoneBase {
 				if (harvest.isDamageable())
 					dura--;
 			}
-			else if (b == Block.getBlockFromItem(BARRIER_BLOCK.getItem()) && meta == BARRIER_BLOCK.getItemDamage())
+			else if (BARRIER_BLOCK.match(b, meta))
 				return;
 		}
 	}

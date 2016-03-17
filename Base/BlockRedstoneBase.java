@@ -11,6 +11,7 @@ package Reika.ExpandedRedstone.Base;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -363,7 +364,7 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 			RedstoneTiles r = RedstoneTiles.TEList[i];
 
 			int num = r.getTextureStates();
-			String pfx = "ExpandedRedstone:"+r.name().toLowerCase();
+			String pfx = "ExpandedRedstone:"+r.name().toLowerCase(Locale.ENGLISH);
 			String pre = num > 1 ? pfx+"/" : pfx+"_";
 
 			if (r.isThinTile()) {

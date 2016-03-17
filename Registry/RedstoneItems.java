@@ -9,6 +9,8 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.Registry;
 
+import java.util.Locale;
+
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -94,7 +96,7 @@ public enum RedstoneItems implements ItemEnum {
 	}
 
 	public String getUnlocalizedName() {
-		return ReikaStringParser.stripSpaces(name).toLowerCase();
+		return ReikaStringParser.stripSpaces(name).toLowerCase(Locale.ENGLISH);
 	}
 
 	public Item getItemInstance() {
