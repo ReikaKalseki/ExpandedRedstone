@@ -10,9 +10,10 @@
 package Reika.ExpandedRedstone.Registry;
 
 import Reika.DragonAPI.Interfaces.Configuration.BooleanConfig;
+import Reika.DragonAPI.Interfaces.Configuration.UserSpecificConfig;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 
-public enum RedstoneOptions implements BooleanConfig {
+public enum RedstoneOptions implements BooleanConfig, UserSpecificConfig {
 
 	NOISES("Ticking Noises", true);
 
@@ -61,5 +62,15 @@ public enum RedstoneOptions implements BooleanConfig {
 	@Override
 	public boolean shouldLoad() {
 		return true;
+	}
+
+	@Override
+	public boolean isUserSpecific() {
+		switch(this) {
+			case NOISES:
+				return true;
+			default:
+				return false;
+		}
 	}
 }

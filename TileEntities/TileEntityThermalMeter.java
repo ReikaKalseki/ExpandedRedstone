@@ -37,6 +37,7 @@ public class TileEntityThermalMeter extends TileRedstoneBase {
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z);
 
+		calcTimer.update();
 		if (calcTimer.checkCap()) {
 			int lastEmit = emit;
 			emit = this.calcEmission();
