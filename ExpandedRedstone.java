@@ -26,6 +26,7 @@ import Reika.DragonAPI.Auxiliary.NEI_DragonAPI_Config;
 import Reika.DragonAPI.Auxiliary.Trackers.CommandableUpdateChecker;
 import Reika.DragonAPI.Base.DragonAPIMod;
 import Reika.DragonAPI.Base.DragonAPIMod.LoadProfiler.LoadPhase;
+import Reika.DragonAPI.Instantiable.Event.Client.AddParticleEvent;
 import Reika.DragonAPI.Instantiable.IO.ControlledConfig;
 import Reika.DragonAPI.Instantiable.IO.ModLogger;
 import Reika.DragonAPI.Libraries.ReikaRegistryHelper;
@@ -40,6 +41,7 @@ import Reika.ExpandedRedstone.Registry.RedstoneItems;
 import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 import Reika.ExpandedRedstone.TileEntities.TileEntity555;
+import Reika.ExpandedRedstone.TileEntities.TileEntityParticleFilter;
 import Reika.RotaryCraft.API.BlockColorInterface;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -51,6 +53,8 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @Mod( modid = "ExpandedRedstone", name="ExpandedRedstone", certificateFingerprint = "@GET_FINGERPRINT@", dependencies="required-after:DragonAPI")
 
@@ -139,6 +143,14 @@ public class ExpandedRedstone extends DragonAPIMod {
 		//TileEntityEqualizer.unregisterAllInWorld(evt.world.provider.dimensionId);
 	}
 
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void cullFX(AddParticleEvent evt) {
+		if (TileEntityParticleFilter.cullParticle(evt.particle)) {
+			evt.setCanceled(true);
+		}
+	}
+
 	private static void addItems() {
 		ReikaRegistryHelper.instantiateAndRegisterItems(instance, RedstoneItems.itemList, items);
 	}
@@ -191,6 +203,8 @@ public class ExpandedRedstone extends DragonAPIMod {
 		RedstoneTiles.COUNTDOWN.addRecipe("RQR", "QCQ", "RQR", 'R', Items.redstone, 'Q', Items.quartz, 'C', RedstoneTiles.CLOCK.getItem());
 		RedstoneTiles.ARITHMETIC.addRecipe("gRg", "RQR", "sss", 's', ReikaItemHelper.stoneSlab, 'R', Items.redstone, 'Q', Items.quartz, 'g', Items.glowstone_dust);
 		RedstoneTiles.RELAY.addRecipe("srs", "rqs", "srs", 's', ReikaItemHelper.stoneSlab, 'r', Items.redstone, 'q', Items.quartz);
+
+		RedstoneTiles.PARTICLE.addRecipe("CWC", "CRC", "CCC", 'W', Blocks.wool, 'R', Blocks.redstone_block, 'C', Blocks.cobblestone);
 	}
 
 	@Override

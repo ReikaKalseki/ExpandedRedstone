@@ -42,6 +42,7 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityEffector;
 import Reika.ExpandedRedstone.TileEntities.TileEntityEmitter;
 import Reika.ExpandedRedstone.TileEntities.TileEntityEqualizer;
 import Reika.ExpandedRedstone.TileEntities.TileEntityHopperTicker;
+import Reika.ExpandedRedstone.TileEntities.TileEntityParticleFilter;
 import Reika.ExpandedRedstone.TileEntities.TileEntityPlacer;
 import Reika.ExpandedRedstone.TileEntities.TileEntityProximity;
 import Reika.ExpandedRedstone.TileEntities.TileEntityReceiver;
@@ -80,7 +81,8 @@ public enum RedstoneTiles implements TileEnum {
 	COUNTDOWN("Countdown Timer", 						TileEntityCountdown.class, 			BlockRedstoneTile.class, 		11),
 	ARITHMETIC("Arithmetic Operator",					TileEntityArithmetic.class,			BlockRedstoneTile.class,		12),
 	RELAY("Analog Relay",								TileEntityRedstoneRelay.class,		BlockRedstoneTile.class,		13),
-	THERMAL("Thermal Monitor",							TileEntityThermalMeter.class,		BlockRedstoneTile.class,		14);
+	THERMAL("Thermal Monitor",							TileEntityThermalMeter.class,		BlockRedstoneTile.class,		14),
+	PARTICLE("Particle Filter", 						TileEntityParticleFilter.class, 	BlockRedstoneMachine.class, 	9);
 
 	private final Class te;
 	private final String name;
@@ -235,6 +237,8 @@ public enum RedstoneTiles implements TileEnum {
 				return 2;
 			case THERMAL:
 				return 16;
+			case PARTICLE:
+				return 2;
 			default:
 				return 1;
 		}
@@ -263,6 +267,7 @@ public enum RedstoneTiles implements TileEnum {
 			case RECEIVER:
 			case EMITTER:
 			case SHOCK:
+			case PARTICLE:
 				return true;
 			default:
 				return false;
@@ -340,6 +345,7 @@ public enum RedstoneTiles implements TileEnum {
 	public boolean isDirectionable() {
 		switch(this) {
 			case PUMP:
+			case PARTICLE:
 				return false;
 			default:
 				return true;
@@ -350,6 +356,8 @@ public enum RedstoneTiles implements TileEnum {
 		switch(this) {
 			case PUMP:
 				return dir == ForgeDirection.DOWN;
+			case PARTICLE:
+				return dir == ForgeDirection.UP;
 			default:
 				return false;
 		}

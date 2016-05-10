@@ -94,7 +94,7 @@ public class TileEntityProximity extends TileRedstoneBase {
 		return RedstoneTiles.PROXIMITY.ordinal();
 	}
 
-	public void stepCreature() {
+	public void stepCreature(EntityPlayer ep) {
 		int c = entity.ordinal();
 		c++;
 		if (c >= EntityType.list.length)
@@ -102,16 +102,16 @@ public class TileEntityProximity extends TileRedstoneBase {
 		entity = EntityType.list[c];
 		this.update();
 		ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.5F, 0.5F);
-		ReikaChatHelper.write("Detector now senses "+entity.label+".");
+		ReikaChatHelper.sendChatToPlayer(ep, "Detector now senses "+entity.label+".");
 	}
 
-	public void stepRange() {
+	public void stepRange(EntityPlayer ep) {
 		range++;
 		if (range > 24)
 			range = 1;
 		this.update();
 		ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.5F, 0.5F);
-		ReikaChatHelper.write("Detector range set to "+range+"m.");
+		ReikaChatHelper.sendChatToPlayer(ep, "Detector range set to "+range+"m.");
 	}
 
 	@Override

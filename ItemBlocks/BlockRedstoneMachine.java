@@ -39,4 +39,14 @@ public class BlockRedstoneMachine extends BlockRedstoneBase {
 		return 255;
 	}
 
+	@Override
+	public boolean isOpaqueCube() {
+		return true;
+	}
+
+	@Override
+	public boolean renderAsNormalBlock() {
+		return true;
+	}
+
 }

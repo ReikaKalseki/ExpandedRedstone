@@ -38,6 +38,7 @@ import Reika.DragonAPI.ASM.APIStripper.Strippable;
 import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
 import Reika.DragonAPI.Base.TileEntityBase;
 import Reika.DragonAPI.Instantiable.Data.Immutable.BlockKey;
+import Reika.DragonAPI.Interfaces.TileEntity.BreakAction;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.DragonAPI.ModRegistry.InterfaceCache;
@@ -52,6 +53,7 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityChestReader;
 import Reika.ExpandedRedstone.TileEntities.TileEntityCountdown;
 import Reika.ExpandedRedstone.TileEntities.TileEntityDriver;
 import Reika.ExpandedRedstone.TileEntities.TileEntityEqualizer;
+import Reika.ExpandedRedstone.TileEntities.TileEntityParticleFilter;
 import Reika.ExpandedRedstone.TileEntities.TileEntityProximity;
 import Reika.ExpandedRedstone.TileEntities.TileEntityRedstoneRelay;
 import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
@@ -245,9 +247,13 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 				return true;
 			case PROXIMITY:
 				if (ep.isSneaking())
-					((TileEntityProximity)te).stepRange();
+					((TileEntityProximity)te).stepRange(ep);
 				else
-					((TileEntityProximity)te).stepCreature();
+					((TileEntityProximity)te).stepCreature(ep);
+				te.syncAllData(true);
+				return true;
+			case PARTICLE:
+				((TileEntityParticleFilter)te).stepRange(ep);
 				te.syncAllData(true);
 				return true;
 			case SCALER:
@@ -383,8 +389,16 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 				for (int j = 0; j < 6; j++) {
 					ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[j];
 					if (r.hasHardcodedDirectionTexture(dir)) {
-						icons[j][i][0] = ico.registerIcon(pre+"_"+dir.name().toLowerCase());
-						ExpandedRedstone.logger.log("Creating directionable block icon "+icons[j][i][0].getIconName()+" for "+r+"["+j+"]["+i+"][0]");
+						if (r.isVariableTexture()) {
+							for (int s = 0; s < num; s++) {
+								icons[j][i][s] = ico.registerIcon(pre+dir.name().toLowerCase()+"_"+s);
+								ExpandedRedstone.logger.log("Creating directionable block icon "+icons[j][i][s].getIconName()+" for "+r+"["+j+"]["+i+"]["+s+"]");
+							}
+						}
+						else {
+							icons[j][i][0] = ico.registerIcon(pre+dir.name().toLowerCase());
+							ExpandedRedstone.logger.log("Creating directionable block icon "+icons[j][i][0].getIconName()+" for "+r+"["+j+"]["+i+"][0]");
+						}
 					}
 				}
 			}
@@ -416,6 +430,8 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 			ReikaItemHelper.dropInventory(world, x, y, z);
 		if (te instanceof AnalogWireless)
 			((AnalogWireless)te).remove();
+		if (te instanceof BreakAction)
+			((BreakAction)te).breakBlock();
 		super.breakBlock(world, x, y, z, par5, par6);
 	}
 
