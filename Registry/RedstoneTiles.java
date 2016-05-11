@@ -50,6 +50,7 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityRedstonePump;
 import Reika.ExpandedRedstone.TileEntities.TileEntityRedstoneRelay;
 import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
 import Reika.ExpandedRedstone.TileEntities.TileEntitySignalScaler;
+import Reika.ExpandedRedstone.TileEntities.TileEntitySignalTimer;
 import Reika.ExpandedRedstone.TileEntities.TileEntityThermalMeter;
 import Reika.ExpandedRedstone.TileEntities.TileEntityToggle;
 import Reika.ExpandedRedstone.TileEntities.TileEntityWeather;
@@ -82,7 +83,8 @@ public enum RedstoneTiles implements TileEnum {
 	ARITHMETIC("Arithmetic Operator",					TileEntityArithmetic.class,			BlockRedstoneTile.class,		12),
 	RELAY("Analog Relay",								TileEntityRedstoneRelay.class,		BlockRedstoneTile.class,		13),
 	THERMAL("Thermal Monitor",							TileEntityThermalMeter.class,		BlockRedstoneTile.class,		14),
-	PARTICLE("Particle Filter", 						TileEntityParticleFilter.class, 	BlockRedstoneMachine.class, 	9);
+	PARTICLE("Particle Filter", 						TileEntityParticleFilter.class, 	BlockRedstoneMachine.class, 	9),
+	TIMER("Signal Interval Timer",						TileEntitySignalTimer.class,		BlockRedstoneTile.class,		15);
 
 	private final Class te;
 	private final String name;
@@ -169,26 +171,7 @@ public enum RedstoneTiles implements TileEnum {
 	}
 
 	public boolean isThinTile() {
-		switch(this) {
-			case TOGGLE:
-			case CHESTREADER:
-			case WEATHER:
-			case CLOCK:
-			case DRIVER:
-			case PROXIMITY:
-			case HOPPER:
-			case SCALER:
-			case ANALOGTRANSMITTER:
-			case ANALOGRECEIVER:
-			case EQUALIZER:
-			case COUNTDOWN:
-			case ARITHMETIC:
-			case RELAY:
-			case THERMAL:
-				return true;
-			default:
-				return false;
-		}
+		return BlockRedstoneTile.class.isAssignableFrom(block.getObjectClass());
 	}
 
 	public boolean hasVariableTopTexture() {

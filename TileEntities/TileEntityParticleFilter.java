@@ -23,6 +23,8 @@ import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaRandomHelper;
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileEntityParticleFilter extends TileRedstoneBase implements LocationCached {
 
@@ -88,6 +90,7 @@ public class TileEntityParticleFilter extends TileRedstoneBase implements Locati
 		cache.remove(new WorldLocation(this));
 	}
 
+	@SideOnly(Side.CLIENT)
 	public static boolean cullParticle(EntityFX fx) {
 		WorldLocation c = new WorldLocation(fx);
 		for (WorldLocation loc : cache) {

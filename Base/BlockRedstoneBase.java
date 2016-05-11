@@ -39,6 +39,7 @@ import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
 import Reika.DragonAPI.Base.TileEntityBase;
 import Reika.DragonAPI.Instantiable.Data.Immutable.BlockKey;
 import Reika.DragonAPI.Interfaces.TileEntity.BreakAction;
+import Reika.DragonAPI.Libraries.IO.ReikaChatHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.DragonAPI.ModRegistry.InterfaceCache;
@@ -58,6 +59,7 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityProximity;
 import Reika.ExpandedRedstone.TileEntities.TileEntityRedstoneRelay;
 import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
 import Reika.ExpandedRedstone.TileEntities.TileEntitySignalScaler;
+import Reika.ExpandedRedstone.TileEntities.TileEntitySignalTimer;
 import Reika.RotaryCraft.API.ItemFetcher;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -217,6 +219,8 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 		}
 		if (ModList.ROTARYCRAFT.isLoaded() && ItemFetcher.isPlayerHoldingAngularTransducer(ep))
 			return false;
+		if (world.isRemote)
+			return true;
 		switch (r) {
 			case CHESTREADER:
 				((TileEntityChestReader)te).alternate();
@@ -276,6 +280,9 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 				else {
 					((TileEntityCountdown)te).incrementDelay();
 				}
+				return true;
+			case TIMER:
+				ReikaChatHelper.sendChatToPlayer(ep, ((TileEntitySignalTimer)te).getIntervalMessage());
 				return true;
 			default:
 				return false;
