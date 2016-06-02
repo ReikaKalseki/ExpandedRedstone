@@ -369,4 +369,8 @@ public enum RedstoneTiles implements TileEnum {
 		return RedstoneItems.PLACER.getStackOfMetadata(this.ordinal());
 	}
 
+	public ItemStack getCraftedProduct(TileEntity te) {
+		return this.getCraftedProduct();
+	}
+
 }

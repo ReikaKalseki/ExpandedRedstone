@@ -49,4 +49,10 @@ public class BlockRedstoneMachine extends BlockRedstoneBase {
 		return true;
 	}
 
+	@Override
+	public boolean isNormalCube(IBlockAccess world, int x, int y, int z)
+	{
+		return true;
+	}
+
 }

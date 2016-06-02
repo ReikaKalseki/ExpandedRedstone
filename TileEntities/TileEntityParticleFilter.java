@@ -99,7 +99,8 @@ public class TileEntityParticleFilter extends TileRedstoneBase implements Locati
 				if (te instanceof TileEntityParticleFilter) {
 					TileEntityParticleFilter tp = (TileEntityParticleFilter)te;
 					if (loc.isWithinSquare(c, tp.range)) {
-						return ReikaRandomHelper.doWithChance(tp.filterFraction);
+						if (ReikaRandomHelper.doWithChance(tp.filterFraction))
+							return true;
 					}
 				}
 			}
