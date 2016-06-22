@@ -23,14 +23,14 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import Reika.DragonAPI.Interfaces.ISBRH;
 import Reika.DragonAPI.Libraries.World.ReikaBiomeHelper;
 import Reika.ExpandedRedstone.Base.BlockRedstoneBase;
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
-public class CircuitBlockRenderer implements ISimpleBlockRenderingHandler {
+public class CircuitBlockRenderer implements ISBRH {
 
 	@Override
 	public void renderInventoryBlock(Block b, int meta, int modelID, RenderBlocks rb) {
