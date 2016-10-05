@@ -108,6 +108,8 @@ public class TileEntityBreaker extends TileRedstoneBase {
 	private void breakBlocks(World world) {
 		if (RedstoneOptions.NOISES.getState())
 			world.playSoundEffect(xCoord+0.5, yCoord+0.5, zCoord+0.5, "random.click", 0.4F, 1F);
+		if (world.isRemote)
+			return;
 		for (int k = 1; k <= harvest.getDigDistance(); k++) {
 			int dx = this.getFacingXScaled(k);
 			int dy = this.getFacingYScaled(k);
@@ -169,6 +171,7 @@ public class TileEntityBreaker extends TileRedstoneBase {
 
 		harvest = Materials.mats[NBT.getInteger("level")];
 		dura = NBT.getInteger("dmg");
+		lastPower = NBT.getBoolean("lastpwr");
 	}
 
 	@Override
@@ -179,6 +182,7 @@ public class TileEntityBreaker extends TileRedstoneBase {
 		if (harvest != null)
 			NBT.setInteger("level", harvest.ordinal());
 		NBT.setInteger("dmg", dura);
+		NBT.setBoolean("lastpwr", lastPower);
 	}
 
 	public int getHarvestLevel() {

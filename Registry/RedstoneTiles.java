@@ -9,12 +9,15 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.Registry;
 
+import java.util.Locale;
+
 import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import Reika.DragonAPI.Exception.RegistrationException;
@@ -58,36 +61,35 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum RedstoneTiles implements TileEnum {
 
-	BUD("Block Update Detector", 						TileEntityBUD.class, 				BlockRedstoneMachine.class, 	0),
-	BREAKER("Block Breaker", 							TileEntityBreaker.class, 			BlockRedstoneMachine.class, 	1),
-	PLACER("Block Placer", 								TileEntityPlacer.class, 			BlockRedstoneMachine.class, 	2),
-	EFFECTOR("Item Effector", 							TileEntityEffector.class, 			BlockRedstoneMachine.class, 	3),
-	PROXIMITY("Proximity Detector",						TileEntityProximity.class, 			BlockRedstoneTile.class, 		0),
-	TOGGLE("Toggle Latch", 								TileEntityToggle.class, 			BlockRedstoneTile.class, 		1),
-	WEATHER("Weather Sensor", 							TileEntityWeather.class, 			BlockRedstoneTile.class, 		2),
-	CHESTREADER("Chest Reader", 						TileEntityChestReader.class, 		BlockRedstoneTile.class, 		3),
-	DRIVER("Signal Driver", 							TileEntityDriver.class, 			BlockRedstoneTile.class, 		4),
-	CLOCK("Redstone Clock", 							TileEntity555.class, 				BlockRedstoneTile.class, 		5),
-	CAMOFLAGE("Camouflage Block", 						TileEntityCamo.class, 				BlockRedstoneCamo.class, 		0),
-	EMITTER("Signal Emitter", 							TileEntityEmitter.class, 			BlockRedstoneMachine.class, 	4),
-	RECEIVER("Signal Receiver", 						TileEntityReceiver.class, 			BlockRedstoneMachine.class, 	5),
-	SHOCK("Shock Panel", 								TileEntityShockPanel.class, 		BlockRedstoneMachine.class, 	6),
-	PUMP("Redstone Pump", 								TileEntityRedstonePump.class, 		BlockRedstoneMachine.class, 	7),
-	HOPPER("Hopper Ticker", 							TileEntityHopperTicker.class, 		BlockRedstoneTile.class, 		6),
-	SCALER("Signal Scaler", 							TileEntitySignalScaler.class, 		BlockRedstoneTile.class, 		7),
-	COLUMN("Column Decrementer", 						TileEntityColumnDecrementer.class, 	BlockRedstoneMachine.class, 	8),
-	ANALOGTRANSMITTER("Analog Wireless Transmitter", 	TileEntityAnalogTransmitter.class, 	BlockRedstoneTile.class, 		8),
-	ANALOGRECEIVER("Analog Wireless Receiver", 			TileEntityAnalogReceiver.class, 	BlockRedstoneTile.class, 		9),
-	EQUALIZER("Equalizer", 								TileEntityEqualizer.class, 			BlockRedstoneTile.class, 		10),
-	COUNTDOWN("Countdown Timer", 						TileEntityCountdown.class, 			BlockRedstoneTile.class, 		11),
-	ARITHMETIC("Arithmetic Operator",					TileEntityArithmetic.class,			BlockRedstoneTile.class,		12),
-	RELAY("Analog Relay",								TileEntityRedstoneRelay.class,		BlockRedstoneTile.class,		13),
-	THERMAL("Thermal Monitor",							TileEntityThermalMeter.class,		BlockRedstoneTile.class,		14),
-	PARTICLE("Particle Filter", 						TileEntityParticleFilter.class, 	BlockRedstoneMachine.class, 	9),
-	TIMER("Signal Interval Timer",						TileEntitySignalTimer.class,		BlockRedstoneTile.class,		15);
+	BUD(				TileEntityBUD.class, 				BlockRedstoneMachine.class, 	0),
+	BREAKER(			TileEntityBreaker.class, 			BlockRedstoneMachine.class, 	1),
+	PLACER(				TileEntityPlacer.class, 			BlockRedstoneMachine.class, 	2),
+	EFFECTOR(			TileEntityEffector.class, 			BlockRedstoneMachine.class, 	3),
+	PROXIMITY(			TileEntityProximity.class, 			BlockRedstoneTile.class, 		0),
+	TOGGLE(				TileEntityToggle.class, 			BlockRedstoneTile.class, 		1),
+	WEATHER(			TileEntityWeather.class, 			BlockRedstoneTile.class, 		2),
+	CHESTREADER(		TileEntityChestReader.class, 		BlockRedstoneTile.class, 		3),
+	DRIVER(				TileEntityDriver.class, 			BlockRedstoneTile.class, 		4),
+	CLOCK(				TileEntity555.class, 				BlockRedstoneTile.class, 		5),
+	CAMOFLAGE(			TileEntityCamo.class, 				BlockRedstoneCamo.class, 		0),
+	EMITTER(			TileEntityEmitter.class, 			BlockRedstoneMachine.class, 	4),
+	RECEIVER(			TileEntityReceiver.class, 			BlockRedstoneMachine.class, 	5),
+	SHOCK(				TileEntityShockPanel.class, 		BlockRedstoneMachine.class, 	6),
+	PUMP(				TileEntityRedstonePump.class, 		BlockRedstoneMachine.class, 	7),
+	HOPPER(				TileEntityHopperTicker.class, 		BlockRedstoneTile.class, 		6),
+	SCALER(				TileEntitySignalScaler.class, 		BlockRedstoneTile.class, 		7),
+	COLUMN(				TileEntityColumnDecrementer.class, 	BlockRedstoneMachine.class, 	8),
+	ANALOGTRANSMITTER(	TileEntityAnalogTransmitter.class, 	BlockRedstoneTile.class, 		8),
+	ANALOGRECEIVER(		TileEntityAnalogReceiver.class, 	BlockRedstoneTile.class, 		9),
+	EQUALIZER(			TileEntityEqualizer.class, 			BlockRedstoneTile.class, 		10),
+	COUNTDOWN(			TileEntityCountdown.class, 			BlockRedstoneTile.class, 		11),
+	ARITHMETIC(			TileEntityArithmetic.class,			BlockRedstoneTile.class,		12),
+	RELAY(				TileEntityRedstoneRelay.class,		BlockRedstoneTile.class,		13),
+	THERMAL(			TileEntityThermalMeter.class,		BlockRedstoneTile.class,		14),
+	PARTICLE(			TileEntityParticleFilter.class, 	BlockRedstoneMachine.class, 	9),
+	TIMER(				TileEntitySignalTimer.class,		BlockRedstoneTile.class,		15);
 
 	private final Class te;
-	private final String name;
 	private final RedstoneBlocks block;
 	private final int meta;
 
@@ -95,9 +97,8 @@ public enum RedstoneTiles implements TileEnum {
 
 	public static final RedstoneTiles[] TEList = RedstoneTiles.values();
 
-	private RedstoneTiles(String n, Class<? extends TileRedstoneBase> cl, Class<? extends BlockRedstoneBase> b, int m) {
+	private RedstoneTiles(Class<? extends TileRedstoneBase> cl, Class<? extends BlockRedstoneBase> b, int m) {
 		te = cl;
-		name = n;
 		block = RedstoneBlocks.getBlockFromClassAndOffset(b, m/16);
 		if (block == null) {
 			throw new RegistrationException(ExpandedRedstone.instance, "Tile "+this.name()+" registered with a null block!");
@@ -149,7 +150,7 @@ public enum RedstoneTiles implements TileEnum {
 	}
 
 	public String getName() {
-		return name;
+		return StatCollector.translateToLocal("exrtile."+this.name().toLowerCase(Locale.ENGLISH));
 	}
 
 	public boolean hasSneakActions() {

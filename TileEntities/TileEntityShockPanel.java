@@ -13,12 +13,12 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.DragonAPI.Libraries.ReikaAABBHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaParticleHelper;
 import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
@@ -122,38 +122,13 @@ public class TileEntityShockPanel extends TileRedstoneBase {
 			int dy = y+dir.offsetY*i;
 			int dz = z+dir.offsetZ*i;
 			Block b = world.getBlock(dx, dy, dz);
-			if (b != Blocks.air) {
-				if (b.isOpaqueCube() || b.getMaterial().isSolid()) {
-					d = i;
-					break;
-				}
+			if (b.isOpaqueCube() || b.getMaterial().isSolid()) {
+				d = i;
+				break;
 			}
 		}
 
-		int dx = -dir.offsetX*d;
-		int dy = -dir.offsetY*d;
-		int dz = -dir.offsetZ*d;
-
-		int dx2 = dir.offsetX*d;
-		int dy2 = dir.offsetY*d;
-		int dz2 = dir.offsetZ*d;
-
-		if (dx > 0)
-			dx2 = 0;
-		else
-			dx = 0;
-		if (dy > 0)
-			dy2 = 0;
-		else
-			dy = 0;
-		if (dz > 0)
-			dz2 = 0;
-		else
-			dz = 0;
-
-		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(x-dx, y-dy, z-dz, x+1+dx2, y+1+dy2, z+1+dz2);
-		//ReikaJavaLibrary.pConsole(box, Side.SERVER);
-		return box;
+		return ReikaAABBHelper.getBeamBox(x, y, z, dir, d);
 	}
 
 	public void setDamageLevel(Lens dmg) {
