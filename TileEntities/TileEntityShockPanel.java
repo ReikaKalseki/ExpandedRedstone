@@ -21,7 +21,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import Reika.DragonAPI.Libraries.ReikaAABBHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaParticleHelper;
-import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneSounds;
@@ -51,8 +50,6 @@ public class TileEntityShockPanel extends TileRedstoneBase {
 
 	private Lens lens;
 
-	private boolean lastPower;
-
 	@Override
 	public int getTEIndex() {
 		return RedstoneTiles.SHOCK.ordinal();
@@ -60,10 +57,13 @@ public class TileEntityShockPanel extends TileRedstoneBase {
 
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
-		if (lens != null && ReikaRedstoneHelper.isPositiveEdge(world, x, y, z, lastPower)) {
-			this.attack(world, x, y, z);
-		}
-		lastPower = world.isBlockIndirectlyGettingPowered(x, y, z);
+
+	}
+
+	@Override
+	protected void onPositiveRedstoneEdge() {
+		if (lens != null)
+			this.attack(worldObj, xCoord, yCoord, zCoord);
 	}
 
 	private void attack(World world, int x, int y, int z) {
@@ -100,10 +100,7 @@ public class TileEntityShockPanel extends TileRedstoneBase {
 					return false;
 				}
 				else {
-					boolean edge = ReikaRedstoneHelper.isPositiveEdge(world, dx, dy, dz, te.lastPower);
-					if (edge)
-						lastPower = false;
-					return te.getLensType() == this.getLensType() && edge;
+					return te.getLensType() == this.getLensType() && te.hasRedstoneSignal();// && te.isPositiveRedstoneEdge();
 				}
 			}
 			else if (!ReikaWorldHelper.softBlocks(world, dx, dy, dz))
@@ -162,7 +159,7 @@ public class TileEntityShockPanel extends TileRedstoneBase {
 
 	@Override
 	public int getFrontTexture() {
-		return (worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) ? 1 : 0);
+		return this.hasRedstoneSignal() ? 1 : 0;
 	}
 
 }

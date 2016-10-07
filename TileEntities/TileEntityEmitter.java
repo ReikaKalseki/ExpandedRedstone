@@ -26,7 +26,7 @@ public class TileEntityEmitter extends TileRedstoneBase {
 	}
 
 	public boolean isBeaming() {
-		return worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+		return this.hasRedstoneSignal();
 	}
 
 	@Override

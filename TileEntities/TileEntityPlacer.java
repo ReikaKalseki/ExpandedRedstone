@@ -16,7 +16,6 @@ import Reika.DragonAPI.Instantiable.Data.Immutable.BlockKey;
 import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
-import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.ExpandedRedstone.Base.InventoriedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneOptions;
@@ -24,15 +23,16 @@ import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityPlacer extends InventoriedRedstoneTileEntity {
 
-	private boolean lastPower;
-
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z);
-		if (!world.isRemote && ReikaRedstoneHelper.isPositiveEdge(world, x, y, z, lastPower) && this.canPlace(world)) {
-			this.placeBlock(world);
+	}
+
+	@Override
+	protected void onPositiveRedstoneEdge() {
+		if (!worldObj.isRemote && this.canPlace(worldObj)) {
+			this.placeBlock(worldObj);
 		}
-		lastPower = world.isBlockIndirectlyGettingPowered(x, y, z);
 	}
 
 	private boolean canPlace(World world) {
@@ -76,7 +76,7 @@ public class TileEntityPlacer extends InventoriedRedstoneTileEntity {
 
 	@Override
 	public int getFrontTexture() {
-		return worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) ? 1 : 0;
+		return this.hasRedstoneSignal() ? 1 : 0;
 	}
 
 	@Override

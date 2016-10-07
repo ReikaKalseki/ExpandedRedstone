@@ -28,14 +28,11 @@ import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
-import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityBreaker extends TileRedstoneBase {
-
-	private boolean lastPower;
 
 	public static final int WOOD_USES = 128;
 	public static final int MAX_RANGE = 12;
@@ -99,10 +96,12 @@ public class TileEntityBreaker extends TileRedstoneBase {
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z);
-		if (ReikaRedstoneHelper.isPositiveEdge(world, x, y, z, lastPower) && harvest != null) {
-			this.breakBlocks(world);
-		}
-		lastPower = world.isBlockIndirectlyGettingPowered(x, y, z);
+	}
+
+	@Override
+	protected void onPositiveRedstoneEdge() {
+		if (harvest != null)
+			this.breakBlocks(worldObj);
 	}
 
 	private void breakBlocks(World world) {
@@ -156,8 +155,8 @@ public class TileEntityBreaker extends TileRedstoneBase {
 	@Override
 	public int getFrontTexture() {
 		if (harvest == null)
-			return (worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) ? 1 : 0);
-		return harvest.ordinal()*2+(worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) ? 1 : 0);
+			return this.hasRedstoneSignal() ? 1 : 0;
+		return harvest.ordinal()*2+(this.hasRedstoneSignal() ? 1 : 0);
 	}
 
 	public void setHarvestLevel(int level) {
@@ -171,7 +170,6 @@ public class TileEntityBreaker extends TileRedstoneBase {
 
 		harvest = Materials.mats[NBT.getInteger("level")];
 		dura = NBT.getInteger("dmg");
-		lastPower = NBT.getBoolean("lastpwr");
 	}
 
 	@Override
@@ -182,7 +180,6 @@ public class TileEntityBreaker extends TileRedstoneBase {
 		if (harvest != null)
 			NBT.setInteger("level", harvest.ordinal());
 		NBT.setInteger("dmg", dura);
-		NBT.setBoolean("lastpwr", lastPower);
 	}
 
 	public int getHarvestLevel() {

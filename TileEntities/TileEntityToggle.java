@@ -47,7 +47,7 @@ public class TileEntityToggle extends TileRedstoneBase {
 				repeat = ((BlockRedstoneDiode) b).func_149912_i(world, x, y, z, side.ordinal());
 			}
 		}
-		return (sided || repeat) && world.isBlockIndirectlyGettingPowered(x, y, z);
+		return (sided || repeat) && this.hasRedstoneSignal();
 	}
 
 	@Override

@@ -24,15 +24,12 @@ import Reika.DragonAPI.Instantiable.HybridTank;
 import Reika.DragonAPI.Instantiable.Data.BlockStruct.BlockArray;
 import Reika.DragonAPI.Instantiable.Data.Immutable.Coordinate;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
-import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.ExpandedRedstone.Base.InventoriedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityRedstonePump extends InventoriedRedstoneTileEntity {
-
-	private boolean lastPower;
 
 	private final HybridTank tank = new HybridTank("rspump", 4000);
 	private BlockArray blocks = new BlockArray();
@@ -57,24 +54,24 @@ public class TileEntityRedstonePump extends InventoriedRedstoneTileEntity {
 			blocks.reverseBlockOrder();
 		}
 
-		if (ReikaRedstoneHelper.isPositiveEdge(world, x, y, z, lastPower)) {
-			int level = world.getBlockPowerInput(x, y, z);
-			Coordinate c = blocks.getNextAndMoveOn();
-			FluidStack f = ReikaWorldHelper.getDrainableFluid(world, c.xCoord, c.yCoord, c.zCoord);
-			if (f != null && tank.canTakeIn(f) && f.amount > 0) {
-				tank.addLiquid(f.amount, f.getFluid());
-				c.setBlock(world, Blocks.air);
-				world.markBlockForUpdate(c.xCoord, c.yCoord, c.zCoord);
-				if (RedstoneOptions.NOISES.getState())
-					ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click");
-			}
-		}
-		lastPower = world.isBlockIndirectlyGettingPowered(x, y, z);
-
 		if (!tank.isEmpty())
 			this.tryDistributeFluid(world, x, y, z);
 
 		//ReikaJavaLibrary.pConsole(inv[0]);
+	}
+
+	@Override
+	protected void onPositiveRedstoneEdge() {
+		int level = worldObj.getBlockPowerInput(xCoord, yCoord, zCoord);
+		Coordinate c = blocks.getNextAndMoveOn();
+		FluidStack f = ReikaWorldHelper.getDrainableFluid(worldObj, c.xCoord, c.yCoord, c.zCoord);
+		if (f != null && tank.canTakeIn(f) && f.amount > 0) {
+			tank.addLiquid(f.amount, f.getFluid());
+			c.setBlock(worldObj, Blocks.air);
+			worldObj.markBlockForUpdate(c.xCoord, c.yCoord, c.zCoord);
+			if (RedstoneOptions.NOISES.getState())
+				ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click");
+		}
 	}
 
 	private void tryDistributeFluid(World world, int x, int y, int z) {

@@ -36,6 +36,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.ASM.APIStripper.Strippable;
 import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
+import Reika.DragonAPI.Base.BlockTEBase;
 import Reika.DragonAPI.Base.TileEntityBase;
 import Reika.DragonAPI.Instantiable.Data.Immutable.BlockKey;
 import Reika.DragonAPI.Interfaces.TileEntity.BreakAction;
@@ -66,7 +67,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 
 @Strippable(value = {"mcp.mobius.waila.api.IWailaDataProvider"})
-public abstract class BlockRedstoneBase extends Block implements IWailaDataProvider {
+public abstract class BlockRedstoneBase extends BlockTEBase implements IWailaDataProvider {
 
 	public static IIcon trans;
 	private static IIcon[][][] icons;
@@ -149,6 +150,7 @@ public abstract class BlockRedstoneBase extends Block implements IWailaDataProvi
 
 	@Override
 	public final void onNeighborBlockChange(World world, int x, int y, int z, Block neighborID) {
+		super.onNeighborBlockChange(world, x, y, z, neighborID);
 		RedstoneTiles r = RedstoneTiles.getTEAt(world, x, y, z);
 		switch (r) {
 			case COLUMN:

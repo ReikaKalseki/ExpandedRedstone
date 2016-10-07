@@ -31,13 +31,13 @@ public class TileEntityCamo extends TileRedstoneBase {
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z);
-		this.setEmitting(world.isBlockIndirectlyGettingPowered(x, y, z));
+		this.setEmitting(this.hasRedstoneSignal());
 		//ReikaJavaLibrary.pConsoleIf(this.getImitatedBlockID(), yCoord == 64);
 	}
 
 	@Override
 	public boolean isOverridingIcon(int side) {
-		return worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+		return this.hasRedstoneSignal();
 	}
 
 	@Override

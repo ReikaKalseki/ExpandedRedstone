@@ -24,22 +24,20 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import Reika.DragonAPI.Libraries.ReikaAABBHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
-import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
 import Reika.ExpandedRedstone.Base.InventoriedRedstoneTileEntity;
 import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
 public class TileEntityEffector extends InventoriedRedstoneTileEntity {
 
-	private boolean lastPower;
-
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z);
-		if (ReikaRedstoneHelper.isPositiveEdge(world, x, y, z, lastPower)) {
-			this.useItem();
-		}
-		lastPower = world.isBlockIndirectlyGettingPowered(x, y, z);
+	}
+
+	@Override
+	protected void onPositiveRedstoneEdge() {
+		this.useItem();
 	}
 
 	private void useItem() {
@@ -101,7 +99,7 @@ public class TileEntityEffector extends InventoriedRedstoneTileEntity {
 
 	@Override
 	public int getFrontTexture() {
-		return worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) ? 1 : 0;
+		return this.hasRedstoneSignal() ? 1 : 0;
 	}
 
 	@Override
