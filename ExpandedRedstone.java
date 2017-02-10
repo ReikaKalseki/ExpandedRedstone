@@ -9,6 +9,7 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone;
 
+import java.io.File;
 import java.net.URL;
 
 import net.minecraft.block.Block;
@@ -236,6 +237,11 @@ public class ExpandedRedstone extends DragonAPIMod {
 	@Override
 	public String getUpdateCheckURL() {
 		return CommandableUpdateChecker.reikaURL;
+	}
+
+	@Override
+	public File getConfigFolder() {
+		return config.getConfigFolder();
 	}
 
 }

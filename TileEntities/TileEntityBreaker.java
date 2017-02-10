@@ -12,6 +12,7 @@ package Reika.ExpandedRedstone.TileEntities;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -77,7 +78,8 @@ public class TileEntityBreaker extends TileRedstoneBase {
 				case WOOD:
 					return dura > 0 && b.getMaterial().isToolNotRequired();
 				case STONE:
-					return b.getMaterial().isToolNotRequired();
+					Material mat = b.getMaterial();
+					return mat.isToolNotRequired() || mat == Material.snow;
 				case IRON:
 					return Items.iron_pickaxe.canHarvestBlock(b, new ItemStack(Items.iron_pickaxe)) || b.getMaterial().isToolNotRequired();
 				case DIAMOND:
@@ -117,7 +119,7 @@ public class TileEntityBreaker extends TileRedstoneBase {
 			int meta = world.getBlockMetadata(dx, dy, dz);
 			EntityPlayer ep = this.getPlacer();
 			if (harvest.canHarvest(dura, b, meta, world, dx, dy, dz)) {
-				ArrayList<ItemStack> items = b.getDrops(world, dx, dy, dz, meta, 0);
+				ArrayList<ItemStack> items = this.getDrops(world, dx, dy, dz, b, meta);
 				MinecraftForge.EVENT_BUS.post(new HarvestDropsEvent(dx, dy, dz, world, b, meta, 0, 1, items, ep, false));
 				for (int i = 0; i < items.size(); i++) {
 					ItemStack is = items.get(i);
@@ -132,6 +134,10 @@ public class TileEntityBreaker extends TileRedstoneBase {
 			else if (BARRIER_BLOCK.match(b, meta))
 				return;
 		}
+	}
+
+	private ArrayList<ItemStack> getDrops(World world, int x, int y, int z, Block b, int meta) {
+		return b.getDrops(world, x, y, z, meta, 0);
 	}
 
 	private boolean chestCheck(World world, int x, int y, int z, ItemStack is) {
