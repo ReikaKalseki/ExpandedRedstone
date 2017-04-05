@@ -13,6 +13,7 @@ import java.awt.Color;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGrass;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.init.Blocks;
@@ -153,7 +154,7 @@ public class CircuitBlockRenderer implements ISBRH {
 			TileEntityCamo cam = (TileEntityCamo)te;
 			int metaread = te.worldObj.getBlockMetadata(te.xCoord, te.yCoord-1, te.zCoord);
 			if (ico[1] == Blocks.grass.getBlockTextureFromSide(1)) {
-				color = ReikaBiomeHelper.biomeToRGB(world, x, y, z, "Grass");
+				color = ReikaBiomeHelper.biomeToRGB(world, x, y, z, Material.grass);
 				v5.setColorOpaque(color[0], color[1], color[2]);
 				if (rb.fancyGrass)
 					for (int i = 2; i < 6; i++) {
@@ -162,7 +163,7 @@ public class CircuitBlockRenderer implements ISBRH {
 			}
 			if (ico[1] == Blocks.leaves.getIcon(1, metaread)) {
 				metaread = metaread & 3;
-				color = ReikaBiomeHelper.biomeToRGB(world, x, y, z, "Leaves");
+				color = ReikaBiomeHelper.biomeToRGB(world, x, y, z, Material.leaves);
 				if (metaread == 0 || metaread == 3) {
 					for (int i = 0; i < 3; i++) {
 						mult[i] = color[i]/255F;

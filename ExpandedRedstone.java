@@ -57,7 +57,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@Mod( modid = "ExpandedRedstone", name="ExpandedRedstone", certificateFingerprint = "@GET_FINGERPRINT@", dependencies="required-after:DragonAPI")
+@Mod( modid = "ExpandedRedstone", name="ExpandedRedstone", version = "v@MAJOR_VERSION@@MINOR_VERSION@", certificateFingerprint = "@GET_FINGERPRINT@", dependencies="required-after:DragonAPI")
 
 
 public class ExpandedRedstone extends DragonAPIMod {

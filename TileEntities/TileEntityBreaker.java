@@ -29,6 +29,7 @@ import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
+import Reika.DragonAPI.Libraries.World.ReikaBlockHelper;
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
@@ -67,6 +68,8 @@ public class TileEntityBreaker extends TileRedstoneBase {
 			if (b == Blocks.air)
 				return false;
 			if (b == Blocks.bedrock)
+				return false;
+			if (ReikaBlockHelper.isLiquid(b))
 				return false;
 			if (b.getBlockHardness(world, x, y, z) < 0)
 				return false;
