@@ -64,6 +64,8 @@ public class TileEntityRedstonePump extends InventoriedRedstoneTileEntity {
 	protected void onPositiveRedstoneEdge() {
 		int level = worldObj.getBlockPowerInput(xCoord, yCoord, zCoord);
 		Coordinate c = blocks.getNextAndMoveOn();
+		if (c == null)
+			return;
 		FluidStack f = ReikaWorldHelper.getDrainableFluid(worldObj, c.xCoord, c.yCoord, c.zCoord);
 		if (f != null && tank.canTakeIn(f) && f.amount > 0) {
 			tank.addLiquid(f.amount, f.getFluid());
