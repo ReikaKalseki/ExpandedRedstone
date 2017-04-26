@@ -35,6 +35,8 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogReceiver;
 import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogTransmitter;
 import Reika.ExpandedRedstone.TileEntities.TileEntityArithmetic;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBUD;
+import Reika.ExpandedRedstone.TileEntities.TileEntityBlockReader;
+import Reika.ExpandedRedstone.TileEntities.TileEntityBlockReader.ReadMode;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker;
 import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
 import Reika.ExpandedRedstone.TileEntities.TileEntityChestReader;
@@ -87,7 +89,8 @@ public enum RedstoneTiles implements TileEnum {
 	RELAY(				TileEntityRedstoneRelay.class,		BlockRedstoneTile.class,		13),
 	THERMAL(			TileEntityThermalMeter.class,		BlockRedstoneTile.class,		14),
 	PARTICLE(			TileEntityParticleFilter.class, 	BlockRedstoneMachine.class, 	9),
-	TIMER(				TileEntitySignalTimer.class,		BlockRedstoneTile.class,		15);
+	TIMER(				TileEntitySignalTimer.class,		BlockRedstoneTile.class,		15),
+	BLOCKREADER(		TileEntityBlockReader.class,		BlockRedstoneMachine.class,		10);
 
 	private final Class te;
 	private final RedstoneBlocks block;
@@ -223,6 +226,8 @@ public enum RedstoneTiles implements TileEnum {
 				return 16;
 			case PARTICLE:
 				return 2;
+			case BLOCKREADER:
+				return ReadMode.list.length;
 			default:
 				return 1;
 		}
@@ -237,6 +242,7 @@ public enum RedstoneTiles implements TileEnum {
 			case EMITTER:
 			case RECEIVER:
 			case SHOCK:
+			case BLOCKREADER:
 				return true;
 			default:
 				return false;

@@ -49,6 +49,7 @@ import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 import Reika.ExpandedRedstone.TileEntities.TileEntity555;
 import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogTransmitter;
 import Reika.ExpandedRedstone.TileEntities.TileEntityArithmetic;
+import Reika.ExpandedRedstone.TileEntities.TileEntityBlockReader;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker;
 import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
 import Reika.ExpandedRedstone.TileEntities.TileEntityChestReader;
@@ -285,6 +286,9 @@ public abstract class BlockRedstoneBase extends BlockTEBase implements IWailaDat
 				return true;
 			case TIMER:
 				ReikaChatHelper.sendChatToPlayer(ep, ((TileEntitySignalTimer)te).getIntervalMessage());
+				return true;
+			case BLOCKREADER:
+				((TileEntityBlockReader)te).increment();
 				return true;
 			default:
 				return false;

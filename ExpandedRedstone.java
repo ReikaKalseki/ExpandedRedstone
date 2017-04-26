@@ -207,6 +207,8 @@ public class ExpandedRedstone extends DragonAPIMod {
 
 		RedstoneTiles.PARTICLE.addRecipe("CWC", "CRC", "CCC", 'W', Blocks.wool, 'R', Blocks.redstone_block, 'C', Blocks.cobblestone);
 		RedstoneTiles.TIMER.addRecipe(" g ", "rqr", "sss", 's', ReikaItemHelper.stoneSlab, 'r', Items.redstone, 'g', Items.glowstone_dust, 'q', Items.quartz);
+
+		RedstoneTiles.BLOCKREADER.addRecipe("cGc", "cpc", "crc", 'c', Blocks.cobblestone, 'r', Items.redstone, 'G', Blocks.glass, 'p', Items.ender_pearl);
 	}
 
 	@Override
