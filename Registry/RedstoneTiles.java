@@ -51,6 +51,7 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityParticleFilter;
 import Reika.ExpandedRedstone.TileEntities.TileEntityPlacer;
 import Reika.ExpandedRedstone.TileEntities.TileEntityProximity;
 import Reika.ExpandedRedstone.TileEntities.TileEntityReceiver;
+import Reika.ExpandedRedstone.TileEntities.TileEntityRedstoneInterrupt;
 import Reika.ExpandedRedstone.TileEntities.TileEntityRedstonePump;
 import Reika.ExpandedRedstone.TileEntities.TileEntityRedstoneRelay;
 import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
@@ -90,7 +91,8 @@ public enum RedstoneTiles implements TileEnum {
 	THERMAL(			TileEntityThermalMeter.class,		BlockRedstoneTile.class,		14),
 	PARTICLE(			TileEntityParticleFilter.class, 	BlockRedstoneMachine.class, 	9),
 	TIMER(				TileEntitySignalTimer.class,		BlockRedstoneTile.class,		15),
-	BLOCKREADER(		TileEntityBlockReader.class,		BlockRedstoneMachine.class,		10);
+	BLOCKREADER(		TileEntityBlockReader.class,		BlockRedstoneMachine.class,		10),
+	INTERRUPT(			TileEntityRedstoneInterrupt.class,	BlockRedstoneTile.class,		16);
 
 	private final Class te;
 	private final RedstoneBlocks block;
@@ -164,6 +166,7 @@ public enum RedstoneTiles implements TileEnum {
 			case EQUALIZER:
 			case COUNTDOWN:
 			case CLOCK:
+			case INTERRUPT:
 				return true;
 			default:
 				return false;
@@ -189,6 +192,7 @@ public enum RedstoneTiles implements TileEnum {
 			case ARITHMETIC:
 			case RELAY:
 			case THERMAL:
+			case INTERRUPT:
 				return true;
 			default:
 				return false;
@@ -228,6 +232,8 @@ public enum RedstoneTiles implements TileEnum {
 				return 2;
 			case BLOCKREADER:
 				return ReadMode.list.length;
+			case INTERRUPT:
+				return 3;
 			default:
 				return 1;
 		}

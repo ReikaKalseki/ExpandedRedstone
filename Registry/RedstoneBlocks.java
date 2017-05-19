@@ -31,7 +31,8 @@ public enum RedstoneBlocks implements BlockEnum {
 	THINTILE(BlockRedstoneTile.class),
 	WIRE(BlockExpandedWire.class),
 	FULLBLOCK(BlockRedstoneMachine.class),
-	CAMO(BlockRedstoneCamo.class);
+	CAMO(BlockRedstoneCamo.class),
+	THINTILE2(BlockRedstoneTile.class, 1);
 
 	private final Class blockClass;
 	private final int offset;
@@ -66,10 +67,10 @@ public enum RedstoneBlocks implements BlockEnum {
 
 	public Material getBlockMaterial() {
 		switch(this) {
-		case WIRE:
-			return Material.circuits;
-		default:
-			return Material.portal;
+			case WIRE:
+				return Material.circuits;
+			default:
+				return Material.portal;
 		}
 	}
 
@@ -90,10 +91,10 @@ public enum RedstoneBlocks implements BlockEnum {
 	@Override
 	public String getBasicName() {
 		switch(this) {
-		case WIRE:
-			return "Lapis Wire";
-		default:
-			return ReikaStringParser.capFirstChar(this.name());
+			case WIRE:
+				return "Lapis Wire";
+			default:
+				return ReikaStringParser.capFirstChar(this.name());
 		}
 	}
 

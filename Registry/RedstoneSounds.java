@@ -63,6 +63,10 @@ public enum RedstoneSounds implements SoundEnum {
 		;//ReikaPacketHelper.sendSoundPacket(ExpandedRedstone.packetChannel, this, world, x, y, z, vol, pitch);
 	}
 
+	public void playSound(World world, double x, double y, double z, float vol, float pitch, boolean attenuate) {
+
+	}
+
 	public void playSoundAtBlock(World world, int x, int y, int z, float vol, float pitch) {
 		this.playSound(world, x+0.5, y+0.5, z+0.5, vol, pitch);
 	}

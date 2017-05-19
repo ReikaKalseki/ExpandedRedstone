@@ -53,7 +53,7 @@ public class TileEntityArithmetic extends TileRedstoneBase {
 				case POWER:
 					return ReikaMathLibrary.intpow2(n1, n2);
 				case SUBTRACT:
-					return n1-n2;
+					return Math.max(0, n1-n2);
 				case MIN:
 					return Math.min(n1, n2);
 				case MAX:
