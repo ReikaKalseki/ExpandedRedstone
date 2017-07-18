@@ -9,6 +9,7 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;
@@ -39,11 +40,10 @@ public class TileEntityColumnDecrementer extends TileRedstoneBase {
 	@Override
 	public int getEmission() {
 		int level = this.getPowerInBack();
-		RedstoneTiles r = RedstoneTiles.getTEAt(worldObj, xCoord, yCoord-1, zCoord);
 		int bottom = 0;
-		if (r == RedstoneTiles.COLUMN) {
-			bottom = ((TileEntityColumnDecrementer)this.getAdjacentTileEntity(ForgeDirection.DOWN)).getEmission()-1;
-		}
+		TileEntity te = this.getAdjacentTileEntity(ForgeDirection.DOWN);
+		if (te instanceof TileEntityColumnDecrementer)
+			bottom = ((TileEntityColumnDecrementer)te).getEmission()-1;
 		return Math.max(level, bottom);
 	}
 
