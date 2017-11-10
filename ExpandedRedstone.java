@@ -12,12 +12,19 @@ package Reika.ExpandedRedstone;
 import java.io.File;
 import java.net.URL;
 
+import mrtjp.projectred.transmission.WireDef.WireDef;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
+
+import org.apache.commons.lang3.tuple.ImmutablePair;
+
 import Reika.ChromatiCraft.API.AcceleratorBlacklist;
 import Reika.ChromatiCraft.API.AcceleratorBlacklist.BlacklistReason;
 import Reika.DragonAPI.DragonAPICore;
@@ -34,8 +41,11 @@ import Reika.DragonAPI.Libraries.ReikaRegistryHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaColorAPI;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
+import Reika.DragonAPI.Libraries.Registry.ReikaDyeHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ExpandedRedstone.Base.AnalogWireless;
+import Reika.ExpandedRedstone.LumaWire.LumaWires;
+import Reika.ExpandedRedstone.LumaWire.LumaWires.LumaWireEntry;
 import Reika.ExpandedRedstone.ModInterface.Lua.RedstoneLuaMethods;
 import Reika.ExpandedRedstone.Registry.RedstoneBlocks;
 import Reika.ExpandedRedstone.Registry.RedstoneItems;
@@ -44,6 +54,8 @@ import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 import Reika.ExpandedRedstone.TileEntities.TileEntity555;
 import Reika.ExpandedRedstone.TileEntities.TileEntityParticleFilter;
 import Reika.RotaryCraft.API.BlockColorInterface;
+import codechicken.multipart.MultiPartRegistry;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -57,7 +69,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@Mod( modid = "ExpandedRedstone", name="ExpandedRedstone", version = "v@MAJOR_VERSION@@MINOR_VERSION@", certificateFingerprint = "@GET_FINGERPRINT@", dependencies="required-after:DragonAPI")
+@Mod( modid = "ExpandedRedstone", name="ExpandedRedstone", version = "v@MAJOR_VERSION@@MINOR_VERSION@", certificateFingerprint = "@GET_FINGERPRINT@", dependencies="required-after:DragonAPI;after:ProjRed|Transmission")
 
 
 public class ExpandedRedstone extends DragonAPIMod {
@@ -111,7 +123,36 @@ public class ExpandedRedstone extends DragonAPIMod {
 
 		if (ModList.NEI.isLoaded())
 			NEI_DragonAPI_Config.hideBlocks(blocks);
+
+		if (ModList.PROJRED.isLoaded() && Loader.isModLoaded("ProjRed|Transmission")) {
+			this.createGlowingRedAlloyWire();
+		}
+
 		this.finishTiming();
+	}
+
+	private void createGlowingRedAlloyWire() {
+		MultiPartRegistry.registerParts(LumaWires.registry, LumaWires.createAndGetNames());
+
+		ItemStack is = LumaWires.getDefinition(ReikaDyeHelper.WHITE).makeStack(3);
+		ItemStack isf = LumaWires.getDefinition(ReikaDyeHelper.WHITE).makeFramedStack(3);
+		ItemStack wire = LumaWires.getRedWire().makeStack();
+		ItemStack wiref = LumaWires.getRedWire().makeFramedStack();
+		int meta = 19;//19 for white, 34 for black
+		ItemStack lumar = ReikaItemHelper.lookupItem("ProjRed|Core:projectred.core.part:"+meta);
+		GameRegistry.addRecipe(is, "gGg", "www", "gGg", 'g', lumar, 'G', Blocks.glass_pane, 'w', wire);
+		GameRegistry.addRecipe(isf, "gGg", "www", "gGg", 'g', lumar, 'G', Blocks.glass_pane, 'w', wiref);
+
+		for (WireDef def : LumaWires.getDefinitions()) {
+			OreDictionary.registerOre("lumaWire", def.makeStack());
+			OreDictionary.registerOre("lumaWireFramed", def.makeFramedStack());
+		}
+
+		for (ImmutablePair<LumaWireEntry, LumaWireEntry> entry : LumaWires.getEntries()) {
+			String ore = entry.left.color.getOreDictName();
+			GameRegistry.addRecipe(new ShapelessOreRecipe(entry.left.getStack(8), ore, "lumaWire", "lumaWire", "lumaWire", "lumaWire", "lumaWire", "lumaWire", "lumaWire", "lumaWire"));
+			GameRegistry.addRecipe(new ShapelessOreRecipe(entry.right.getStack(8), ore, "lumaWireFramed", "lumaWireFramed", "lumaWireFramed", "lumaWireFramed", "lumaWireFramed", "lumaWireFramed", "lumaWireFramed", "lumaWireFramed"));
+		}
 	}
 
 	@Override
@@ -147,7 +188,7 @@ public class ExpandedRedstone extends DragonAPIMod {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void cullFX(AddParticleEvent evt) {
-		if (TileEntityParticleFilter.cullParticle(evt.particle)) {
+		if (TileEntityParticleFilter.cullParticle(evt.getParticle())) {
 			evt.setCanceled(true);
 		}
 	}

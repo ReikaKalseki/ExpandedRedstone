@@ -69,7 +69,7 @@ public class GuiAnalog extends GuiContainer {
 
 		this.initGui();
 
-		ReikaPacketHelper.sendDataPacket(ExpandedRedstone.packetChannel, 0, tile, channel);
+		ReikaPacketHelper.sendPacketToServer(ExpandedRedstone.packetChannel, 0, tile, channel);
 	}
 
 	@Override

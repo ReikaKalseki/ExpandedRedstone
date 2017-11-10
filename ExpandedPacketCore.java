@@ -114,6 +114,7 @@ public class ExpandedPacketCore implements PacketHandler {
 				case NBT:
 					break;
 				case STRINGINT:
+				case STRINGINTLOC:
 					stringdata = packet.readString();
 					control = inputStream.readInt();
 					data = new int[1];

@@ -17,6 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import Reika.DragonAPI.Instantiable.Data.Immutable.WorldLocation;
 import Reika.DragonAPI.Interfaces.Registry.SoundEnum;
+import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -81,6 +82,13 @@ public enum RedstoneSounds implements SoundEnum {
 
 	public void playSoundAtBlock(WorldLocation loc) {
 		this.playSoundAtBlock(loc.getWorld(), loc.xCoord, loc.yCoord, loc.zCoord);
+	}
+
+	public void playSoundNoAttenuation(World world, double x, double y, double z, float vol, float pitch, int broadcast) {
+		if (world.isRemote)
+			return;
+		//ReikaSoundHelper.playSound(this, ExpandedRedstone.packetChannel, te.worldObj, x, y, z, vol/* *this.getModulatedVolume()*/, pitch, false);
+		ReikaPacketHelper.sendSoundPacket(ExpandedRedstone.packetChannel, this, world, x, y, z, vol, pitch, false, broadcast);
 	}
 
 	public String getName() {

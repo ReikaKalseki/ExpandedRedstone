@@ -92,6 +92,8 @@ public class TileEntityParticleFilter extends TileRedstoneBase implements Locati
 
 	@SideOnly(Side.CLIENT)
 	public static boolean cullParticle(EntityFX fx) {
+		if (cache.isEmpty())
+			return false;
 		WorldLocation c = new WorldLocation(fx);
 		for (WorldLocation loc : cache) {
 			if (loc.isWithinSquare(c, MAX_RANGE)) {
