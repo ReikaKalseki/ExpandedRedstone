@@ -30,6 +30,7 @@ import Reika.ChromatiCraft.API.AcceleratorBlacklist.BlacklistReason;
 import Reika.DragonAPI.DragonAPICore;
 import Reika.DragonAPI.DragonOptions;
 import Reika.DragonAPI.ModList;
+import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
 import Reika.DragonAPI.Auxiliary.NEI_DragonAPI_Config;
 import Reika.DragonAPI.Auxiliary.Trackers.CommandableUpdateChecker;
 import Reika.DragonAPI.Base.DragonAPIMod;
@@ -131,6 +132,7 @@ public class ExpandedRedstone extends DragonAPIMod {
 		this.finishTiming();
 	}
 
+	@ModDependent(ModList.PROJRED)
 	private void createGlowingRedAlloyWire() {
 		MultiPartRegistry.registerParts(LumaWires.registry, LumaWires.createAndGetNames());
 

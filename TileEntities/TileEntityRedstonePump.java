@@ -49,8 +49,7 @@ public class TileEntityRedstonePump extends InventoriedRedstoneTileEntity {
 		if (f2 == null)
 			return;
 		if (blocks.isEmpty()) {
-			blocks.setLiquid(ReikaWorldHelper.getMaterial(world, x, y-1, z));
-			blocks.recursiveAddLiquidWithBounds(world, x, y-1, z, x-16, 0, z-16, x+16, y-1, z+16);
+			blocks.recursiveAddLiquidWithBounds(world, x, y-1, z, x-16, 0, z-16, x+16, y-1, z+16, f2);
 			blocks.reverseBlockOrder();
 		}
 
