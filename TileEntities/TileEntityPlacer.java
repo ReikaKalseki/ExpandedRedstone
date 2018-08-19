@@ -52,6 +52,7 @@ public class TileEntityPlacer extends InventoriedRedstoneTileEntity {
 				BlockKey id = ReikaItemHelper.getWorldBlockFromItem(is);
 				if (id.blockID != Blocks.air) {
 					if (world.setBlock(dx, dy, dz, id.blockID, id.metadata, 3)) {
+						id.blockID.onBlockPlacedBy(world, dx, dy, dz, this.getPlacer(), is);
 						ReikaInventoryHelper.decrStack(i, inv);
 						ReikaSoundHelper.playPlaceSound(world, dx, dy, dz, id.blockID);
 					}
