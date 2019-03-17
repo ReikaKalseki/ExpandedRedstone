@@ -18,6 +18,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import Reika.DragonAPI.Libraries.ReikaAABBHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaParticleHelper;

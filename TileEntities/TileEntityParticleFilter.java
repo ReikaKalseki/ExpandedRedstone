@@ -16,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
 import Reika.DragonAPI.Instantiable.Data.Immutable.WorldLocation;
 import Reika.DragonAPI.Interfaces.TileEntity.LocationCached;
 import Reika.DragonAPI.Libraries.IO.ReikaChatHelper;
@@ -23,6 +24,7 @@ import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaRandomHelper;
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

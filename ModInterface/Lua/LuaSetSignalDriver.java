@@ -10,8 +10,10 @@
 package Reika.ExpandedRedstone.ModInterface.Lua;
 
 import net.minecraft.tileentity.TileEntity;
+
 import Reika.DragonAPI.ModInteract.Lua.LuaMethod;
 import Reika.ExpandedRedstone.TileEntities.TileEntityDriver;
+
 import dan200.computercraft.api.lua.LuaException;
 
 public class LuaSetSignalDriver extends LuaMethod {

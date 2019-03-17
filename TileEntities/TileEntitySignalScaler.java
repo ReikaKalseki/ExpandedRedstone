@@ -11,6 +11,7 @@ package Reika.ExpandedRedstone.TileEntities;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+
 import Reika.DragonAPI.Libraries.IO.ReikaChatHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;

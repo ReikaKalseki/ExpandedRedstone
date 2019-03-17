@@ -15,6 +15,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+
 import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
 import Reika.DragonAPI.Libraries.ReikaNBTHelper.NBTTypes;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;

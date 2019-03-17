@@ -17,21 +17,22 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Locale;
 
-import mrtjp.projectred.transmission.WireDef.WireDef;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
-
-import scala.collection.mutable.WrappedArray;
 import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.Libraries.IO.ReikaColorAPI;
 import Reika.DragonAPI.Libraries.Registry.ReikaDyeHelper;
+
 import codechicken.lib.data.MCDataInput;
 import codechicken.multipart.MultiPartRegistry.IPartFactory2;
 import codechicken.multipart.TMultiPart;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
+import mrtjp.projectred.transmission.WireDef.WireDef;
+import scala.collection.mutable.WrappedArray;
 
 
 public class LumaWires {

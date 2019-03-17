@@ -12,6 +12,7 @@ package Reika.ExpandedRedstone.TileEntities;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 

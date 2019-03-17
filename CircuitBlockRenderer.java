@@ -11,6 +11,8 @@ package Reika.ExpandedRedstone;
 
 import java.awt.Color;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGrass;
 import net.minecraft.block.material.Material;
@@ -21,8 +23,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.lwjgl.opengl.GL11;
 
 import Reika.DragonAPI.Interfaces.ISBRH;
 import Reika.DragonAPI.Libraries.World.ReikaBiomeHelper;

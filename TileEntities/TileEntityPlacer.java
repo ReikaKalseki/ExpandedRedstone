@@ -12,6 +12,7 @@ package Reika.ExpandedRedstone.TileEntities;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
 import Reika.DragonAPI.Instantiable.Data.Immutable.BlockKey;
 import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;

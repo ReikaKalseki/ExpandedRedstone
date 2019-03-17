@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -13,9 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import mcp.mobius.waila.api.IWailaDataProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -33,6 +30,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.ASM.APIStripper.Strippable;
 import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
@@ -52,6 +50,7 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogTransmitter;
 import Reika.ExpandedRedstone.TileEntities.TileEntityArithmetic;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBlockReader;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker;
+import Reika.ExpandedRedstone.TileEntities.TileEntityBusLatch;
 import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
 import Reika.ExpandedRedstone.TileEntities.TileEntityChestReader;
 import Reika.ExpandedRedstone.TileEntities.TileEntityCountdown;
@@ -65,9 +64,13 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
 import Reika.ExpandedRedstone.TileEntities.TileEntitySignalScaler;
 import Reika.ExpandedRedstone.TileEntities.TileEntitySignalTimer;
 import Reika.RotaryCraft.API.ItemFetcher;
+
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.api.IWailaDataProvider;
 
 @Strippable(value = {"mcp.mobius.waila.api.IWailaDataProvider"})
 public abstract class BlockRedstoneBase extends BlockTEBase implements IWailaDataProvider {
@@ -298,6 +301,9 @@ public abstract class BlockRedstoneBase extends BlockTEBase implements IWailaDat
 					((TileEntityRedstoneInterrupt)te).togglePass();
 				}
 				ReikaSoundHelper.playSoundAtBlock(world, x, y, z, "random.click", 0.5F, 0.5F);
+				return true;
+			case BUSLATCH:
+				((TileEntityBusLatch)te).toggle(ep);
 				return true;
 			default:
 				return false;

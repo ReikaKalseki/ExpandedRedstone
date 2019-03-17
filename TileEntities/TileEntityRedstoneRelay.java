@@ -12,6 +12,7 @@ package Reika.ExpandedRedstone.TileEntities;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import Reika.DragonAPI.Libraries.ReikaDirectionHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;

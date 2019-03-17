@@ -22,6 +22,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import Reika.DragonAPI.Libraries.ReikaEntityHelper;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.ExpandedRedstone.ExpandedRedstone;
@@ -31,6 +32,7 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker.Materials;
 import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel;
 import Reika.ExpandedRedstone.TileEntities.TileEntityShockPanel.Lens;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

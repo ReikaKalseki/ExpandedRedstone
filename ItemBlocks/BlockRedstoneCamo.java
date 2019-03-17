@@ -15,10 +15,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
 import Reika.DragonAPI.Instantiable.Data.Immutable.BlockKey;
 import Reika.ExpandedRedstone.Base.BlockRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

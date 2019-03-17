@@ -10,6 +10,7 @@
 package Reika.ExpandedRedstone.TileEntities;
 
 import net.minecraft.world.World;
+
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 

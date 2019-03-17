@@ -10,9 +10,11 @@
 package Reika.ExpandedRedstone.ModInterface.Lua;
 
 import net.minecraft.tileentity.TileEntity;
+
 import Reika.DragonAPI.ModInteract.Lua.LuaMethod;
 import Reika.ExpandedRedstone.TileEntities.TileEntity555;
 import Reika.ExpandedRedstone.TileEntities.TileEntity555.Settings;
+
 import dan200.computercraft.api.lua.LuaException;
 
 public class Lua555SetTiming extends LuaMethod {

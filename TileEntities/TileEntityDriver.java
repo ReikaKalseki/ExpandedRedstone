@@ -15,6 +15,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;

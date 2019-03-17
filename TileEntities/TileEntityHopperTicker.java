@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.world.World;
+
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneOptions;

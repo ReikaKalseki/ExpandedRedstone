@@ -15,6 +15,7 @@ import java.util.UUID;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+
 import Reika.DragonAPI.Auxiliary.ModularLogger;
 import Reika.DragonAPI.Instantiable.Data.Immutable.WorldLocation;
 import Reika.ExpandedRedstone.ExpandedRedstone;

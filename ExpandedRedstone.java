@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -12,7 +12,8 @@ package Reika.ExpandedRedstone;
 import java.io.File;
 import java.net.URL;
 
-import mrtjp.projectred.transmission.WireDef.WireDef;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -22,8 +23,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-
-import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import Reika.ChromatiCraft.API.AcceleratorBlacklist;
 import Reika.ChromatiCraft.API.AcceleratorBlacklist.BlacklistReason;
@@ -55,6 +54,7 @@ import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 import Reika.ExpandedRedstone.TileEntities.TileEntity555;
 import Reika.ExpandedRedstone.TileEntities.TileEntityParticleFilter;
 import Reika.RotaryCraft.API.BlockColorInterface;
+
 import codechicken.multipart.MultiPartRegistry;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -69,8 +69,9 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import mrtjp.projectred.transmission.WireDef.WireDef;
 
-@Mod( modid = "ExpandedRedstone", name="ExpandedRedstone", version = "v@MAJOR_VERSION@@MINOR_VERSION@", certificateFingerprint = "@GET_FINGERPRINT@", dependencies="required-after:DragonAPI;after:ProjRed|Transmission")
+@Mod( modid = "ExpandedRedstone", name="ExpandedRedstone", version = "v@MAJOR_VERSION@@MINOR_VERSION@", certificateFingerprint = "@GET_FINGERPRINT@", dependencies="required-after:DragonAPI;after:ProjRed|Transmission;after:ProjRed|Integration")
 
 
 public class ExpandedRedstone extends DragonAPIMod {
@@ -127,6 +128,14 @@ public class ExpandedRedstone extends DragonAPIMod {
 
 		if (ModList.PROJRED.isLoaded() && Loader.isModLoaded("ProjRed|Transmission")) {
 			this.createGlowingRedAlloyWire();
+
+			ItemStack bundle = ReikaItemHelper.lookupItem("ProjRed|Transmission:projectred.transmission.wire:17");
+			ItemStack latch = ReikaItemHelper.lookupItem("ProjRed|Integration:projectred.integration.gate:12");
+			if (latch == null)
+				latch = new ItemStack(Items.comparator);
+			if (bundle == null)
+				bundle = new ItemStack(Items.redstone);
+			GameRegistry.addRecipe(RedstoneTiles.BUSLATCH.getCraftedProduct(), "rqr", "blb", "sss", 'b', bundle, 's', ReikaItemHelper.stoneSlab, 'r', Items.redstone, 'q', Items.quartz, 'l', latch);
 		}
 
 		this.finishTiming();

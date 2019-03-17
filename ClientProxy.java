@@ -11,10 +11,12 @@ package Reika.ExpandedRedstone;
 
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
+
 import Reika.DragonAPI.Instantiable.IO.SoundLoader;
 import Reika.DragonAPI.Instantiable.Rendering.CustomWireRenderer;
 import Reika.ExpandedRedstone.Registry.RedstoneItems;
 import Reika.ExpandedRedstone.Registry.RedstoneSounds;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 

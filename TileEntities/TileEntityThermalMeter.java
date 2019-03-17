@@ -12,6 +12,7 @@ package Reika.ExpandedRedstone.TileEntities;
 import java.util.TreeMap;
 
 import net.minecraft.world.World;
+
 import Reika.DragonAPI.Instantiable.StepTimer;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.DragonAPI.Libraries.World.ReikaBiomeHelper.BiomeTemperatures;

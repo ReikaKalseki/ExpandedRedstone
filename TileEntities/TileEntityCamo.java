@@ -16,6 +16,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import Reika.DragonAPI.Instantiable.Data.Immutable.BlockKey;
 import Reika.ExpandedRedstone.Base.BlockRedstoneBase;
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;

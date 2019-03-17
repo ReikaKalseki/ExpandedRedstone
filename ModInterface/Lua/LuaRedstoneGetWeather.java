@@ -10,8 +10,10 @@
 package Reika.ExpandedRedstone.ModInterface.Lua;
 
 import net.minecraft.tileentity.TileEntity;
+
 import Reika.DragonAPI.ModInteract.Lua.LuaMethod;
 import Reika.ExpandedRedstone.TileEntities.TileEntityWeather;
+
 import dan200.computercraft.api.lua.LuaException;
 
 public class LuaRedstoneGetWeather extends LuaMethod {

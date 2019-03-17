@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -20,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import Reika.DragonAPI.Exception.RegistrationException;
 import Reika.DragonAPI.Instantiable.Data.Maps.BlockMap;
 import Reika.DragonAPI.Interfaces.Registry.TileEnum;
@@ -38,6 +39,7 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityBUD;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBlockReader;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBlockReader.ReadMode;
 import Reika.ExpandedRedstone.TileEntities.TileEntityBreaker;
+import Reika.ExpandedRedstone.TileEntities.TileEntityBusLatch;
 import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
 import Reika.ExpandedRedstone.TileEntities.TileEntityChestReader;
 import Reika.ExpandedRedstone.TileEntities.TileEntityColumnDecrementer;
@@ -60,6 +62,7 @@ import Reika.ExpandedRedstone.TileEntities.TileEntitySignalTimer;
 import Reika.ExpandedRedstone.TileEntities.TileEntityThermalMeter;
 import Reika.ExpandedRedstone.TileEntities.TileEntityToggle;
 import Reika.ExpandedRedstone.TileEntities.TileEntityWeather;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum RedstoneTiles implements TileEnum {
@@ -92,7 +95,8 @@ public enum RedstoneTiles implements TileEnum {
 	PARTICLE(			TileEntityParticleFilter.class, 	BlockRedstoneMachine.class, 	9),
 	TIMER(				TileEntitySignalTimer.class,		BlockRedstoneTile.class,		15),
 	BLOCKREADER(		TileEntityBlockReader.class,		BlockRedstoneMachine.class,		10),
-	INTERRUPT(			TileEntityRedstoneInterrupt.class,	BlockRedstoneTile.class,		16);
+	INTERRUPT(			TileEntityRedstoneInterrupt.class,	BlockRedstoneTile.class,		16),
+	BUSLATCH(			TileEntityBusLatch.class,			BlockRedstoneTile.class,		17);
 
 	private final Class te;
 	private final RedstoneBlocks block;
@@ -193,6 +197,7 @@ public enum RedstoneTiles implements TileEnum {
 			case RELAY:
 			case THERMAL:
 			case INTERRUPT:
+			case BUSLATCH:
 				return true;
 			default:
 				return false;
@@ -234,6 +239,8 @@ public enum RedstoneTiles implements TileEnum {
 				return ReadMode.list.length;
 			case INTERRUPT:
 				return 3;
+			case BUSLATCH:
+				return 2;
 			default:
 				return 1;
 		}
@@ -264,7 +271,8 @@ public enum RedstoneTiles implements TileEnum {
 			case EMITTER:
 			case SHOCK:
 			case PARTICLE:
-				return true;
+				//case BUSLATCH:
+				//	return true;
 			default:
 				return false;
 		}

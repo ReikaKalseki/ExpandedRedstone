@@ -9,9 +9,10 @@
  ******************************************************************************/
 package Reika.ExpandedRedstone.LumaWire;
 
+import Reika.ExpandedRedstone.LumaWire.LumaWires.LumaWireEntry;
+
 import mrtjp.projectred.transmission.RedAlloyWirePart;
 import mrtjp.projectred.transmission.WireDef.WireDef;
-import Reika.ExpandedRedstone.LumaWire.LumaWires.LumaWireEntry;
 
 
 public class GlowingRedAlloyWire extends RedAlloyWirePart {
