@@ -14,8 +14,6 @@ import net.minecraft.tileentity.TileEntity;
 import Reika.DragonAPI.ModInteract.Lua.LuaMethod;
 import Reika.ExpandedRedstone.TileEntities.TileEntityDriver;
 
-import dan200.computercraft.api.lua.LuaException;
-
 public class LuaSetSignalDriver extends LuaMethod {
 
 	public LuaSetSignalDriver() {
@@ -23,7 +21,7 @@ public class LuaSetSignalDriver extends LuaMethod {
 	}
 
 	@Override
-	public Object[] invoke(TileEntity te, Object[] args) throws LuaException, InterruptedException {
+	protected Object[] invoke(TileEntity te, Object[] args) throws LuaMethodException, InterruptedException {
 		((TileEntityDriver)te).setOutput((Integer)args[0]);
 		return null;
 	}

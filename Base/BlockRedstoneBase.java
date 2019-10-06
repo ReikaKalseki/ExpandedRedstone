@@ -133,8 +133,7 @@ public abstract class BlockRedstoneBase extends BlockTEBase implements IWailaDat
 	}
 
 	@Override
-	public final boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean harvest)
-	{
+	public final boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean harvest) {
 		if (!player.capabilities.isCreativeMode)
 			this.harvestBlock(world, player, x, y, z, world.getBlockMetadata(x, y, z));
 		return world.setBlockToAir(x, y, z);
@@ -178,20 +177,17 @@ public abstract class BlockRedstoneBase extends BlockTEBase implements IWailaDat
 	}
 
 	@Override
-	public final boolean canBeReplacedByLeaves(IBlockAccess world, int x, int y, int z)
-	{
+	public final boolean canBeReplacedByLeaves(IBlockAccess world, int x, int y, int z) {
 		return false;
 	}
 
 	@Override
-	public final boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata)
-	{
+	public final boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata) {
 		return false;
 	}
 
 	@Override
-	public final int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face)
-	{
+	public final int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
 		return 0;
 	}
 

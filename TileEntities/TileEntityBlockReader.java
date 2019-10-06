@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -21,8 +21,6 @@ import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.ModInteract.Lua.LuaMethod;
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
-
-import dan200.computercraft.api.lua.LuaException;
 
 public class TileEntityBlockReader extends TileRedstoneBase {
 
@@ -79,7 +77,7 @@ public class TileEntityBlockReader extends TileRedstoneBase {
 		}
 
 		@Override
-		public Object[] invoke(TileEntity te, Object[] args) throws LuaException, InterruptedException {
+		protected Object[] invoke(TileEntity te, Object[] args) throws LuaMethodException, InterruptedException {
 			TileEntityBlockReader tile = (TileEntityBlockReader)te;
 			return this.invoke(te.worldObj, tile.getFacingX(), tile.getFacingY(), tile.getFacingZ());
 		}

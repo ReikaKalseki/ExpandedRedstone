@@ -14,8 +14,6 @@ import net.minecraft.tileentity.TileEntity;
 import Reika.DragonAPI.ModInteract.Lua.LuaMethod;
 import Reika.ExpandedRedstone.Base.AnalogWireless;
 
-import dan200.computercraft.api.lua.LuaException;
-
 public class LuaWirelessSetChannel extends LuaMethod {
 
 	public LuaWirelessSetChannel() {
@@ -23,7 +21,7 @@ public class LuaWirelessSetChannel extends LuaMethod {
 	}
 
 	@Override
-	public Object[] invoke(TileEntity te, Object[] args) throws LuaException, InterruptedException {
+	protected Object[] invoke(TileEntity te, Object[] args) throws LuaMethodException, InterruptedException {
 		((AnalogWireless)te).setChannel((Integer)args[0]);
 		return null;
 	}

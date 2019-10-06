@@ -272,7 +272,7 @@ public enum RedstoneTiles implements TileEnum {
 			case SHOCK:
 			case PARTICLE:
 				//case BUSLATCH:
-				//	return true;
+				return true;
 			default:
 				return false;
 		}

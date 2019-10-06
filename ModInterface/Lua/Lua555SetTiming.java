@@ -15,8 +15,6 @@ import Reika.DragonAPI.ModInteract.Lua.LuaMethod;
 import Reika.ExpandedRedstone.TileEntities.TileEntity555;
 import Reika.ExpandedRedstone.TileEntities.TileEntity555.Settings;
 
-import dan200.computercraft.api.lua.LuaException;
-
 public class Lua555SetTiming extends LuaMethod {
 
 	public Lua555SetTiming() {
@@ -24,7 +22,7 @@ public class Lua555SetTiming extends LuaMethod {
 	}
 
 	@Override
-	public Object[] invoke(TileEntity te, Object[] args) throws LuaException, InterruptedException {
+	protected Object[] invoke(TileEntity te, Object[] args) throws LuaMethodException, InterruptedException {
 		TileEntity555 t5 = (TileEntity555)te;
 		t5.loadSetting(Settings.list[(int)args[0]], true, false);
 		t5.loadSetting(Settings.list[(int)args[1]], false, false);
