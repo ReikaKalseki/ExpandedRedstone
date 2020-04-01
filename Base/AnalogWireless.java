@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -18,11 +18,12 @@ import net.minecraft.world.World;
 
 import Reika.DragonAPI.Auxiliary.ModularLogger;
 import Reika.DragonAPI.Instantiable.Data.Immutable.WorldLocation;
+import Reika.DragonAPI.Interfaces.TileEntity.BreakAction;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 import Reika.ExpandedRedstone.TileEntities.TileEntityAnalogTransmitter;
 import Reika.RotaryCraft.API.Interfaces.Transducerable;
 
-public abstract class AnalogWireless extends TileRedstoneBase implements Transducerable {
+public abstract class AnalogWireless extends TileRedstoneBase implements Transducerable, BreakAction {
 
 	public static final int CHANNELS = 8192; //8192 channels
 
@@ -130,6 +131,10 @@ public abstract class AnalogWireless extends TileRedstoneBase implements Transdu
 	@Override
 	public void update() {
 		super.update();
+	}
+
+	public void breakBlock() {
+		this.remove();
 	}
 
 	@Override

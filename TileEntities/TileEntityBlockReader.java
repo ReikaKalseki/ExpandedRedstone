@@ -43,6 +43,91 @@ public class TileEntityBlockReader extends TileRedstoneBase {
 		}
 	}
 
+	private ReadMode mode = ReadMode.BLOCK;
+	private int oldLevel;
+
+	@Override
+	public int getFrontTexture() {
+		return mode.ordinal();
+	}
+
+	@Override
+	public boolean isBinaryRedstone() {
+		return false;
+	}
+
+	@Override
+	public int getEmission() {
+		return this.readBlock(worldObj);
+	}
+
+	@Override
+	public boolean canPowerSide(int s) {
+		return s != this.getFacing().getOpposite().ordinal();
+	}
+
+	@Override
+	public void updateEntity(World world, int x, int y, int z, int meta) {
+		super.updateEntity(world, x, y, z);
+		int level = this.readBlock(world);
+		if (level != oldLevel) {
+			this.update();
+		}
+		oldLevel = level;
+	}
+
+	private int readBlock(World world) {
+		int x = this.getFacingX();
+		int y = this.getFacingY();
+		int z = this.getFacingZ();
+		switch(mode) {
+			case TILEENTITY:
+				TileEntity te = world.getTileEntity(x, y, z);
+				return te != null ? 15 : 0;
+			case BLOCK:
+				return world.getBlock(x, y, z).isAir(world, x, y, z) ? 0 : 15;
+			case METADATA:
+				return world.getBlockMetadata(x, y, z);
+			case CANSEESKY:
+				return world.canBlockSeeTheSky(x, y, z) ? 15 : 0;
+			case LIGHTVAL:
+				return world.getBlockLightValue(x, y, z);
+			case BIOME:
+				return 0;
+		}
+		return 0;
+	}
+
+	@Override
+	public int getTEIndex() {
+		return RedstoneTiles.BLOCKREADER.ordinal();
+	}
+
+	public void increment() {
+		mode = mode.next();
+		this.update();
+		ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.5F, 0.5F);
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound NBT) {
+		super.readFromNBT(NBT);
+
+		mode = ReadMode.list[NBT.getInteger("mode")];
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound NBT) {
+		super.writeToNBT(NBT);
+
+		NBT.setInteger("mode", mode.ordinal());
+	}
+
+	@Override
+	public int getTopTexture() {
+		return mode.ordinal();
+	}
+
 	private static class ReaderLuaMethod extends LuaMethod {
 
 		private final ReadMode mode;
@@ -107,82 +192,5 @@ public class TileEntityBlockReader extends TileRedstoneBase {
 			}
 			return null;
 		}
-	}
-
-	private ReadMode mode = ReadMode.METADATA;
-
-	@Override
-	public int getFrontTexture() {
-		return mode.ordinal();
-	}
-
-	@Override
-	public boolean isBinaryRedstone() {
-		return false;
-	}
-
-	@Override
-	public int getEmission() {
-		return this.readBlock(worldObj);
-	}
-
-	@Override
-	public void updateEntity(World world, int x, int y, int z, int meta) {
-		super.updateEntity(world, x, y, z);
-		//this.readBlock(world);
-	}
-
-	private int readBlock(World world) {
-		int x = this.getFacingX();
-		int y = this.getFacingY();
-		int z = this.getFacingZ();
-		switch(mode) {
-			case TILEENTITY:
-				TileEntity te = world.getTileEntity(x, y, z);
-				return te != null ? 15 : 0;
-			case BLOCK:
-				return 0;
-			case METADATA:
-				return world.getBlockMetadata(x, y, z);
-			case CANSEESKY:
-				return world.canBlockSeeTheSky(x, y, z) ? 15 : 0;
-			case LIGHTVAL:
-				return world.getBlockLightValue(x, y, z);
-			case BIOME:
-				return 0;
-		}
-		return 0;
-	}
-
-	@Override
-	public int getTEIndex() {
-		return RedstoneTiles.BLOCKREADER.ordinal();
-	}
-
-	public void increment() {
-		mode = mode.next();
-		this.update();
-		ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.5F, 0.5F);
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound NBT)
-	{
-		super.readFromNBT(NBT);
-
-		mode = ReadMode.list[NBT.getInteger("mode")];
-	}
-
-	@Override
-	public void writeToNBT(NBTTagCompound NBT)
-	{
-		super.writeToNBT(NBT);
-
-		NBT.setInteger("mode", mode.ordinal());
-	}
-
-	@Override
-	public int getTopTexture() {
-		return mode.ordinal();
 	}
 }

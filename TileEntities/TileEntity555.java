@@ -14,8 +14,8 @@ import net.minecraft.world.World;
 
 import Reika.DragonAPI.Instantiable.StepTimer;
 import Reika.DragonAPI.Libraries.IO.ReikaChatHelper;
-import Reika.DragonAPI.Libraries.IO.ReikaFormatHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
+import Reika.DragonAPI.Libraries.MathSci.ReikaDateHelper;
 import Reika.DragonAPI.Libraries.World.ReikaRedstoneHelper;
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneOptions;
@@ -56,7 +56,7 @@ public class TileEntity555 extends TileRedstoneBase {
 
 		@Override
 		public String toString() {
-			return duration+" ticks ("+ReikaFormatHelper.getTickAsHMS(duration)+")";
+			return duration+" ticks ("+ReikaDateHelper.getTickAsHMS(duration)+")";
 		}
 	}
 

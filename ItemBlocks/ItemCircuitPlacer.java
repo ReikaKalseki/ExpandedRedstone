@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -81,16 +81,15 @@ public class ItemCircuitPlacer extends Item {
 		world.playSoundEffect(x+0.5, y+0.5, z+0.5, "step.stone", 1F, 1.5F);
 		TileRedstoneBase te = (TileRedstoneBase)world.getTileEntity(x, y, z);
 		if (tile.isDirectionable()) {
+			ForgeDirection dir = ReikaEntityHelper.getDirectionFromEntityLook(ep, tile.canBeVertical());
 			if (tile.isReversedPlacement()) {
-				ForgeDirection dir = ReikaEntityHelper.getDirectionFromEntityLook(ep, tile.canBeVertical());
-				te.setFacing(dir.getOpposite());
+				dir = dir.getOpposite();
 			}
-			else {
-				te.setFacing(ReikaEntityHelper.getDirectionFromEntityLook(ep, tile.canBeVertical()));
-			}
+			te.setFacing(dir);
 		}
-		else
+		else {
 			te.setFacing(ForgeDirection.UNKNOWN);
+		}
 
 		te.setPlacer(ep);
 		if (tile == RedstoneTiles.BREAKER) {
@@ -116,8 +115,11 @@ public class ItemCircuitPlacer extends Item {
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item id, CreativeTabs tab, List list) {
 		for (int i = 0; i < RedstoneTiles.TEList.length; i++) {
+			RedstoneTiles rs = RedstoneTiles.TEList[i];
+			if (rs.isDummiedOut())
+				continue;
 			ItemStack item = new ItemStack(id, 1, i);
-			if (i == RedstoneTiles.BREAKER.ordinal()) {
+			if (rs == RedstoneTiles.BREAKER) {
 				for (int h = 0; h < Materials.mats.length; h++) {
 					ItemStack item1 = item.copy();
 					item1.stackTagCompound = new NBTTagCompound();
@@ -127,7 +129,7 @@ public class ItemCircuitPlacer extends Item {
 					list.add(item1);
 				}
 			}
-			else if (i == RedstoneTiles.SHOCK.ordinal()) {
+			else if (rs == RedstoneTiles.SHOCK) {
 				for (int h = 0; h < Lens.list.length; h++) {
 					ItemStack item1 = item.copy();
 					item1.stackTagCompound = new NBTTagCompound();

@@ -198,6 +198,10 @@ public abstract class TileRedstoneBase extends TileEntityBase {
 		return 0;
 	}
 
+	public int getBackTexture() {
+		return 0;
+	}
+
 	public int[] getTopTextures() {
 		return new int[]{this.getTopTexture()};
 	}
@@ -235,14 +239,15 @@ public abstract class TileRedstoneBase extends TileEntityBase {
 
 	protected void setEmitting(boolean e) {
 		if (emit != e) {
+			ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.5F, e ? 1.5F : 1.25F);
 			emit = e;
 			this.update();
 		}
 	}
 
 	protected void toggleEmitting() {
-		this.update();
 		emit = !emit;
+		this.update();
 	}
 
 	@Override

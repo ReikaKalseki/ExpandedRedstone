@@ -1,17 +1,14 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
 package Reika.ExpandedRedstone.TileEntities;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRedstoneDiode;
-import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -35,20 +32,8 @@ public class TileEntityToggle extends TileRedstoneBase {
 			if (RedstoneOptions.NOISES.getState())
 				ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.click", 0.5F, 0.5F);
 		}
-		lastPower = this.wasLastPowered(world, x, y, z, side);
+		lastPower = ReikaRedstoneHelper.isPoweredOnSide(world, x, y, z, side);
 		lastRepeat = ReikaRedstoneHelper.isReceivingPowerFromRepeater(world, x, y, z, side);
-	}
-
-	private boolean wasLastPowered(World world, int x, int y, int z, ForgeDirection side) {
-		boolean sided = world.getIndirectPowerOutput(x+side.offsetX, y+side.offsetY, z+side.offsetZ, side.getOpposite().ordinal());
-		boolean repeat = false;
-		Block b = world.getBlock(x+side.offsetX, y+side.offsetY, z+side.offsetZ);
-		if (b != Blocks.air) {
-			if (b instanceof BlockRedstoneDiode) {
-				repeat = ((BlockRedstoneDiode) b).func_149912_i(world, x, y, z, side.ordinal());
-			}
-		}
-		return (sided || repeat) && this.hasRedstoneSignal();
 	}
 
 	@Override

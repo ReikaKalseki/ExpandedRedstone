@@ -125,6 +125,11 @@ public class ExpandedRedstone extends DragonAPIMod {
 		if (ModList.NEI.isLoaded())
 			NEI_DragonAPI_Config.hideBlocks(blocks);
 
+		for (RedstoneTiles rs : RedstoneTiles.TEList) {
+			if (rs.isDummiedOut())
+				NEI_DragonAPI_Config.hideItem(rs.getCraftedProduct());
+		}
+
 		if (ModList.PROJRED.isLoaded() && Loader.isModLoaded("ProjRed|Transmission")) {
 			this.createGlowingRedAlloyWire();
 

@@ -19,7 +19,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -37,7 +36,6 @@ import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
 import Reika.DragonAPI.Base.BlockTEBase;
 import Reika.DragonAPI.Base.TileEntityBase;
 import Reika.DragonAPI.Instantiable.Data.Immutable.BlockKey;
-import Reika.DragonAPI.Interfaces.TileEntity.BreakAction;
 import Reika.DragonAPI.Libraries.IO.ReikaChatHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
@@ -78,6 +76,7 @@ public abstract class BlockRedstoneBase extends BlockTEBase implements IWailaDat
 	public static IIcon trans;
 	private static IIcon[][][] icons;
 	private static IIcon[][] front;
+	private static IIcon[][] back;
 	private static final String BLANK_TEX = "ExpandedRedstone:basic";
 	private static final String BLANK_TEX_2 = "ExpandedRedstone:basic_side";
 	private static final String BLANK_TEX_3 = "ExpandedRedstone:block";
@@ -307,8 +306,7 @@ public abstract class BlockRedstoneBase extends BlockTEBase implements IWailaDat
 	}
 
 	@Override
-	public final IIcon getIcon(IBlockAccess iba, int x, int y, int z, int s)
-	{
+	public final IIcon getIcon(IBlockAccess iba, int x, int y, int z, int s) {
 		TileRedstoneBase te = (TileRedstoneBase)iba.getTileEntity(x, y, z);
 		int meta = iba.getBlockMetadata(x, y, z);
 		if (te == null)
@@ -330,6 +328,10 @@ public abstract class BlockRedstoneBase extends BlockTEBase implements IWailaDat
 				//ReikaJavaLibrary.pConsole(front[r.ordinal()][te.getFrontTexture()]);
 				return front[r.ordinal()][te.getFrontTexture()];
 			}
+			else if (te.getFacing() != null && s == te.getFacing().getOpposite().ordinal()) {
+				//ReikaJavaLibrary.pConsole(front[r.ordinal()][te.getFrontTexture()]);
+				return back[r.ordinal()][te.getBackTexture()];
+			}
 			else {
 				return icons[s][r.ordinal()][te.getTextureForSide(s)];
 			}
@@ -339,8 +341,7 @@ public abstract class BlockRedstoneBase extends BlockTEBase implements IWailaDat
 	}
 
 	@Override
-	public final IIcon getIcon(int s, int meta)
-	{
+	public final IIcon getIcon(int s, int meta) { //item only
 		RedstoneTiles r = RedstoneTiles.TEList[meta];
 		if (s == 4 && !r.isThinTile() && !r.isOmniTexture()) {
 			if (r == RedstoneTiles.BREAKER)
@@ -373,6 +374,12 @@ public abstract class BlockRedstoneBase extends BlockTEBase implements IWailaDat
 				front[i][j] = ico.registerIcon(BLANK_TEX_3);
 			}
 		}
+
+		for (int i = 0; i < back.length; i++) {
+			for (int j = 0; j < back[i].length; j++) {
+				back[i][j] = ico.registerIcon(BLANK_TEX_3);
+			}
+		}
 	}
 
 	@Override
@@ -387,6 +394,7 @@ public abstract class BlockRedstoneBase extends BlockTEBase implements IWailaDat
 
 		icons = new IIcon[6][RedstoneTiles.TEList.length][max];
 		front = new IIcon[RedstoneTiles.TEList.length][max];
+		back = new IIcon[RedstoneTiles.TEList.length][max];
 		this.registerBlankTextures(ico);
 		trans = ico.registerIcon("ExpandedRedstone:trans");
 
@@ -430,11 +438,15 @@ public abstract class BlockRedstoneBase extends BlockTEBase implements IWailaDat
 				if (r.isVariableTexture()) {
 					for (int j = 0; j < num; j++) {
 						front[i][j] = ico.registerIcon(pre+"front_"+j);
+						if (r.hasBackTexture())
+							back[i][j] = ico.registerIcon(pre+"back_"+j);
 						ExpandedRedstone.logger.debug("Creating variable block icon "+front[i][j].getIconName()+" for "+r+"["+i+"]["+j+"]");
 					}
 				}
 				else {
 					front[i][0] = ico.registerIcon(pre+"front");
+					if (r.hasBackTexture())
+						back[i][0] = ico.registerIcon(pre+"back");
 					ExpandedRedstone.logger.debug("Creating static block icon "+front[i][0].getIconName()+" for "+r);
 				}
 			}
@@ -445,18 +457,6 @@ public abstract class BlockRedstoneBase extends BlockTEBase implements IWailaDat
 				ExpandedRedstone.logger.debug("Creating static full texture "+icons[0][i][0].getIconName()+" for "+r);
 			}
 		}
-	}
-
-	@Override
-	public final void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
-		TileEntity te = world.getTileEntity(x, y, z);
-		if (te instanceof IInventory)
-			ReikaItemHelper.dropInventory(world, x, y, z);
-		if (te instanceof AnalogWireless)
-			((AnalogWireless)te).remove();
-		if (te instanceof BreakAction)
-			((BreakAction)te).breakBlock();
-		super.breakBlock(world, x, y, z, par5, par6);
 	}
 
 	@Override

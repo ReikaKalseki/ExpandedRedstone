@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -21,11 +21,18 @@ public class TileEntityBUD extends TileRedstoneBase {
 	private Block IDStored;
 	private int metaStored;
 
+	private int cooldown = 0;
+
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z);
-		if (this.checkForUpdates(world))
-			this.sendPulse(20);
+		if (cooldown > 0) {
+			cooldown--;
+		}
+		else if (this.checkForUpdates(world)) {
+			cooldown = 8;
+			this.sendPulse(4);
+		}
 		this.setStates(world);
 	}
 
@@ -55,27 +62,27 @@ public class TileEntityBUD extends TileRedstoneBase {
 	}
 
 	@Override
-	protected void readSyncTag(NBTTagCompound NBT)
-	{
+	protected void readSyncTag(NBTTagCompound NBT) {
 		super.readSyncTag(NBT);
 
 		IDStored = Block.getBlockById(NBT.getInteger("ids"));
 		metaStored = NBT.getInteger("metas");
+		cooldown = NBT.getInteger("cool");
 	}
 
 	@Override
-	protected void writeSyncTag(NBTTagCompound NBT)
-	{
+	protected void writeSyncTag(NBTTagCompound NBT) {
 		super.writeSyncTag(NBT);
 
 		NBT.setInteger("ids", Block.getIdFromBlock(IDStored));
 		NBT.setInteger("metas", metaStored);
+		NBT.setInteger("cool", cooldown);
 	}
 
 	@Override
 	public boolean canPowerSide(int s) {
 		if (this.getFacing() == null)
 			return false;
-		return s == this.getFacing().ordinal();
+		return s != this.getFacing().getOpposite().ordinal();
 	}
 }

@@ -13,8 +13,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 import Reika.DragonAPI.Libraries.IO.ReikaChatHelper;
-import Reika.DragonAPI.Libraries.IO.ReikaFormatHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
+import Reika.DragonAPI.Libraries.MathSci.ReikaDateHelper;
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneOptions;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
@@ -123,7 +123,7 @@ public class TileEntityCountdown extends TileRedstoneBase {
 	}
 
 	public String getCountdownDisplay() {
-		return ReikaFormatHelper.getTickAsHMS(count);
+		return ReikaDateHelper.getTickAsHMS(count);
 	}
 
 	@Override

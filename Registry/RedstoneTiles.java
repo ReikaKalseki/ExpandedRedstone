@@ -21,9 +21,12 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import Reika.DragonAPI.DragonAPICore;
+import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.Exception.RegistrationException;
 import Reika.DragonAPI.Instantiable.Data.Maps.BlockMap;
 import Reika.DragonAPI.Interfaces.Registry.TileEnum;
+import Reika.DragonAPI.Libraries.Java.ReikaObfuscationHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 import Reika.ExpandedRedstone.Base.BlockRedstoneBase;
@@ -63,6 +66,7 @@ import Reika.ExpandedRedstone.TileEntities.TileEntityThermalMeter;
 import Reika.ExpandedRedstone.TileEntities.TileEntityToggle;
 import Reika.ExpandedRedstone.TileEntities.TileEntityWeather;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum RedstoneTiles implements TileEnum {
@@ -218,7 +222,7 @@ public enum RedstoneTiles implements TileEnum {
 			case TOGGLE:
 				return 4;
 			case PROXIMITY:
-				return 10;
+				return TileEntityProximity.EntityType.list.length*2;
 			case CLOCK:
 				return 21+TileEntity555.Settings.list.length;
 			case DRIVER:
@@ -271,6 +275,7 @@ public enum RedstoneTiles implements TileEnum {
 			case EMITTER:
 			case SHOCK:
 			case PARTICLE:
+			case BLOCKREADER:
 				//case BUSLATCH:
 				return true;
 			default:
@@ -292,6 +297,15 @@ public enum RedstoneTiles implements TileEnum {
 	public boolean isOmniTexture() {
 		switch(this) {
 			case CAMOFLAGE:
+				return true;
+			default:
+				return false;
+		}
+	}
+
+	public boolean hasBackTexture() {
+		switch(this) {
+			case BREAKER:
 				return true;
 			default:
 				return false;
@@ -340,6 +354,7 @@ public enum RedstoneTiles implements TileEnum {
 			case CHESTREADER:
 			case DRIVER:
 			case SHOCK:
+			case BLOCKREADER:
 				return true;
 			default:
 				return false;
@@ -392,6 +407,17 @@ public enum RedstoneTiles implements TileEnum {
 
 	public ItemStack getCraftedProduct(TileEntity te) {
 		return this.getCraftedProduct();
+	}
+
+	public boolean isDummiedOut() {
+		if (DragonAPICore.isReikasComputer() && ReikaObfuscationHelper.isDeObfEnvironment())
+			return false;
+		switch(this) {
+			case BUSLATCH:
+				return !(ModList.PROJRED.isLoaded() && Loader.isModLoaded("ProjRed|Transmission"));
+			default:
+				return false;
+		}
 	}
 
 }

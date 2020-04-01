@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -28,6 +28,7 @@ import Reika.DragonAPI.Instantiable.Data.Immutable.BlockKey;
 import Reika.DragonAPI.Interfaces.Block.SemiUnbreakable;
 import Reika.DragonAPI.Libraries.ReikaInventoryHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
+import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.DragonAPI.Libraries.World.ReikaBlockHelper;
@@ -78,6 +79,10 @@ public class TileEntityBreaker extends TileRedstoneBase {
 				if (((SemiUnbreakable)b).isUnbreakable(world, x, y, z, meta))
 					return false;
 			}
+			if (b == Blocks.snow_layer)
+				return true;
+			if (b == Blocks.snow)
+				return true;
 			switch(this) {
 				case WOOD:
 					return dura > 0 && b.getMaterial().isToolNotRequired();
@@ -141,6 +146,10 @@ public class TileEntityBreaker extends TileRedstoneBase {
 	}
 
 	private ArrayList<ItemStack> getDrops(World world, int x, int y, int z, Block b, int meta) {
+		if (b == Blocks.snow_layer)
+			return ReikaJavaLibrary.makeListFrom(new ItemStack(Items.snowball));
+		if (b == Blocks.snow)
+			return ReikaJavaLibrary.makeListFrom(new ItemStack(Items.snowball, 4));
 		return b.getDrops(world, x, y, z, meta, 0);
 	}
 
