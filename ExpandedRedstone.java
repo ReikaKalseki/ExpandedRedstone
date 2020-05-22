@@ -122,12 +122,13 @@ public class ExpandedRedstone extends DragonAPIMod {
 		proxy.registerRenderers();
 		this.addRecipes();
 
-		if (ModList.NEI.isLoaded())
+		if (ModList.NEI.isLoaded()) {
 			NEI_DragonAPI_Config.hideBlocks(blocks);
 
-		for (RedstoneTiles rs : RedstoneTiles.TEList) {
-			if (rs.isDummiedOut())
-				NEI_DragonAPI_Config.hideItem(rs.getCraftedProduct());
+			for (RedstoneTiles rs : RedstoneTiles.TEList) {
+				if (rs.isDummiedOut())
+					NEI_DragonAPI_Config.hideItem(rs.getCraftedProduct());
+			}
 		}
 
 		if (ModList.PROJRED.isLoaded() && Loader.isModLoaded("ProjRed|Transmission")) {
