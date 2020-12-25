@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -14,7 +14,6 @@ import java.awt.Color;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockGrass;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -24,6 +23,7 @@ import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import Reika.DragonAPI.Instantiable.Event.Client.GrassIconEvent;
 import Reika.DragonAPI.Interfaces.ISBRH;
 import Reika.DragonAPI.Libraries.World.ReikaBiomeHelper;
 import Reika.ExpandedRedstone.Base.BlockRedstoneBase;
@@ -158,7 +158,7 @@ public class CircuitBlockRenderer implements ISBRH {
 				v5.setColorOpaque(color[0], color[1], color[2]);
 				if (rb.fancyGrass)
 					for (int i = 2; i < 6; i++) {
-						overlay[i] = BlockGrass.getIconSideOverlay();
+						overlay[i] = GrassIconEvent.fireSide(te.worldObj.getBlock(te.xCoord, te.yCoord-1, te.zCoord), world, x, y, z);
 					}
 			}
 			if (ico[1] == Blocks.leaves.getIcon(1, metaread)) {
