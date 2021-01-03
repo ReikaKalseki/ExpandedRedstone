@@ -23,8 +23,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import Reika.DragonAPI.ModList;
-import Reika.DragonAPI.Libraries.IO.ReikaColorAPI;
 import Reika.DragonAPI.Libraries.Registry.ReikaDyeHelper;
+import Reika.DragonAPI.Libraries.Rendering.ReikaColorAPI;
 
 import codechicken.lib.data.MCDataInput;
 import codechicken.multipart.MultiPartRegistry.IPartFactory2;
