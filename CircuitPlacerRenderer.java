@@ -40,7 +40,7 @@ public class CircuitPlacerRenderer implements IItemRenderer {
 		ReikaTextureHelper.bindTerrainTexture();
 		if (type == ItemRenderType.ENTITY)
 			GL11.glScaled(0.5, 0.5, 0.5);
-		ClientProxy.circuit.renderInventoryBlock(b, meta, 0, rb);
+		ClientProxy.getCircuit().renderInventoryBlock(b, meta, 0, rb);
 		if (type == ItemRenderType.ENTITY)
 			GL11.glScaled(2, 2, 2);
 	}

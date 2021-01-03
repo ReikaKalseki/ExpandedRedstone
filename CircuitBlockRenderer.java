@@ -23,15 +23,19 @@ import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import Reika.DragonAPI.Base.ISBRH;
 import Reika.DragonAPI.Instantiable.Event.Client.GrassIconEvent;
-import Reika.DragonAPI.Interfaces.ISBRH;
 import Reika.DragonAPI.Libraries.World.ReikaBiomeHelper;
 import Reika.ExpandedRedstone.Base.BlockRedstoneBase;
 import Reika.ExpandedRedstone.Base.TileRedstoneBase;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 import Reika.ExpandedRedstone.TileEntities.TileEntityCamo;
 
-public class CircuitBlockRenderer implements ISBRH {
+public class CircuitBlockRenderer extends ISBRH {
+
+	public CircuitBlockRenderer(int id) {
+		super(id);
+	}
 
 	@Override
 	public void renderInventoryBlock(Block b, int meta, int modelID, RenderBlocks rb) {
@@ -284,11 +288,6 @@ public class CircuitBlockRenderer implements ISBRH {
 	@Override
 	public boolean shouldRender3DInInventory(int model) {
 		return true;
-	}
-
-	@Override
-	public int getRenderId() {
-		return ExpandedRedstone.proxy.tileRender;
 	}
 
 }

@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -22,8 +22,8 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientProxy extends CommonProxy {
 
-	public static final CircuitBlockRenderer circuit = new CircuitBlockRenderer();
-	public static final CustomWireRenderer wire = new CustomWireRenderer(wireRender);
+	private static CircuitBlockRenderer circuit;
+	private static CustomWireRenderer wire;
 
 	@Override
 	public void registerSounds() {
@@ -40,6 +40,8 @@ public class ClientProxy extends CommonProxy {
 	public void registerRenderers() {
 		tileRender = RenderingRegistry.getNextAvailableRenderId();
 		wireRender = RenderingRegistry.getNextAvailableRenderId();
+		circuit = new CircuitBlockRenderer(tileRender);
+		wire = new CustomWireRenderer(wireRender);
 		RenderingRegistry.registerBlockHandler(tileRender, circuit);
 		RenderingRegistry.registerBlockHandler(wireRender, wire);
 
@@ -49,9 +51,12 @@ public class ClientProxy extends CommonProxy {
 	// Override any other methods that need to be handled differently client side.
 
 	@Override
-	public World getClientWorld()
-	{
+	public World getClientWorld() {
 		return FMLClientHandler.instance().getClient().theWorld;
+	}
+
+	public static CircuitBlockRenderer getCircuit() {
+		return circuit;
 	}
 
 }
