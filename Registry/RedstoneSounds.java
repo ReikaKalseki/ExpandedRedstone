@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 import Reika.DragonAPI.Instantiable.Data.Immutable.WorldLocation;
 import Reika.DragonAPI.Interfaces.Registry.SoundEnum;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
+import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.ExpandedRedstone.ExpandedRedstone;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -27,8 +28,6 @@ import cpw.mods.fml.relauncher.Side;
 public enum RedstoneSounds implements SoundEnum {
 
 	SHOCK("shock");
-
-	public static final RedstoneSounds[] soundList = values();
 
 	public static final String PREFIX = "Reika/ExpandedRedstone/";
 	public static final String SOUND_FOLDER = "Sounds/";
@@ -63,11 +62,11 @@ public enum RedstoneSounds implements SoundEnum {
 	public void playSound(World world, double x, double y, double z, float vol, float pitch) {
 		if (FMLCommonHandler.instance().getEffectiveSide() != Side.SERVER)
 			return;
-		;//ReikaPacketHelper.sendSoundPacket(ExpandedRedstone.packetChannel, this, world, x, y, z, vol, pitch);
+		ReikaSoundHelper.playSound(this, world, x, y, z, vol/* *this.getModulatedVolume()*/, pitch);
 	}
 
 	public void playSound(World world, double x, double y, double z, float vol, float pitch, boolean attenuate) {
-
+		ReikaSoundHelper.playSound(this, world, x, y, z, vol/* *this.getModulatedVolume()*/, pitch, attenuate);
 	}
 
 	public void playSoundAtBlock(World world, int x, int y, int z, float vol, float pitch) {
@@ -90,7 +89,7 @@ public enum RedstoneSounds implements SoundEnum {
 		if (world.isRemote)
 			return;
 		//ReikaSoundHelper.playSound(this, ExpandedRedstone.packetChannel, te.worldObj, x, y, z, vol/* *this.getModulatedVolume()*/, pitch, false);
-		ReikaPacketHelper.sendSoundPacket(ExpandedRedstone.packetChannel, this, world, x, y, z, vol, pitch, false, broadcast);
+		ReikaPacketHelper.sendSoundPacket(this, world, x, y, z, vol, pitch, false, broadcast);
 	}
 
 	public String getName() {
@@ -103,15 +102,6 @@ public enum RedstoneSounds implements SoundEnum {
 
 	public URL getURL() {
 		return ExpandedRedstone.class.getResource(SOUND_DIR+name+SOUND_EXT);
-	}
-
-	public static RedstoneSounds getSoundByName(String name) {
-		for (int i = 0; i < soundList.length; i++) {
-			if (soundList[i].name().equals(name))
-				return soundList[i];
-		}
-		ExpandedRedstone.logger.logError("\""+name+"\" does not correspond to a registered sound!");
-		return null;
 	}
 
 	@Override

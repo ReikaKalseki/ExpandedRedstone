@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -11,10 +11,15 @@ package Reika.ExpandedRedstone;
 
 import net.minecraft.world.World;
 
+import Reika.DragonAPI.Instantiable.IO.SoundLoader;
+import Reika.ExpandedRedstone.Registry.RedstoneSounds;
+
 public class CommonProxy {
 
 	public static int tileRender;
 	public static int wireRender;
+
+	protected SoundLoader sounds = new SoundLoader(RedstoneSounds.class);
 
 	/**
 	 * Client side only register stuff...

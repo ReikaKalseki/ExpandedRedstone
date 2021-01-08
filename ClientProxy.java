@@ -33,7 +33,7 @@ public class ClientProxy extends CommonProxy {
 
 		//CustomSoundHandler.instance.addSound("ExpandedRedstone", "shock", SoundCategory.BLOCKS);
 
-		new SoundLoader(RedstoneSounds.soundList).register();
+		sounds.register();
 	}
 
 	@Override
