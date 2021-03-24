@@ -24,6 +24,7 @@ import Reika.ExpandedRedstone.ExpandedRedstone;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public enum RedstoneSounds implements SoundEnum {
 
@@ -105,6 +106,7 @@ public enum RedstoneSounds implements SoundEnum {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public SoundCategory getCategory() {
 		return SoundCategory.BLOCKS;
 	}
