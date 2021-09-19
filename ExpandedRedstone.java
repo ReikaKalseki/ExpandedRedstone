@@ -284,6 +284,11 @@ public class ExpandedRedstone extends DragonAPIMod {
 	}
 
 	@Override
+	public URL getBugSite() {
+		return DragonAPICore.getReikaGithubPage();
+	}
+
+	@Override
 	public ModLogger getModLogger() {
 		return logger;
 	}
