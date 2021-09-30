@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -10,6 +10,7 @@
 package Reika.ExpandedRedstone.TileEntities;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -53,7 +54,13 @@ public class TileEntityPlacer extends InventoriedRedstoneTileEntity {
 				BlockKey id = ReikaItemHelper.getWorldBlockFromItem(is);
 				if (id.blockID != Blocks.air) {
 					if (world.setBlock(dx, dy, dz, id.blockID, id.metadata, 3)) {
-						id.blockID.onBlockPlacedBy(world, dx, dy, dz, this.getPlacer(), is);
+						if (is.getItem() instanceof ItemBlock) {
+							int side = this.getFacing().ordinal();
+							((ItemBlock)is.getItem()).placeBlockAt(is, this.getPlacer(), world, dx, dy, dz, side, 0, 0, 0, id.metadata);
+						}
+						else {
+							id.blockID.onBlockPlacedBy(world, dx, dy, dz, this.getPlacer(), is);
+						}
 						ReikaInventoryHelper.decrStack(i, inv);
 						ReikaSoundHelper.playPlaceSound(world, dx, dy, dz, id.blockID);
 					}
