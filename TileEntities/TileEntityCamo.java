@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -53,7 +53,7 @@ public class TileEntityCamo extends TileRedstoneBase {
 				IIcon ico = te.getOverridingIcon(side);
 				if (ico == Blocks.grass.getIcon(side, meta) && !this.canRenderAsGrass())
 					ico = Blocks.dirt.getIcon(side, meta);
-				else if (te.getImitatedBlockID().blockID == Blocks.grass && ico == Blocks.dirt.getIcon(side, meta) && this.canRenderAsGrass())
+				else if (te.getImitatedBlockID() != null && te.getImitatedBlockID().blockID == Blocks.grass && ico == Blocks.dirt.getIcon(side, meta) && this.canRenderAsGrass())
 					ico = Blocks.grass.getIcon(side, meta);
 				return ico;
 			}
