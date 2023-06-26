@@ -19,7 +19,7 @@ public class CommonProxy {
 	public static int tileRender;
 	public static int wireRender;
 
-	protected SoundLoader sounds = new SoundLoader(RedstoneSounds.class);
+	protected static final SoundLoader sounds = new SoundLoader(RedstoneSounds.class);
 
 	/**
 	 * Client side only register stuff...
