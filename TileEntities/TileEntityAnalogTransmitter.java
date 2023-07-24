@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -25,8 +25,8 @@ public class TileEntityAnalogTransmitter extends AnalogWireless {
 	private int ticksToCalc = 2;
 
 	@Override
-	public int getTEIndex() {
-		return RedstoneTiles.ANALOGTRANSMITTER.ordinal();
+	public RedstoneTiles getTile() {
+		return RedstoneTiles.ANALOGTRANSMITTER;
 	}
 
 	@Override

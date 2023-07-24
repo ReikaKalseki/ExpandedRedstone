@@ -206,7 +206,7 @@ public class CircuitBlockRenderer extends ISBRH {
 		else {
 			int[] top = te.getTopTextures();
 			for (int i = 0; i < top.length; i++) {
-				IIcon topico = te.getFacing() == ForgeDirection.UP ? rb.getBlockIcon(b, world, x, y, z, 1) : BlockRedstoneBase.getIcon(1, te.getTEIndex(), top[i]);
+				IIcon topico = te.getFacing() == ForgeDirection.UP ? rb.getBlockIcon(b, world, x, y, z, 1) : BlockRedstoneBase.getIcon(1, te.getIndex(), top[i]);
 				double d = i*0.00125;
 				switch(dir) {
 					case WEST:

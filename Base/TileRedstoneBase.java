@@ -16,13 +16,13 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import Reika.DragonAPI.Base.TileEntityBase;
+import Reika.DragonAPI.Base.TileEntityRegistryBase;
 import Reika.DragonAPI.Instantiable.StepTimer;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 
-public abstract class TileRedstoneBase extends TileEntityBase {
+public abstract class TileRedstoneBase extends TileEntityRegistryBase<RedstoneTiles> {
 
 	private ForgeDirection facing;
 
@@ -30,8 +30,6 @@ public abstract class TileRedstoneBase extends TileEntityBase {
 
 	private StepTimer pulsar = new StepTimer(0);
 	private boolean isPulsing = false;
-
-	public abstract int getTEIndex();
 
 	public void updateEntity(World world, int x, int y, int z) {
 		if (isPulsing) {
@@ -47,17 +45,7 @@ public abstract class TileRedstoneBase extends TileEntityBase {
 	}
 
 	@Override
-	public String getTEName() {
-		return RedstoneTiles.TEList[this.getTEIndex()].getName();
-	}
-
-	@Override
 	protected void animateWithTick(World world, int x, int y, int z) {}
-
-	@Override
-	public final Block getTileEntityBlockID() {
-		return RedstoneTiles.TEList[this.getTEIndex()].getBlock();
-	}
 
 	public final boolean isEmitting() {
 		return emit;
@@ -214,7 +202,7 @@ public abstract class TileRedstoneBase extends TileEntityBase {
 	}
 
 	public void rotate() {
-		RedstoneTiles r = RedstoneTiles.TEList[this.getTEIndex()];
+		RedstoneTiles r = this.getTile();
 		if (r.canBeVertical()) {
 			int o = facing.ordinal();
 			o++;

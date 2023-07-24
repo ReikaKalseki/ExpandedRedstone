@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -20,8 +20,8 @@ public class TileEntityRedstoneInterrupt extends TileRedstoneBase {
 	private States state = States.PASS;
 
 	@Override
-	public int getTEIndex() {
-		return RedstoneTiles.INTERRUPT.ordinal();
+	public RedstoneTiles getTile() {
+		return RedstoneTiles.INTERRUPT;
 	}
 
 	@Override

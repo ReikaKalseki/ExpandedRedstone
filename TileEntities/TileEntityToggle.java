@@ -37,8 +37,8 @@ public class TileEntityToggle extends TileRedstoneBase {
 	}
 
 	@Override
-	public int getTEIndex() {
-		return RedstoneTiles.TOGGLE.ordinal();
+	public RedstoneTiles getTile() {
+		return RedstoneTiles.TOGGLE;
 	}
 
 	@Override

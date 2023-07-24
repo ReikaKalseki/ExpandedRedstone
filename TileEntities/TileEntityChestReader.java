@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -40,8 +40,8 @@ public class TileEntityChestReader extends TileRedstoneBase {
 	}
 
 	@Override
-	public int getTEIndex() {
-		return RedstoneTiles.CHESTREADER.ordinal();
+	public RedstoneTiles getTile() {
+		return RedstoneTiles.CHESTREADER;
 	}
 
 	public void alternate() {

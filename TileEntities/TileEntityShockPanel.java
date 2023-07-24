@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -52,8 +52,8 @@ public class TileEntityShockPanel extends TileRedstoneBase {
 	private Lens lens;
 
 	@Override
-	public int getTEIndex() {
-		return RedstoneTiles.SHOCK.ordinal();
+	public RedstoneTiles getTile() {
+		return RedstoneTiles.SHOCK;
 	}
 
 	@Override

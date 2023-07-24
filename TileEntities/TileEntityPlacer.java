@@ -73,8 +73,8 @@ public class TileEntityPlacer extends InventoriedRedstoneTileEntity {
 	}
 
 	@Override
-	public int getTEIndex() {
-		return RedstoneTiles.PLACER.ordinal();
+	public RedstoneTiles getTile() {
+		return RedstoneTiles.PLACER;
 	}
 
 	@Override

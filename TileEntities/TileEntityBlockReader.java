@@ -99,8 +99,8 @@ public class TileEntityBlockReader extends TileRedstoneBase {
 	}
 
 	@Override
-	public int getTEIndex() {
-		return RedstoneTiles.BLOCKREADER.ordinal();
+	public RedstoneTiles getTile() {
+		return RedstoneTiles.BLOCKREADER;
 	}
 
 	public void increment() {

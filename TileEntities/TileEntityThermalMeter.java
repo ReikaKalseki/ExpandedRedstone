@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -30,8 +30,8 @@ public class TileEntityThermalMeter extends TileRedstoneBase {
 	private final StepTimer calcTimer = new StepTimer(5).stagger();
 
 	@Override
-	public int getTEIndex() {
-		return RedstoneTiles.THERMAL.ordinal();
+	public RedstoneTiles getTile() {
+		return RedstoneTiles.THERMAL;
 	}
 
 	@Override

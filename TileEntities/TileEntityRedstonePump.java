@@ -36,8 +36,8 @@ public class TileEntityRedstonePump extends InventoriedRedstoneTileEntity {
 	private BlockArray blocks = new BlockArray();
 
 	@Override
-	public int getTEIndex() {
-		return RedstoneTiles.PUMP.ordinal();
+	public RedstoneTiles getTile() {
+		return RedstoneTiles.PUMP;
 	}
 
 	@Override

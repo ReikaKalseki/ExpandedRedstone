@@ -24,8 +24,8 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-import Reika.ChromatiCraft.API.AcceleratorBlacklist;
-import Reika.ChromatiCraft.API.AcceleratorBlacklist.BlacklistReason;
+import Reika.ChromatiCraft.API.AdjacencyUpgradeAPI.BlacklistReason;
+import Reika.ChromatiCraft.API.ChromatiAPI;
 import Reika.DragonAPI.DragonAPICore;
 import Reika.DragonAPI.DragonOptions;
 import Reika.DragonAPI.ModList;
@@ -187,7 +187,7 @@ public class ExpandedRedstone extends DragonAPIMod {
 		}
 
 		if (ModList.CHROMATICRAFT.isLoaded()) {
-			AcceleratorBlacklist.addBlacklist(TileEntity555.class, BlacklistReason.BUGS);
+			ChromatiAPI.getAPI().adjacency().addAcceleratorBlacklist(TileEntity555.class, RedstoneTiles.CLOCK.getCraftedProduct(), BlacklistReason.BUGS);
 		}
 
 		this.finishTiming();

@@ -25,8 +25,8 @@ import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 public class TileEntityCamo extends TileRedstoneBase {
 
 	@Override
-	public int getTEIndex() {
-		return RedstoneTiles.CAMOFLAGE.ordinal();
+	public RedstoneTiles getTile() {
+		return RedstoneTiles.CAMOFLAGE;
 	}
 
 	@Override

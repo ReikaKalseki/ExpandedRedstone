@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -24,8 +24,8 @@ public class TileEntityReceiver extends TileRedstoneBase {
 	public static final int MAX_RANGE = 64;
 
 	@Override
-	public int getTEIndex() {
-		return RedstoneTiles.RECEIVER.ordinal();
+	public RedstoneTiles getTile() {
+		return RedstoneTiles.RECEIVER;
 	}
 
 	@Override

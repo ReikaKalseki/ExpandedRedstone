@@ -100,8 +100,8 @@ public class TileEntityBreaker extends TileRedstoneBase {
 	}
 
 	@Override
-	public int getTEIndex() {
-		return RedstoneTiles.BREAKER.ordinal();
+	public RedstoneTiles getTile() {
+		return RedstoneTiles.BREAKER;
 	}
 
 	@Override

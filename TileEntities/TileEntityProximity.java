@@ -138,8 +138,8 @@ public class TileEntityProximity extends TileRedstoneBase {
 	}
 
 	@Override
-	public int getTEIndex() {
-		return RedstoneTiles.PROXIMITY.ordinal();
+	public RedstoneTiles getTile() {
+		return RedstoneTiles.PROXIMITY;
 	}
 
 	public void stepCreature(EntityPlayer ep) {

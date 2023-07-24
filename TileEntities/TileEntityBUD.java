@@ -57,8 +57,8 @@ public class TileEntityBUD extends TileRedstoneBase {
 	}
 
 	@Override
-	public int getTEIndex() {
-		return RedstoneTiles.BUD.ordinal();
+	public RedstoneTiles getTile() {
+		return RedstoneTiles.BUD;
 	}
 
 	@Override

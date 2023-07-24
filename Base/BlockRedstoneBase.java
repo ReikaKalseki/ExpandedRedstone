@@ -33,7 +33,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.ASM.APIStripper.Strippable;
 import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
-import Reika.DragonAPI.Base.BlockTEBase;
+import Reika.DragonAPI.Base.BlockTileEnum;
 import Reika.DragonAPI.Base.TileEntityBase;
 import Reika.DragonAPI.Instantiable.Data.Immutable.BlockKey;
 import Reika.DragonAPI.Libraries.IO.ReikaChatHelper;
@@ -71,7 +71,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
 
 @Strippable(value = {"mcp.mobius.waila.api.IWailaDataProvider"})
-public abstract class BlockRedstoneBase extends BlockTEBase implements IWailaDataProvider {
+public abstract class BlockRedstoneBase extends BlockTileEnum<TileRedstoneBase, RedstoneTiles> implements IWailaDataProvider {
 
 	public static IIcon trans;
 	private static IIcon[][][] icons;
@@ -90,8 +90,18 @@ public abstract class BlockRedstoneBase extends BlockTEBase implements IWailaDat
 	}
 
 	@Override
-	public final TileEntity createTileEntity(World world, int meta) {
-		return RedstoneTiles.createTEFromIDandMetadata(this, meta);
+	public final TileRedstoneBase createTileEntity(World world, int meta) {
+		return (TileRedstoneBase)RedstoneTiles.createTEFromIDandMetadata(this, meta);
+	}
+
+	@Override
+	public RedstoneTiles getMapping(int meta) {
+		return RedstoneTiles.TEList[RedstoneTiles.getIndexFromIDandMetadata(this, meta)];
+	}
+
+	@Override
+	public RedstoneTiles getMapping(IBlockAccess world, int x, int y, int z) {
+		return RedstoneTiles.getTEAt(world, x, y, z);
 	}
 
 	@Override

@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -19,8 +19,8 @@ import Reika.ExpandedRedstone.Registry.RedstoneTiles;
 public class TileEntityColumnDecrementer extends TileRedstoneBase {
 
 	@Override
-	public int getTEIndex() {
-		return RedstoneTiles.COLUMN.ordinal();
+	public RedstoneTiles getTile() {
+		return RedstoneTiles.COLUMN;
 	}
 
 	@Override

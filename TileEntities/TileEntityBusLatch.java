@@ -58,8 +58,8 @@ public class TileEntityBusLatch extends TileRedstoneBase implements IBundledTile
 	}
 
 	@Override
-	public int getTEIndex() {
-		return RedstoneTiles.BUSLATCH.ordinal();
+	public RedstoneTiles getTile() {
+		return RedstoneTiles.BUSLATCH;
 	}
 
 	public void toggle(EntityPlayer ep) {
